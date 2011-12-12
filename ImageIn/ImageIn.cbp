@@ -31,6 +31,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Array.h" />
+		<Unit filename="BinaryImage.cpp" />
+		<Unit filename="BinaryImage.h" />
+		<Unit filename="GrayscaleImage.cpp" />
+		<Unit filename="GrayscaleImage.h" />
+		<Unit filename="GrayscaleImage.tpp" />
+		<Unit filename="Histogram.cpp" />
+		<Unit filename="Histogram.h" />
+		<Unit filename="Image.cpp" />
+		<Unit filename="Image.h" />
+		<Unit filename="Image.tpp" />
+		<Unit filename="ProjectionHistogram.cpp" />
+		<Unit filename="ProjectionHistogram.h" />
+		<Unit filename="Rectangle.h" />
+		<Unit filename="RgbImage.cpp" />
+		<Unit filename="RgbImage.h" />
+		<Unit filename="RgbImage.tpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

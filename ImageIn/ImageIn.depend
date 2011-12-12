@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1323707325 source:y:\detiqt\src\imagein\histogram.cpp
+	"Histogram.h"
+
+1323707324 y:\detiqt\src\imagein\histogram.h
+	"Array.h"
+	"Rectangle.h"
+
+1323707324 y:\detiqt\src\imagein\array.h
+
+1323707324 y:\detiqt\src\imagein\rectangle.h
+
+1323707325 source:y:\detiqt\src\imagein\projectionhistogram.cpp
+	"ProjectionHistogram.h"
+
+1323707324 y:\detiqt\src\imagein\projectionhistogram.h
+	"Array.h"
+	"Image.h"
+
+1323707324 y:\detiqt\src\imagein\image.h
+	<vector>
+	<string>
+	"Rectangle.h"
+	"Histogram.h"
+	"Image.tpp"
+
+1323707324 y:\detiqt\src\imagein\image.tpp
+	"Image.h"
+
+1323707324 source:y:\detiqt\src\imagein\binaryimage.cpp
+	"BinaryImage.h"
+
+1323709158 y:\detiqt\src\imagein\binaryimage.h
+	"GrayscaleImage.h"
+
+1323707324 y:\detiqt\src\imagein\grayscaleimage.h
+	"Image.h"
+	"GrayscaleImage.tpp"
+
+1323707324 y:\detiqt\src\imagein\grayscaleimage.tpp
+	"GrayscaleImage.h"
+
