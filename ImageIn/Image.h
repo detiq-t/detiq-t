@@ -23,11 +23,12 @@ namespace ImageIn
         public:
             typedef D* iterator;
             typedef const D* const_iterator;
+
             Image() : _width(0), _height(0), _nChannels(0) {};
             Image(unsigned int width, unsigned int height, unsigned int nChannels, const D* data);
             Image(std::string filename);
 
-            virtual ~Image();
+            virtual ~Image() { delete[] _mat; }
 
             Image(const Image& other);
             Image& operator=(const Image& other);
@@ -40,8 +41,10 @@ namespace ImageIn
             void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
             void setPixel(unsigned int x, unsigned int y, const D* pixel);
 
-            iterator begin();
-            iterator end();
+            inline iterator begin() { return _mat; }
+            inline const_iterator begin() const { return _mat; }
+            inline iterator end() { return _mat + _width*_height*_nChannels; }
+            inline const_iterator end() const { return _mat + _width*_height*_nChannels; }
 
             Image<D> crop(const Rectangle& rect) const;
 
