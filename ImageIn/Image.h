@@ -41,10 +41,10 @@ namespace ImageIn
             void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
             void setPixel(unsigned int x, unsigned int y, const D* pixel);
 
-            inline iterator begin() { return _mat; }
-            inline const_iterator begin() const { return _mat; }
-            inline iterator end() { return _mat + _width*_height*_nChannels; }
-            inline const_iterator end() const { return _mat + _width*_height*_nChannels; }
+            inline iterator begin() { return _mat; } //!< Returns an iterator to the first channel on the top-left corner of the image
+            inline const_iterator begin() const { return _mat; } //!< Returns a const iterator to the first channel on the top-left corner of the image
+            inline iterator end() { return _mat + _width*_height*_nChannels; } //!< Returns an iterator past then end of the image
+            inline const_iterator end() const { return _mat + _width*_height*_nChannels; } //!< returns a const iterator past the end of the image
 
             /*!
              * \brief Crops the image to the boundaries defined by a Rectangle.
