@@ -24,7 +24,7 @@ namespace ImageIn
             typedef D* iterator;
             typedef const D* const_iterator;
 
-            Image() : _width(0), _height(0), _nChannels(0) {};
+            Image() : _width(0), _height(0), _nChannels(0), _mat(NULL) {};
             Image(unsigned int width, unsigned int height, unsigned int nChannels, const D* data);
             Image(std::string filename);
 
@@ -46,11 +46,17 @@ namespace ImageIn
             inline iterator end() { return _mat + _width*_height*_nChannels; }
             inline const_iterator end() const { return _mat + _width*_height*_nChannels; }
 
+            /*!
+             * \brief Crops the image to the boundaries defined by a Rectangle.
+             *
+             * \param rect the rectangle used to define the boundaries of the new image.
+             * \return A new image of the same type.
+             */
             Image<D> crop(const Rectangle& rect) const;
 
             void save(std::string filename, ImgFormat format) const;
 
-            Histogram getHistogram(unsigned int channel, const Rectangle& rect = Rectangle()) const;
+            inline Histogram getHistogram(unsigned int channel, const Rectangle& rect = Rectangle()) const { return Histogram(*this, channel, rect); }
 
             // TODO (spercott#1#): Image from stl container iterator
             //void setPixel(int x, int y, std::iterator begin, std::iterator end);
