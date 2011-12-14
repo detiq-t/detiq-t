@@ -1,6 +1,6 @@
 #include "GrayscaleImage.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 template <typename D>
 GrayscaleImage<D>::~GrayscaleImage()

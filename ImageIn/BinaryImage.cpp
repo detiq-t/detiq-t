@@ -1,6 +1,6 @@
 #include "BinaryImage.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 BinaryImage::~BinaryImage()
 {

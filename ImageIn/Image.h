@@ -7,7 +7,7 @@
 #include "Rectangle.h"
 #include "Histogram.h"
 
-namespace ImageIn
+namespace imagein
 {
 
     typedef enum {

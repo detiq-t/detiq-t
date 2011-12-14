@@ -3,7 +3,7 @@
 
 #include "GrayscaleImage.h"
 
-namespace ImageIn
+namespace imagein
 {
     class BinaryImage : public GrayscaleImage<bool>
     {

@@ -1,6 +1,6 @@
 #include "ProjectionHistogram.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 
 ProjectionHistogram::~ProjectionHistogram()

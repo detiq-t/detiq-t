@@ -2,7 +2,7 @@
 #define ARRAY_H
 
 
-namespace ImageIn
+namespace imagein
 {
     class Array
     {

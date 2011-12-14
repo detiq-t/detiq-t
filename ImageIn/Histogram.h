@@ -5,7 +5,7 @@
 #include "Rectangle.h"
 
 
-namespace ImageIn
+namespace imagein
 {
     template <typename D>
     class Image;

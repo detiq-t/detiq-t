@@ -1,6 +1,6 @@
 #include "RgbImage.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 template <typename D>
 RgbImage<D>::~RgbImage()

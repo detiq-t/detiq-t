@@ -1,6 +1,6 @@
 #include "Image.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 template<typename D>
 Image<D>::Image(unsigned int width, unsigned int height, unsigned int nChannels, const D* data)

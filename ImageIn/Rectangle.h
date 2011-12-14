@@ -2,7 +2,7 @@
 #define RECTANGLE_H
 
 
-namespace ImageIn
+namespace imagein
 {
     struct Rectangle
     {

@@ -6,7 +6,7 @@
 #include "Image.h"
 
 
-namespace ImageIn
+namespace imagein
 {
     class ProjectionHistogram : public Array
     {

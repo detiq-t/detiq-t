@@ -4,7 +4,7 @@
 #include "Image.h"
 
 
-namespace ImageIn
+namespace imagein
 {
     template <typename D>
     class RgbImage : Image<D>

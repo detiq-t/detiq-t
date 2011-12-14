@@ -1,6 +1,6 @@
 #include "Histogram.h"
 
-using namespace ImageIn;
+using namespace imagein;
 
 
 Histogram::~Histogram()
