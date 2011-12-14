@@ -10,13 +10,6 @@
 namespace imagein
 {
 
-    typedef enum {
-        F_BMP,
-        F_JPG,
-        F_PNG,
-        F_WEBP
-    }ImgFormat;
-
     template <typename D>
     class Image
     {
@@ -25,6 +18,7 @@ namespace imagein
             typedef const D* const_iterator;
 
             Image() : _width(0), _height(0), _nChannels(0), _mat(NULL) {};
+            Image(unsigned int width, unsigned int height, unsigned int nChannels);
             Image(unsigned int width, unsigned int height, unsigned int nChannels, const D* data);
             Image(std::string filename);
 
@@ -37,7 +31,7 @@ namespace imagein
             inline unsigned int getHeight() const { return _height; }
             inline unsigned int getNbChannels() const { return _nChannels; }
 
-            const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const;
+            const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const { return _mat[x][y][channel]; };
             void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
             void setPixel(unsigned int x, unsigned int y, const D* pixel);
 
@@ -54,7 +48,7 @@ namespace imagein
              */
             Image<D> crop(const Rectangle& rect) const;
 
-            void save(std::string filename, ImgFormat format) const;
+            void save(std::string filename) const;
 
             inline Histogram getHistogram(unsigned int channel, const Rectangle& rect = Rectangle()) const { return Histogram(*this, channel, rect); }
 
