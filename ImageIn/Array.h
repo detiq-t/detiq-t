@@ -1,7 +1,6 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-
 namespace imagein
 {
     /*!
@@ -37,7 +36,7 @@ namespace imagein
             //! Returns a const_iterator past then end of the array
             inline const_iterator end() const { return _array+_width; };
 
-        private:
+        protected:
             unsigned int* _array;
             unsigned int _width;
     };
