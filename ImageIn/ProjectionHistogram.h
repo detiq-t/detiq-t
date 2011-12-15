@@ -18,9 +18,9 @@ namespace imagein
     {
         public:
             template <typename D>
-            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, unsigned int channel, const Rectangle& rect);
+            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel = 0);
             template <typename D>
-            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, const Rectangle& rect);
+            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, unsigned int channel = 0);
             inline virtual ~ProjectionHistogram() {};
         protected:
         private:
