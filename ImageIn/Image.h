@@ -31,7 +31,7 @@ namespace imagein
             inline unsigned int getHeight() const { return _height; };
             inline unsigned int getNbChannels() const { return _nChannels; };
 
-            const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const { return _mat[x][y][channel]; };
+            const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const { return _mat[y*_nChannels*_width + x*_nChannels + channel]; };
             void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
             void setPixel(unsigned int x, unsigned int y, const D* pixel);
 

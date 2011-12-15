@@ -176,8 +176,8 @@ Image<D> Image<D>::crop(const Rectangle& rect) const
 {
     unsigned int topleft = rect.y*_width + rect.x;
 
-    Image<D>::iterator it = this->begin() + topleft*_nChannels; //iterator pointing on the top-left corner of the rectangle
-    Image<D>::iterator end = it + ((rect.h-1)*_width + rect.w)*_nChannels; //iterator pointing just after the bottom-right corner of the rectangle
+    Image<D>::const_iterator it = this->begin() + topleft*_nChannels; //iterator pointing on the top-left corner of the rectangle
+    Image<D>::const_iterator end = it + ((rect.h-1)*_width + rect.w)*_nChannels; //iterator pointing just after the bottom-right corner of the rectangle
 
     D* data = new D[rect.w * rect.y * _nChannels]; //new array containing the new image data
     D* di = data; //pointer to the first element of data
@@ -196,7 +196,7 @@ Image<D> Image<D>::crop(const Rectangle& rect) const
     }
 
     //creating an empty image then filling its attributes manually avoids a copy of every value in the data array.
-    Image<D> ret();
+    Image<D> ret;
     ret._width = rect.w;
     ret._height = rect.h;
     ret._nChannels = this->_nChannels;
