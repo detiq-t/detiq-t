@@ -2,7 +2,7 @@
 #define IMAGEFILE_H
 
 #include <string>
-
+#include "FileNotFoundException.h"
 
 namespace imagein
 {
@@ -97,7 +97,7 @@ namespace imagein
              */
             virtual void writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)=0;
 
-        private:
+        protected:
             std::string _filename;
     };
 }
