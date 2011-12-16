@@ -3,13 +3,14 @@
 
 #include "ImageFile.h"
 
+#include <string>
 
 namespace imagein
 {
     class BmpImage : public ImageFile
     {
         public:
-            BmpImage(std::string filename) : ImageFile(filename) {}
+            BmpImage(std::string filename);
 
             unsigned int readHeight();
             unsigned int readWidth();
