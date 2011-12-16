@@ -9,7 +9,7 @@ namespace imagein
     class JpgImage : public ImageFile
     {
         public:
-            JpgImage(std::string filename);
+            JpgImage(std::string filename) : ImageFile(filename) {}
 
             unsigned int readHeight();
             unsigned int readWidth();

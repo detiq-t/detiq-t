@@ -2,10 +2,6 @@
 
 using namespace imagein;
 
-PngImage::PngImage(std::string filename) : ImageFile(filename) {
-    //TODO
-}
-
 unsigned int PngImage::readHeight(){
     //TODO
     return 0;

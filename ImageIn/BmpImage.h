@@ -10,7 +10,7 @@ namespace imagein
     class BmpImage : public ImageFile
     {
         public:
-            BmpImage(std::string filename);
+            BmpImage(std::string filename) : ImageFile(filename) {}
 
             unsigned int readHeight();
             unsigned int readWidth();

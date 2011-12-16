@@ -2,10 +2,6 @@
 
 using namespace imagein;
 
-JpgImage::JpgImage(std::string filename) : ImageFile(filename) {
-    //TODO
-}
-
 unsigned int JpgImage::readHeight(){
     //TODO
     return 0;

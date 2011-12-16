@@ -9,7 +9,7 @@ namespace imagein
     class PngImage : public ImageFile
     {
         public:
-            PngImage(std::string filename);
+            PngImage(std::string filename) : ImageFile(filename) {}
 
             unsigned int readHeight();
             unsigned int readWidth();

@@ -2,10 +2,6 @@
 
 using namespace imagein;
 
-BmpImage::BmpImage(std::string filename) : ImageFile(filename) {
-    //TODO
-}
-
 unsigned int BmpImage::readHeight(){
     //TODO
     return 0;
