@@ -1,5 +1,7 @@
 #include "PngImage.h"
 
+#include <png.h>
+
 using namespace imagein;
 
 unsigned int PngImage::readHeight(){
