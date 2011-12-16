@@ -70,7 +70,8 @@ debug/BinaryImage.o: BinaryImage.cpp BinaryImage.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/BinaryImage.o BinaryImage.cpp
 
 debug/BmpImage.o: BmpImage.cpp BmpImage.h \
-		ImageFile.h
+		ImageFile.h \
+		FileNotFoundException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/BmpImage.o BmpImage.cpp
 
 debug/Histogram.o: Histogram.cpp Histogram.h \
@@ -80,13 +81,15 @@ debug/Histogram.o: Histogram.cpp Histogram.h \
 
 debug/ImageFileFactory.o: ImageFileFactory.cpp ImageFileFactory.h \
 		ImageFile.h \
+		FileNotFoundException.h \
 		JpgImage.h \
 		PngImage.h \
 		BmpImage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/ImageFileFactory.o ImageFileFactory.cpp
 
 debug/JpgImage.o: JpgImage.cpp JpgImage.h \
-		ImageFile.h
+		ImageFile.h \
+		FileNotFoundException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/JpgImage.o JpgImage.cpp
 
 debug/main.o: main.cpp Image.h \
@@ -100,7 +103,8 @@ debug/main.o: main.cpp Image.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/main.o main.cpp
 
 debug/PngImage.o: PngImage.cpp PngImage.h \
-		ImageFile.h
+		ImageFile.h \
+		FileNotFoundException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/PngImage.o PngImage.cpp
 
 debug/ProjectionHistogram.o: ProjectionHistogram.cpp ProjectionHistogram.h \
