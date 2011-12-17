@@ -1,6 +1,6 @@
 #############################################################################
 # Makefile for building: ImageIn
-# 
+#
 # Do not forget to add dependency rules whenever you add an #include in a file.
 # Do not forget to add a target whenever you add a new cpp file.
 #
@@ -29,7 +29,7 @@ SOURCES       = BinaryImage.cpp \
 		JpgImage.cpp \
 		main.cpp \
 		PngImage.cpp \
-		ProjectionHistogram.cpp 
+		ProjectionHistogram.cpp
 OBJECTS       = debug/BinaryImage.o \
 		debug/BmpImage.o \
 		debug/Histogram.o \
@@ -51,10 +51,10 @@ DESTDIR_TARGET = debug/ImageIn.exe
 
 ####### Build rules
 
-$(DESTDIR_TARGET):  $(OBJECTS) 
+$(DESTDIR_TARGET):  $(OBJECTS)
 	$(LINK) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
 
-clean: 
+clean:
 	rm -f $(OBJECTS) $(DESTDIR_TARGET)
 
 ####### Compile
@@ -71,7 +71,7 @@ debug/BinaryImage.o: BinaryImage.cpp BinaryImage.h \
 
 debug/BmpImage.o: BmpImage.cpp BmpImage.h \
 		ImageFile.h \
-		FileNotFoundException.h
+		ImageFileException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/BmpImage.o BmpImage.cpp
 
 debug/Histogram.o: Histogram.cpp Histogram.h \
@@ -81,7 +81,7 @@ debug/Histogram.o: Histogram.cpp Histogram.h \
 
 debug/ImageFileFactory.o: ImageFileFactory.cpp ImageFileFactory.h \
 		ImageFile.h \
-		FileNotFoundException.h \
+		ImageFileException.h \
 		JpgImage.h \
 		PngImage.h \
 		BmpImage.h
@@ -89,7 +89,7 @@ debug/ImageFileFactory.o: ImageFileFactory.cpp ImageFileFactory.h \
 
 debug/JpgImage.o: JpgImage.cpp JpgImage.h \
 		ImageFile.h \
-		FileNotFoundException.h
+		ImageFileException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/JpgImage.o JpgImage.cpp
 
 debug/main.o: main.cpp Image.h \
@@ -104,8 +104,7 @@ debug/main.o: main.cpp Image.h \
 
 debug/PngImage.o: PngImage.cpp PngImage.h \
 		ImageFile.h \
-		FileNotFoundException.h \
-		OpenErrorException.h
+		ImageFileException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/PngImage.o PngImage.cpp
 
 debug/ProjectionHistogram.o: ProjectionHistogram.cpp ProjectionHistogram.h \

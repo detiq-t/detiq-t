@@ -2,7 +2,7 @@
 #define IMAGEFILE_H
 
 #include <string>
-#include "FileNotFoundException.h"
+#include "ImageFileException.h"
 
 namespace imagein
 {
@@ -43,6 +43,10 @@ namespace imagein
              */
             ImageFile(std::string filename) : _filename(filename) {}
 
+            /*!
+             * \brief Standard virtual destructor.
+             */
+            virtual ~ImageFile() {};
 
             /*!
              * \brief Reads the height of the image from the file.

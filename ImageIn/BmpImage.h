@@ -5,12 +5,16 @@
 
 #include <string>
 
+#include <bitmap.h>
+// Cf. http://www.kalytta.com/bitmap.h
+// Warning : I had to change the "#include <string>" into "#include <cstring>" for the memset and memcpy methodes
+
 namespace imagein
 {
     class BmpImage : public ImageFile
     {
         public:
-            BmpImage(std::string filename) : ImageFile(filename) {}
+            BmpImage(std::string filename);
 
             unsigned int readHeight();
             unsigned int readWidth();
@@ -21,6 +25,7 @@ namespace imagein
             void writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
+            CBitmap workImg;
     };
 }
 

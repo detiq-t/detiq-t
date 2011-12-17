@@ -7,18 +7,18 @@
 
 namespace imagein
 {
-    class FileNotFoundException : public std::exception
+    class ImageFileException : public std::exception
     {
     public:
-        FileNotFoundException( const char * Msg, int Line )
+        ImageFileException( const std::string& msg, int line, std::string file)
         {
             std::ostringstream oss;
-            oss << "Erreur ligne " << Line << " : "
-                << Msg;
+            oss << "Exception raised line " << line << " in file " << file << " : "
+                << msg;
             this->msg = oss.str();
         }
 
-        virtual ~FileNotFoundException() throw()
+        virtual ~ImageFileException() throw()
         {
 
         }
