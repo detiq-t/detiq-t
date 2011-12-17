@@ -104,7 +104,8 @@ debug/main.o: main.cpp Image.h \
 
 debug/PngImage.o: PngImage.cpp PngImage.h \
 		ImageFile.h \
-		FileNotFoundException.h
+		FileNotFoundException.h \
+		OpenErrorException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/PngImage.o PngImage.cpp
 
 debug/ProjectionHistogram.o: ProjectionHistogram.cpp ProjectionHistogram.h \

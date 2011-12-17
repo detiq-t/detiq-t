@@ -3,13 +3,14 @@
 
 #include "ImageFile.h"
 
+#include <png.h>
 
 namespace imagein
 {
     class PngImage : public ImageFile
     {
         public:
-            PngImage(std::string filename) : ImageFile(filename) {}
+            PngImage(std::string filename);
 
             unsigned int readHeight();
             unsigned int readWidth();
@@ -20,6 +21,9 @@ namespace imagein
             void writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
+
+            png_structp _pngPtr;
+            png_infop _infoPtr;
     };
 }
 
