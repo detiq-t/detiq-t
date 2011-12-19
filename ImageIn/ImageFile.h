@@ -99,7 +99,7 @@ namespace imagein
              * \param nChannels The number of channels for each pixel.
              * \param depth The size (in bits) of the data in each value of a pixel. Must represent an integer number of bytes (8, 16, 24...)
              */
-            virtual void writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)=0;
+            virtual void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)=0;
 
         protected:
             std::string _filename;

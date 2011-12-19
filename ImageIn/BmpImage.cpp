@@ -41,7 +41,7 @@ char* BmpImage::readData()
     return NULL;
 }
 
-void BmpImage::writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
+void BmpImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
 {
     //TODO
 }

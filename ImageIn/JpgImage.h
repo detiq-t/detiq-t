@@ -17,7 +17,7 @@ namespace imagein
             unsigned int readDepth();
             char* readData();
 
-            void writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
+            void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
     };

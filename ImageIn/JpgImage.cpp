@@ -27,7 +27,7 @@ char* JpgImage::readData(){
     return NULL;
 }
 
-void JpgImage::writeData(char* data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth){
+void JpgImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth){
     //TODO
 }
 
