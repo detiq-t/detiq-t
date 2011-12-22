@@ -10,7 +10,7 @@ namespace imagein
     class GrayscaleImage : public Image<D>
     {
         public:
-            GrayscaleImage(unsigned int width, unsigned int height, const D* data) : Image<D>(width, height, 1, data) {};
+            GrayscaleImage(unsigned int width, unsigned int height, D* data) : Image<D>(width, height, 1, data) {};
             GrayscaleImage(std::string filename);
             virtual ~GrayscaleImage();
 

@@ -12,7 +12,7 @@ namespace imagein
     {
         unsigned int getImageDepth(std::string filename);
         ImageFile* getImageFile(std::string filename);
-    };
+    }
 }
 
 #endif // IMAGEFILEFACTORY_H

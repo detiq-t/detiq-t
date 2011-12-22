@@ -8,8 +8,13 @@ using namespace imagein;
 
 unsigned int ImageFileFactory::getImageDepth(std::string filename)
 {
-    //TODO
-    return 0;
+    ImageFile* file = getImageFile(filename);
+
+    unsigned int depth = file->readDepth();
+
+    delete file;
+
+    return depth;
 }
 
 ImageFile* ImageFileFactory::getImageFile(std::string filename)

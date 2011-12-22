@@ -33,6 +33,7 @@ PngImage::PngImage(string filename)
             throw ImageFileException("File "+filename+" is not a valid png file", __LINE__, __FILE__);
         }
 
+        //TODO : error handling
         _readPngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
         if (!_readPngPtr) {
             throw ImageFileException("Couldn't initialize png read struct", __LINE__, __FILE__);
@@ -102,6 +103,7 @@ char* PngImage::readData()
 
 void PngImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
 {
+    //TODO : Error handling
     _writePngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
 
     _stream = new fstream(_filename.c_str(), ios_base::out | ios_base::binary);

@@ -10,7 +10,7 @@ namespace imagein
     class RgbImage : Image<D>
     {
         public:
-            RgbImage(unsigned int width, unsigned int height, const D* data) : Image<D>(width, height, 3, data) {};
+            RgbImage(unsigned int width, unsigned int height, D* data) : Image<D>(width, height, 3, data) {};
             RgbImage(std::string filename);
 
             inline const D& getRed(unsigned int x, unsigned int y) const { return Image<D>::getPixel(x, y, 0); }
