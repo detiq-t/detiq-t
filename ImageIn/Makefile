@@ -14,7 +14,7 @@ CC            = g++ #Compiler
 LINK          = g++ #Linker
 DEFINES       =     #Compiler defines
 CXXFLAGS      = -g -Wall $(DEFINES) #Compiler options. Do not forget to append the defines
-LIBS          = -lpng  # Libs to link with the library
+LIBS          = -lpng -ljpeg # Libs to link with the library
 
 ####### Output directory
 
@@ -24,7 +24,6 @@ OBJECTS_DIR   = debug
 
 SOURCES       = BinaryImage.cpp \
 		BmpImage.cpp \
-		Histogram.cpp \
 		ImageFileFactory.cpp \
 		JpgImage.cpp \
 		main.cpp \
@@ -32,7 +31,6 @@ SOURCES       = BinaryImage.cpp \
 		ProjectionHistogram.cpp
 OBJECTS       = debug/BinaryImage.o \
 		debug/BmpImage.o \
-		debug/Histogram.o \
 		debug/ImageFileFactory.o \
 		debug/JpgImage.o \
 		debug/main.o \
@@ -66,18 +64,14 @@ debug/BinaryImage.o: BinaryImage.cpp BinaryImage.h \
 		Histogram.h \
 		Array.h \
 		Image.tpp \
-		GrayscaleImage.tpp
+		GrayscaleImage.tpp \
+		Histogram.tpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/BinaryImage.o BinaryImage.cpp
 
 debug/BmpImage.o: BmpImage.cpp BmpImage.h \
 		ImageFile.h \
 		ImageFileException.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/BmpImage.o BmpImage.cpp
-
-debug/Histogram.o: Histogram.cpp Histogram.h \
-		Array.h \
-		Rectangle.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/Histogram.o Histogram.cpp
 
 debug/ImageFileFactory.o: ImageFileFactory.cpp ImageFileFactory.h \
 		ImageFile.h \

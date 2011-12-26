@@ -4,6 +4,7 @@
 #include "ImageFile.h"
 
 #include <string>
+#include <cstring>
 
 #include <bitmap.h>
 // Cf. http://www.kalytta.com/bitmap.h

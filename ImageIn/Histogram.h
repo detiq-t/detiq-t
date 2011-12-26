@@ -17,10 +17,11 @@ namespace imagein
             Histogram(const Image<D>& img, unsigned int channel, const Rectangle& rect);
             template <typename D>
             Histogram(const Image<D>& img, const Rectangle& rect);
-            virtual ~Histogram();
         protected:
         private:
     };
 }
+
+#include "Histogram.tpp"
 
 #endif // HISTOGRAM_H
