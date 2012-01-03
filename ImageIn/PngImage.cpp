@@ -105,7 +105,8 @@ void PngImage::writeData(const char* const data, unsigned int width, unsigned in
 {
     //TODO : Error handling
     _writePngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
-
+    
+    delete _stream;
     _stream = new fstream(_filename.c_str(), ios_base::out | ios_base::binary);
 
     if(!_writePngPtr) {
