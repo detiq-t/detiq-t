@@ -14,7 +14,7 @@ CC            = g++ #Compiler
 LINK          = g++ #Linker
 DEFINES       =     #Compiler defines
 CXXFLAGS      = -g -Wall $(DEFINES) #Compiler options. Do not forget to append the defines
-LIBS          = -lpng -ljpeg # Libs to link with the library
+LIBS          = -lpng -ljpeg -lz # Libs to link with the library
 
 ####### Output directory
 
