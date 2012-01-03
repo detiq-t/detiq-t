@@ -208,8 +208,8 @@ char* JpgImage::readData(){
     unsigned int width = cinfo.output_width;
     unsigned int height = cinfo.output_height;
     unsigned int nChannels = cinfo.output_components;
-    unsigned int depth = sizeof(JSAMPLE);
-    unsigned int rowSize = width*nChannels*(depth/sizeof(unsigned char));
+    unsigned int depth = sizeof(JSAMPLE)*8;
+    unsigned int rowSize = width*nChannels*((depth/8)/sizeof(unsigned char));
 
     unsigned char* data = new unsigned char[height*rowSize];
 
@@ -220,7 +220,6 @@ char* JpgImage::readData(){
     /* We read the decompression results */
     //for (unsigned int i=0; i < 1; i++) {
     while(cinfo.output_scanline < cinfo.output_height) {
-        //unsigned char* pos = &data[i*width*nChannels*(depth/sizeof(char))];
         unsigned char* pos = &data[cinfo.output_scanline*rowSize];
         jpeg_read_scanlines(&cinfo, &pos, 1);
     }

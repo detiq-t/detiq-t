@@ -108,5 +108,5 @@ void Image<D>::save(const std::string& filename) const
 {
     ImageFile* im = ImageFileFactory::getImageFile(filename);
 
-    im->writeData(reinterpret_cast<char*>(_mat), _width, _height, _nChannels, sizeof(D));
+    im->writeData(reinterpret_cast<char*>(_mat), _width, _height, _nChannels, sizeof(D)*8);
 }
