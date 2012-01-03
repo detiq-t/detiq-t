@@ -8,7 +8,7 @@
 
 #include <bitmap.h>
 // Cf. http://www.kalytta.com/bitmap.h
-// Warning : I had to change the "#include <string>" into "#include <cstring>" for the memset and memcpy methodes
+// Warning : I had to add "#include <cstring>" for the memset and memcpy methodes
 
 namespace imagein
 {
