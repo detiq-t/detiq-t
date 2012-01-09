@@ -28,9 +28,15 @@ namespace imagein
 
         private:
             png_structp _readPngPtr, _writePngPtr;
-            png_infop _infoPtr;
+            png_infop _readInfoPtr, _writeInfoPtr;
             std::fstream* _stream;
             bool _was_palette;
+
+            //Init libpng structures for reading.
+            void initRead();
+
+            //Init libpng structures for writing.
+            void initWrite();
 
             //function used to read data from png file
             static void userReadData(png_structp pngPtr, png_bytep data, png_size_t length)
@@ -53,33 +59,33 @@ namespace imagein
     inline unsigned int PngImage::readHeight()
     {
         if(!_readPngPtr) {
-            throw ImageFileException("File "+_filename+" is not a valid png file", __LINE__, __FILE__);
+            initRead();
         }
-        return png_get_image_height(_readPngPtr, _infoPtr);
+        return png_get_image_height(_readPngPtr, _readInfoPtr);
     }
 
     inline unsigned int PngImage::readWidth()
     {
         if(!_readPngPtr) {
-            throw ImageFileException("File "+_filename+" is not a valid png file", __LINE__, __FILE__);
+            initRead();
         }
-        return png_get_image_width(_readPngPtr, _infoPtr);
+        return png_get_image_width(_readPngPtr, _readInfoPtr);
     }
 
     inline unsigned int PngImage::readNbChannels()
     {
         if(!_readPngPtr) {
-            throw ImageFileException("File "+_filename+" is not a valid png file", __LINE__, __FILE__);
+            initRead();
         }
-        return (_was_palette) ? 3 : png_get_channels(_readPngPtr, _infoPtr);
+        return (_was_palette) ? 3 : png_get_channels(_readPngPtr, _readInfoPtr);
     }
 
     inline unsigned int PngImage::readDepth()
     {
         if(!_readPngPtr) {
-            throw ImageFileException("File "+_filename+" is not a valid png file", __LINE__, __FILE__);
+            initRead();
         }
-        return png_get_bit_depth(_readPngPtr, _infoPtr);
+        return png_get_bit_depth(_readPngPtr, _readInfoPtr);
     }
 }
 
