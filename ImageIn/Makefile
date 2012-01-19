@@ -25,6 +25,7 @@ OBJECTS_DIR   = debug
 SOURCES       = BinaryImage.cpp \
 		BmpImage.cpp \
 		ImageFileFactory.cpp \
+		ImageFileAbsFactory.cpp \
 		JpgImage.cpp \
 		main.cpp \
 		PngImage.cpp \
@@ -32,6 +33,7 @@ SOURCES       = BinaryImage.cpp \
 OBJECTS       = debug/BinaryImage.o \
 		debug/BmpImage.o \
 		debug/ImageFileFactory.o \
+		debug/ImageFileAbsFactory.o \
 		debug/JpgImage.o \
 		debug/main.o \
 		debug/PngImage.o \
@@ -80,6 +82,11 @@ debug/ImageFileFactory.o: ImageFileFactory.cpp ImageFileFactory.h \
 		PngImage.h \
 		BmpImage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/ImageFileFactory.o ImageFileFactory.cpp
+
+debug/ImageFileAbsFactory.o: ImageFileAbsFactory.cpp ImageFileAbsFactory.h \
+		ImageFileFactory.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/ImageFileAbsFactory.o ImageFileAbsFactory.cpp
+	
 
 debug/JpgImage.o: JpgImage.cpp JpgImage.h \
 		ImageFile.h \

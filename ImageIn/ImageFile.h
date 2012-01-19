@@ -13,13 +13,14 @@ namespace imagein
      * Every method writing or reading in a file will use classes implementing this interface, so that it can prepare its data regardless of the file format being used.
      *
      * To add a new format to ImageIn, follow these steps :
-     * -# Add an item into the ImageFile::Format enum representing the new format.
      * -# Create a class deriving from ImageFile and reimplement the methods defined in it.
-     * -# Update the two methods in ImageFileFactory.cpp so they are able to handle your new file format.
+     * -# Create a class deriving from ImageFileFactory and reimplement the method getImageFile() so that it can return your ImageFile class when it needs to
+     * (don't forget to call the original getImageFileMethod so you dont remove Jpg, Png and Bmp support).
+     * -# call the method ImageFileAbsFactory::setFactory(), passing an instance of your newly created factory class.
      *
      * The file format will then be available to use within the Image classes.
      *
-     * \sa ImageFileFactory::getImageFile()
+     * \sa ImageFileFactory::getImageFile(), ImageFileAbsFactory::setFactory
      */
     class ImageFile
     {

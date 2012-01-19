@@ -6,7 +6,7 @@
 
 using namespace imagein;
 
-unsigned int ImageFileFactory::getImageDepth(std::string filename)
+unsigned int ImageFileFactory::getImageDepth(std::string filename) const
 {
     ImageFile* file = this->getImageFile(filename);
 
@@ -17,7 +17,7 @@ unsigned int ImageFileFactory::getImageDepth(std::string filename)
     return depth;
 }
 
-ImageFile* ImageFileFactory::getImageFile(std::string filename)
+ImageFile* ImageFileFactory::getImageFile(std::string filename) const
 {
     ImageFile* imgf = NULL;
     if(filename.substr(filename.size()-4,4)==".bmp") {
