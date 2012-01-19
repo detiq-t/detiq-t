@@ -8,7 +8,7 @@ using namespace imagein;
 
 unsigned int ImageFileFactory::getImageDepth(std::string filename)
 {
-    ImageFile* file = getImageFile(filename);
+    ImageFile* file = this->getImageFile(filename);
 
     unsigned int depth = file->readDepth();
 

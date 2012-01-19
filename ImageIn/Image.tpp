@@ -1,7 +1,7 @@
 #include "Image.h"
 
 #include "ImageFile.h"
-#include "ImageFileFactory.h"
+#include "ImageFileAbsFactory.h"
 
 #include <stdexcept>
 
@@ -10,7 +10,7 @@ using namespace imagein;
 template <typename D>
 Image<D>::Image(std::string filename)
 {
-    ImageFile* im = ImageFileFactory::getImageFile(filename);
+    ImageFile* im = ImageFileAbsFactory::getFactory()->getImageFile(filename);
 
     _width = im->readWidth();
     _height = im->readHeight();
@@ -106,7 +106,7 @@ Image<D> Image<D>::crop(const Rectangle& rect) const
 template <typename D>
 void Image<D>::save(const std::string& filename) const
 {
-    ImageFile* im = ImageFileFactory::getImageFile(filename);
+    ImageFile* im = ImageFileAbsFactory::getFactory()->getImageFile(filename);
 
     im->writeData(reinterpret_cast<const char* const>(_mat), _width, _height, _nChannels, sizeof(D)*8);
 

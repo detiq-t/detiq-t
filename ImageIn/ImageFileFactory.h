@@ -8,11 +8,12 @@
 
 namespace imagein
 {
-    namespace ImageFileFactory
+    class ImageFileFactory
     {
-        unsigned int getImageDepth(std::string filename);
-        ImageFile* getImageFile(std::string filename);
-    }
+        public:
+            unsigned int getImageDepth(std::string filename);
+            virtual ImageFile* getImageFile(std::string filename);
+    };
 }
 
 #endif // IMAGEFILEFACTORY_H
