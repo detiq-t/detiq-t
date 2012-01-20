@@ -189,6 +189,7 @@ namespace imagein
             D* _mat;
     };
 
+    typedef Image<unsigned char> Image_8; //!< 8 bits depth Image. Provided for convenience.
 }
 
 

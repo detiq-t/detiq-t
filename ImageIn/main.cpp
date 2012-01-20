@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Image.h"
+#include "GrayscaleImage.h"
 
 using namespace std;
 
@@ -8,16 +9,16 @@ int main(int argc, char* argv[])
 {
     //Writing from nothing.
 
-    unsigned char* data = new unsigned char[255*255];
+    unsigned int* data = new unsigned int[1800*900];
 
-    for(int j = 0 ; j < 255 ; ++j) {
-        for(int i = 0 ; i < 255 ; ++i) {
-            data[j*255+i] = i;
+    for(unsigned int j = 0 ; j < 900 ; ++j) {
+        for(unsigned int i = 0 ; i < 1800 ; ++i) {
+            data[j*1800+i] = i;
         }
     }
 
-    Image<unsigned char> out(255, 255, 1, data);
-    out.save("samples/test.png");
+    Image<unsigned int> out(1800, 900, 1, data);
+    out.save("samples/test.jpg");
 
     return 0;/**/
 

@@ -23,6 +23,8 @@ namespace imagein
 
             virtual ~RgbImage();
     };
+
+    typedef RgbImage<unsigned char> RgbImage_8; //!< 8 bits depth RGB Image.
 }
 
 #include "RgbImage.tpp"
