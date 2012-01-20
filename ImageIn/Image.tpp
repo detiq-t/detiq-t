@@ -40,7 +40,7 @@ Image<D>& Image<D>::operator=(const Image& other)
 }
 
 template <typename D>
-Image<D> Image<D>::clone()
+Image<D> Image<D>::clone() const
 {
     D* data = new D[_width*_height*_nChannels];
 

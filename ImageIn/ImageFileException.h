@@ -7,6 +7,7 @@
 
 namespace imagein
 {
+    //! This is the exception thrown by ImageFile and its subclasses when there is an error reading from or writing in a file.
     class ImageFileException : public std::exception
     {
     public:

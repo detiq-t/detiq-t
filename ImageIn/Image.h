@@ -20,7 +20,7 @@ namespace imagein
      * The depth of the image is set using the template parameter. The most common depth
      * is 8 bits (1 byte) so you can use unsigned char as the template parameter. If you want
      * to use a 32-bit depth grayscale image, you can use uint32_t. These are only examples
-     * and you can use whatever types you wish as long as they provide basic arithmetic operations.
+     * and you can use whatever numeric type you wish as long as they are basic c++ types (with operator sizeof working).
      * Note that if you use  non-standard types, some algorithms may not work with this type of image.
      *
      * \tparam D the type of pixel values.
@@ -51,6 +51,8 @@ namespace imagein
              * \brief Constructs an image from the given file.
              *
              * The file format currently supported are jpg, png, bmp. Other formats will raise an exception.
+             *
+             * If you want to use other file formats, see the class ImageFile and ImageFileFactory for instructions.
              *
              * \param filename The relative or absolute filename to the image file.
              * \throw ImageFileException if the file format isn't supported or if there is an error while reading the file.
@@ -98,7 +100,7 @@ namespace imagein
              * This method should be used if you want to perform a real copy of the image. The Image returned
              * will be totally independant from the object on which this method is called.
              */
-            Image<D> clone();
+            Image<D> clone() const;
 
             //! Returns the width of the image
             inline unsigned int getWidth() const { return _width; };
