@@ -16,9 +16,8 @@ int main(int argc, char* argv[])
         }
     }
 
-    Image<unsigned char> out(200, 200, 1, data);
-    delete[] data;
-    out.save("samples/test.jpg");
+    Image<unsigned char> out(255, 255, 1, data);
+    out.save("samples/test.png");
 
     return 0;/**/
 

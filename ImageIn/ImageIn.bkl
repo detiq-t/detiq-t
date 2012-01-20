@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<makefile>
+
+<include file="presets/simple.bkl" />
+
+<lib id="ImageIn" template="simple">
+	
+	<libname>imagein</libname>	
+
+	<sources>
+		BinaryImage.cpp
+		BmpImage.cpp
+		ImageFileAbsFactory.cpp
+		ImageFileFactory.cpp
+		JpgImage.cpp
+		PngImage.cpp
+		ProjectionHistogram.cpp
+	</sources>	
+</lib>
+
+<exe id="ImageIn_test" template="simple">
+	<sources>
+		main.cpp
+	</sources>
+
+	<app-type>console</app-type>
+
+	<library>ImageIn</library>
+	
+	<sys-lib>png</sys-lib>
+	<sys-lib>jpeg</sys-lib>
+	<sys-lib>z</sys-lib>
+</exe>
+
+</makefile>
