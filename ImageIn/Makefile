@@ -49,7 +49,8 @@ IMAGEIN_OBJECTS =  \
 	ImageIn_ImageFileFactory.o \
 	ImageIn_JpgImage.o \
 	ImageIn_PngImage.o \
-	ImageIn_ProjectionHistogram.o
+	ImageIn_ProjectionHistogram.o \
+	ImageIn_EasyBMP.o
 IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_0) $(____DEBUG_2) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_TEST_OBJECTS =  \
@@ -118,6 +119,9 @@ ImageIn_PngImage.o: ./PngImage.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_ProjectionHistogram.o: ./ProjectionHistogram.cpp
+	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+
+ImageIn_EasyBMP.o: ./EasyBMP.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_test_main.o: ./main.cpp

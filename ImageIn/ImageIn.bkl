@@ -15,6 +15,7 @@
 		JpgImage.cpp
 		PngImage.cpp
 		ProjectionHistogram.cpp
+		EasyBMP.cpp
 	</sources>	
 </lib>
 
