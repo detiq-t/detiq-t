@@ -13,32 +13,14 @@ BmpImage::BmpImage(std::string filename)
     }
 }
 
-unsigned int BmpImage::readHeight()
-{
-    return workImg.GetHeight();
-}
-
-unsigned int BmpImage::readWidth()
-{
-    return workImg.GetWidth();
-}
-
-unsigned int BmpImage::readNbChannels()
-{
-    //TODO
-    return 0;
-}
-
-unsigned int BmpImage::readDepth()
-{
-    //TODO
-    return 0;
-}
-
 char* BmpImage::readData()
 {
-    //TODO
-    return NULL;
+	unsigned int w=readWidth(), h=readHeight(), c=readNbChannels(), d=d/8;
+	if(d==0) d=1;
+	char* data = new char[w * h * c * d];
+	unsigned int size = w*h*c*d;
+	workImg.GetBits(data, size, 5, 6, 5, 0);
+	return data;
 }
 
 void BmpImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)

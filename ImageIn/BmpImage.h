@@ -28,6 +28,27 @@ namespace imagein
         private:
             CBitmap workImg;
     };
+	
+	inline unsigned int BmpImage::readHeight()
+	{
+		return workImg.GetHeight();
+	}
+
+	inline unsigned int BmpImage::readWidth()
+	{
+		return workImg.GetWidth();
+	}
+
+	inline unsigned int BmpImage::readNbChannels()
+	{
+		if(readDepth()==32) return 4;
+		else return 3;
+	}
+
+	inline unsigned int BmpImage::readDepth()
+	{
+		return workImg.GetBitCount();
+	}
 }
 
 #endif // BMPIMAGE_H
