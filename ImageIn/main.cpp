@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    //Writing from nothing.
+    /*//Writing from nothing.
 
     unsigned int* data = new unsigned int[1800*900];
 
@@ -22,8 +22,8 @@ int main(int argc, char* argv[])
 
     return 0;/**/
 
-    /*//Writing from existing image
-    Image<unsigned char> in("samples/Basketball.png");
+    //Writing from existing image
+    Image<unsigned char> in("samples/lena.bmp");
     Image<unsigned char> out = in.clone();
     out.save("samples/test.png");
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     /**/
 
     /*//Printing image info
-    Image<unsigned char> in("samples/test.png");
+    Image<unsigned char> in("samples/lena.bmp");
     cout << in.getWidth() << endl;
     cout << in.getHeight() << endl;
     cout << in.getNbChannels() << endl;

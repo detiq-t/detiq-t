@@ -19,7 +19,7 @@ char* BmpImage::readData()
 	if(d==0) d=1;
 	char* data = new char[w * h * c * d];
 	unsigned int size = w*h*c*d;
-	workImg.GetBits(data, size, 5, 6, 5, 0);
+	workImg.GetBits(data, size);
 	return data;
 }
 
