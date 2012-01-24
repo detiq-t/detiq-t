@@ -3,12 +3,7 @@
 
 #include "ImageFile.h"
 
-#include <string>
-#include <cstring>
-
-#include <bitmap.h>
-// Cf. http://www.kalytta.com/bitmap.h
-// Warning : I had to add "#include <cstring>" for the memset and memcpy methodes
+#include "EasyBMP.h"
 
 namespace imagein
 {
@@ -17,26 +12,26 @@ namespace imagein
         public:
             BmpImage(std::string filename);
 
-            unsigned int readHeight();
-            unsigned int readWidth();
-            unsigned int readNbChannels();
-            unsigned int readDepth();
+            inline unsigned int readHeight();
+            inline unsigned int readWidth();
+            inline unsigned int readNbChannels();
+            inline unsigned int readDepth();
             char* readData();
 
             void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
-            CBitmap workImg;
+            BMP workImg;
     };
 	
 	inline unsigned int BmpImage::readHeight()
 	{
-		return workImg.GetHeight();
+		return workImg.TellHeight();
 	}
 
 	inline unsigned int BmpImage::readWidth()
 	{
-		return workImg.GetWidth();
+		return workImg.TellWidth();
 	}
 
 	inline unsigned int BmpImage::readNbChannels()
@@ -47,7 +42,7 @@ namespace imagein
 
 	inline unsigned int BmpImage::readDepth()
 	{
-		return workImg.GetBitCount();
+		return workImg.TellBitDepth();
 	}
 }
 

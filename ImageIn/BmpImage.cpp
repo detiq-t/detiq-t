@@ -5,7 +5,8 @@ using namespace imagein;
 BmpImage::BmpImage(std::string filename)
  : ImageFile(filename)
 {
-    if(!workImg.Load(_filename.c_str())) {
+	workImg = BMP();
+    if(!workImg.ReadFromFile(_filename.c_str())) {
         std::string msg = "The file ";
         msg += _filename;
         msg += " could not be opened.";
@@ -15,11 +16,22 @@ BmpImage::BmpImage(std::string filename)
 
 char* BmpImage::readData()
 {
-	unsigned int w=readWidth(), h=readHeight(), c=readNbChannels(), d=d/8;
+	unsigned int w=readWidth(), h=readHeight(), c=readNbChannels(), d=readDepth()/8;
 	if(d==0) d=1;
 	char* data = new char[w * h * c * d];
-	unsigned int size = w*h*c*d;
-	workImg.GetBits(data, size);
+	unsigned int i, j, k;
+	RGBApixel px;
+	for(i=0;i<w;i++) {
+		for(j=0;j<h;j++) {
+			px = BMP.GetPixel(i,j);
+			for(k=0;k<d;k++) {
+				data[k+i*c+j*w*c] = px.Red
+				data[k+d+i*c+j*w*c] = px.Green;
+				data[k+2*d+i*c+j*w*c] = px.Blue;
+				if(c==4) data[k+3*d+i*c+j*w*c] = px.Alpha;
+			}
+		}
+	}
 	return data;
 }
 
