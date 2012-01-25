@@ -63,7 +63,7 @@ namespace imagein
              * \brief Image destructor.
              *
              * The data matrix is deleted when the image is deleted. You should be careful if the data
-             * is still accessible from the exterior of the class (for example if you used
+             * is still accessible from outside the class (for example if you used
              * copy constructor or operator=() from another image, or with the first constructor)
              *
              * \sa operator=(const Image<D>& other), Image(const Image<D>& other), Image()
@@ -153,14 +153,6 @@ namespace imagein
             inline const_iterator end() const { return _mat + _width*_height*_nChannels; };
 
             /*!
-             * \brief Crops the image to the boundaries defined by a Rectangle.
-             *
-             * \param rect the rectangle used to define the boundaries of the new image.
-             * \return A new image of the same type.
-             */
-            Image<D> crop(const Rectangle& rect) const;
-
-            /*!
              * \brief Saves the image into a file.
              *
              * The format of the image will be based on the filename extension.
@@ -190,8 +182,9 @@ namespace imagein
     };
 
     typedef Image<unsigned char> Image_8; //!< 8 bits depth Image. Provided for convenience.
-}
 
+    //#include "Image_bool.h"
+}
 
 #include "Image.tpp"
 
