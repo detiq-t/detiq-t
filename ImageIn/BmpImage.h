@@ -11,6 +11,7 @@ namespace imagein
     {
         public:
             BmpImage(std::string filename);
+			~BmpImage() {delete workImg;}
 
             inline unsigned int readHeight();
             inline unsigned int readWidth();
@@ -21,17 +22,17 @@ namespace imagein
             void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
-            BMP workImg;
+            BMP* workImg;
     };
 	
 	inline unsigned int BmpImage::readHeight()
 	{
-		return workImg.TellHeight();
+		return workImg->TellHeight();
 	}
 
 	inline unsigned int BmpImage::readWidth()
 	{
-		return workImg.TellWidth();
+		return workImg->TellWidth();
 	}
 
 	inline unsigned int BmpImage::readNbChannels()
@@ -42,7 +43,8 @@ namespace imagein
 
 	inline unsigned int BmpImage::readDepth()
 	{
-		return workImg.TellBitDepth();
+		if(workImg->TellBitDepth() == 32) return 32;
+		else return 24;
 	}
 }
 

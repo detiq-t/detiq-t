@@ -23,15 +23,15 @@ int main(int argc, char* argv[])
     return 0;/**/
 
     //Writing from existing image
-    Image<unsigned char> in("samples/lena.bmp");
+    Image<unsigned char> in("samples/lena.jpg");
     Image<unsigned char> out = in.clone();
-    out.save("samples/test.png");
+    out.save("samples/test.bmp");
 
     return 0;
     /**/
 
     /*//Printing image info
-    Image<unsigned char> in("samples/lena.bmp");
+    Image<unsigned char> in("samples/lena.jpg");
     cout << in.getWidth() << endl;
     cout << in.getHeight() << endl;
     cout << in.getNbChannels() << endl;
