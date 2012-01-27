@@ -9,11 +9,10 @@
 
 namespace imagein
 {
-
     /*!
      * \brief Main class to manipulate images.
      *
-     * The image class is used to manipulate matrix images. It can handle any type of 2D image, and the
+     * The Image_t class is used to manipulate matrix images. It can handle any type of 2D image, and the
      * subclasses are only simplified interfaces for this class. If you don't know which type of image
      * you are dealing with, you can always use this class.
      *
@@ -26,7 +25,7 @@ namespace imagein
      * \tparam D the type of pixel values.
      */
     template <typename D>
-    class Image
+    class Image_t
     {
         public:
             typedef D* iterator; //!< Random access iterator
@@ -41,12 +40,9 @@ namespace imagein
              * \param width The image width
              * \param height The image height
              * \param nChannels The number of channels of the image.
-             * \param data The actual data matrix containing the pixels of the image. Note that the array is not copied but the pointer is used directly,
-             *        so you should only pass dynamically allocated data. No verification of the size of the array is performed.
+             * \param data The actual data matrix containing the pixels of the image.  No verification of the size of the array is performed.
              */
-            Image(unsigned int width=0, unsigned int height=0, unsigned int nChannels=0, D* data=NULL)
-                 : _width(width), _height(height), _nChannels(nChannels), _mat(data) {};
-
+            Image_t(unsigned int width, unsigned int height, unsigned int nChannels, D* data);
             /*!
              * \brief Constructs an image from the given file.
              *
@@ -57,50 +53,30 @@ namespace imagein
              * \param filename The relative or absolute filename to the image file.
              * \throw ImageFileException if the file format isn't supported or if there is an error while reading the file.
              */
-            Image(std::string filename);
+            Image_t(std::string filename);
 
             /*!
              * \brief Image destructor.
              *
              * The data matrix is deleted when the image is deleted. You should be careful if the data
-             * is still accessible from outside the class (for example if you used
-             * copy constructor or operator=() from another image, or with the first constructor)
-             *
-             * \sa operator=(const Image<D>& other), Image(const Image<D>& other), Image()
+             * is still accessible from outside the class.
              */
-            virtual ~Image() { delete[] _mat; };
+            virtual ~Image_t();
 
             /*!
-             * \brief Copy constructor. Doesn't copy data matrix
-             *
-             * The data matrix will be shared by the object constructed and the object being copied.
-             * Modifying either the first image or the new one will modify the other as well.
-             * Destructing one of the image will cause the other to be invalid.<br>
-             * <br>
-             * You should always use the clone() method if you want to perform a real copy of the image.
+             * \brief Copy constructor
              *
              * \param other The image to be copied.
-             * \sa clone()
              */
-            Image(const Image& other);
+            Image_t(const Image_t& other);
 
             /*!
-             * \brief Affect operator. Doesn't copy data matrix
-             *
-             * See copy constructor for more details.
+             * \brief Affect operator.
              *
              * \param other The image to be affected.
-             * \sa Image(const Image<D>& other), clone()
+             * \sa Image(const Image_t<D>& other)
              */
-            Image<D>& operator=(const Image& other);
-
-            /*!
-             * \brief Perform a real copy of the image.
-             *
-             * This method should be used if you want to perform a real copy of the image. The Image returned
-             * will be totally independant from the object on which this method is called.
-             */
-            Image<D> clone() const;
+            Image_t<D>& operator=(const Image_t& other);
 
             //! Returns the width of the image
             inline unsigned int getWidth() const { return _width; };
@@ -169,21 +145,31 @@ namespace imagein
              */
             inline Histogram getHistogram(unsigned int channel=0, const Rectangle& rect = Rectangle()) const { return Histogram(*this, channel, rect); };
 
+
+            /*!
+             * \brief Crops the image to the boundaries defined by a Rectangle.
+             *
+             * \param rect the rectangle used to define the boundaries of the new image.
+             * \return A new image of the same type.
+             */
+            virtual Image_t<D>* crop(const Rectangle& rect) const;
+
+
             // TODO (spercott#1#): Image from stl container iterator
             //void setPixel(int x, int y, std::iterator begin, std::iterator end);
 
 
         protected:
-        private:
+            void crop(const Rectangle& rect, D* mat) const;
+
             unsigned int _width;
             unsigned int _height;
             unsigned int _nChannels;
             D* _mat;
     };
 
-    typedef Image<unsigned char> Image_8; //!< 8 bits depth Image. Provided for convenience.
-
-    //#include "Image_bool.h"
+    typedef Image_t<unsigned char> Image_8; //!< 8 bits depth Image. Provided for convenience.
+    typedef Image_t<unsigned char> Image; //!< Standard Image is 8 bits depth.
 }
 
 #include "Image.tpp"

@@ -1,40 +1,37 @@
 #include <iostream>
 
 #include "Image.h"
+#include "RgbImage.h"
 #include "GrayscaleImage.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-    /*//Writing from nothing.
+    /*unsigned char* data = new unsigned char[100*100];
 
-    unsigned int* data = new unsigned int[1800*900];
-
-    for(unsigned int j = 0 ; j < 900 ; ++j) {
-        for(unsigned int i = 0 ; i < 1800 ; ++i) {
-            data[j*1800+i] = i;
+    for(unsigned int j = 0 ; j < 100 ; ++j) {
+        for(unsigned int i = 0 ; i < 100 ; ++i) {
+            data[j*100+i] = i;
         }
+    }*/
+
+    try {
+        Image test("samples/lena.jpg");
+
+        Image* out = test.crop(Rectangle(100,100,100,100));
+
+        cout << "cp1" << endl;
+
+        out->save("samples/test.jpg");
+
+        cout << "cp2" << endl;
+    }
+    catch(std::exception& e) {
+        cout << e.what() << endl;
     }
 
-    Image<unsigned int> out(1800, 900, 1, data);
-    out.save("samples/test.jpg");
 
-    return 0;/**/
-
-    //Writing from existing image
-    Image<unsigned char> in("samples/lena.jpg");
-    Image<unsigned char> out = in.clone();
-    out.save("samples/test.bmp");
 
     return 0;
-    /**/
-
-    /*//Printing image info
-    Image<unsigned char> in("samples/lena.jpg");
-    cout << in.getWidth() << endl;
-    cout << in.getHeight() << endl;
-    cout << in.getNbChannels() << endl;
-    return 0;
-    /**/
 }

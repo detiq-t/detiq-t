@@ -3,14 +3,14 @@
 using namespace imagein;
 
 template <typename D>
-ProjectionHistogram::ProjectionHistogram(const Image<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel) : Array() {
+ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel) : Array() {
     // We recreate the Array depending on the orientation of the projection and the size of the cropped Image
     if(horizontal) _width = rect.h;
     else _width = rect.w;
     delete [] _array;
     _array = new unsigned int[_width];
     // We crop the Image to the Rectangle given in parameter
-    Image<D> workImg = img.crop(rect);
+    Image_t<D> workImg = img.crop(rect);
     // We prepare to iterate through the Image, we get the max width and height now to avoid to calculate it every iteration
     unsigned int wmax, hmax, iterw, iterh;
     wmax = workImg.getWidth();
@@ -26,7 +26,7 @@ ProjectionHistogram::ProjectionHistogram(const Image<D>& img, D value, bool hori
 }
 
 template <typename D>
-ProjectionHistogram::ProjectionHistogram(const Image<D>& img, D value, bool horizontal, unsigned int channel) {
+ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, unsigned int channel) {
 	// We recreate the Array depending on the orientation of the projection and the size of the cropped Image
     if(horizontal) _width = img.getHeight();
     else _width = img.getWidth();
