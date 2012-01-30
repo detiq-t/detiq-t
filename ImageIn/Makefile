@@ -28,8 +28,8 @@ CPPFLAGS ?=
 # Standard linker flags 
 LDFLAGS ?= 
 
-# Set to 1 to build debug version [0,1]
-DEBUG ?= 0
+# Set to 0 to build release version [0,1]
+DEBUG ?= 1
 
 
 

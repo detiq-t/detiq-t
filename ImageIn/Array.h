@@ -15,7 +15,9 @@ namespace imagein
             typedef const unsigned int* const_iterator; //!< Random access const iterator
 
             /*!
-             * \brief Creates an array of the given size. Values are not initialized.
+             * \brief Creates an array of the given size.
+             *
+             * Values are not initialized.
              */
             inline Array(int width = 0) : _width(width) { _array = new unsigned int[width]; };
             inline virtual ~Array() { delete[] _array; };

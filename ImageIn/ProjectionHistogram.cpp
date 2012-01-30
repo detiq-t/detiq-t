@@ -10,14 +10,14 @@ ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool ho
     delete [] _array;
     _array = new unsigned int[_width];
     // We crop the Image to the Rectangle given in parameter
-    Image_t<D> workImg = img.crop(rect);
+    Image_t<D>* workImg = img.crop(rect);
     // We prepare to iterate through the Image, we get the max width and height now to avoid to calculate it every iteration
     unsigned int wmax, hmax, iterw, iterh;
-    wmax = workImg.getWidth();
-    hmax = workImg.getHeight();
+    wmax = workImg->getWidth();
+    hmax = workImg->getHeight();
     for(iterw=0;iterw<wmax;iterw++) {
         for(iterh=0;iterh<hmax;iterh++) {
-            if(workImg.getPixel(iterw,iterh,channel)==value) {
+            if(workImg->getPixel(iterw,iterh,channel)==value) {
                 if(horizontal) _array[iterh]++;
                 else _array[iterw]++;
             }
