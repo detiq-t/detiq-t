@@ -17,10 +17,9 @@ Service* GenericInterface::service (int id)
 
 void GenericInterface::run (bool shw)
 {
-  map<int, Service*>::iterator it = _services.begin ();
   bool fail (false);
 
-  for (;it != _services.end (); ++it)
+  for (map<int, Service*>::iterator it = _services.begin () ; it != _services.end () ; ++it)
   {
     try
     {
