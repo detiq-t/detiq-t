@@ -27,5 +27,6 @@ namespace imagein
     };
 }
 
+#include "ProjectionHistogram.tpp"
 
 #endif // PROJECTIONHISTOGRAM_H
