@@ -1,12 +1,16 @@
+#include <QApplication>
+#include "GenericInterface.h"
 #include "Log.h"
 
-int main ()
+int main (int argc, char** argv)
 {
-  Log::configure (true, false, 0);
-  Log::critical ("ceci est un test");
-  Log::info ("ceci est un test");
-  Log::warning ("ma foi");
-  Log::verbose ("huhu");
+  QApplication app (argc, argv);
 
-  return 0;
+  Log::configure (true, false, 0);
+
+  GenericInterface m;
+
+  m.run ();
+
+  return app.exec ();
 }
