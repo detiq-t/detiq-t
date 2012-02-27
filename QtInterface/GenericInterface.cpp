@@ -4,10 +4,18 @@ using namespace std;
 
 void GenericInterface::addService (int id, Service* s) throw (BadIdException)
 {
+  if (_services.find(id) == _services.end())
+  {
+    _services[id] = s;
+    s->display(this);
+  }
+  else
+    throw new BadIdException(id);
 }
 
 void GenericInterface::changeService (int id, Service* s)
 {
+  // delete s
 }
 
 Service* GenericInterface::service (int id)
