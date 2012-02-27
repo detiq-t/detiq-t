@@ -78,8 +78,22 @@ public:
   */
   virtual void run (bool shw = true);
 
+  /**
+  * @brief Create the Mdi Widget of the main window
+  *
+  * This function will throw an exception if it was already called
+  *
+  * @return a pointer to the created widget
+  */
   virtual QMdiArea* initCentralWidget();
 
+  /**
+  * @brief Get a pointer to the QMenu labelled name
+  *
+  * @param name the label of the wanted menu
+  *
+  * @return the pointer
+  */
   virtual QMenu* menu(QString name);
 
 protected:
