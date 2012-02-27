@@ -42,3 +42,37 @@ void GenericInterface::run (bool shw)
 
   if (shw) this-> show ();
 }
+
+QMdiArea* GenericInterface::initCentralWidget ()
+{
+  static bool init (false);
+  QMdiArea* res;
+
+  if(!init)
+  {
+    init = true;
+    res = new QMdiArea;
+    setCentralWidget (res);
+  }
+  else
+    throw new AlreadyInitException;
+
+  return res;
+}
+
+QMenu* GenericInterface::menu(QString name)
+{
+  QMenu* res;
+
+  if (_menus.find (name) != _menus.end ())
+  {
+    res = _menus[name];
+  }
+  else
+  {
+    res = menuBar ()->addMenu (name);
+    _menus[name] = res;
+  }
+
+  return res;
+}

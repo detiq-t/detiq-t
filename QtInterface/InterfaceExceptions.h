@@ -49,4 +49,21 @@ class BadIdException : public std::exception
     int _id;
 };
 
+class AlreadyInitException : public std::exception
+{
+  public:
+    /**
+    * @brief Getter for the error message
+    *
+    * @return a simple phrase explain which id caused the error
+    */
+    virtual const char* what () const throw ()
+    {
+      std::ostringstream err;
+      err << "the central widget has already been initialized";
+
+      return err.str ().c_str ();
+    }
+};
+
 #endif

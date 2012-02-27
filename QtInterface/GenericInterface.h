@@ -7,6 +7,10 @@
 /* Qt includes */
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QMdiArea>
+#include <QMenuBar>
+#include <QMenu>
+#include <QString>
 
 class GenericInterface; /* Pre-declaration for the Service include */
 
@@ -74,11 +78,16 @@ public:
   */
   virtual void run (bool shw = true);
 
+  virtual QMdiArea* initCentralWidget();
+
+  virtual QMenu* menu(QString name);
+
 protected:
   /**
   * @brief The services the interface can uses.
   */
   std::map<int, Service*> _services;
+  std::map<QString, QMenu*> _menus;
 };
 
 #endif
