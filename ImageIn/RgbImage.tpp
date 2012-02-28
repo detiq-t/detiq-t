@@ -1,5 +1,15 @@
 //#include "RgbImage.h"
 
+#include "BadImageException.h"
+
+template <typename D>
+RgbImage_t<D>::RgbImage_t(std::string filename)
+ : Image_t<D>(filename)
+{
+    if(this->_nChannels != 3) 
+        throw BadImageException("Image with 3 channels expected", __LINE__, __FILE__);
+}
+
 template <typename D>
 RgbImage_t<D>* RgbImage_t<D>::crop(const Rectangle& rect) const
 {

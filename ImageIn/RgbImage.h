@@ -11,7 +11,7 @@ namespace imagein
     {
         public:
             RgbImage_t(unsigned int width=0, unsigned int height=0, D* data=NULL) : Image_t<D>(width, height, 3, data) {};
-            RgbImage_t(std::string filename) : Image_t<D>(filename) {};
+            RgbImage_t(std::string filename);
             RgbImage_t(const RgbImage_t<D>& other) : Image_t<D>(other) {};
 
             RgbImage_t<D>* crop(const Rectangle& rect) const;

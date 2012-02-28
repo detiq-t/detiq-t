@@ -1,5 +1,5 @@
-#ifndef FILENOTFOUNDEXCEPTION_H
-#define FILENOTFOUNDEXCEPTION_H
+#ifndef IMAGEFILEEXCEPTION_H
+#define IMAGEFILEEXCEPTION_H
 
 #include <iostream>
 #include <sstream>

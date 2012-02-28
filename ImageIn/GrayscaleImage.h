@@ -11,7 +11,7 @@ namespace imagein
     {
         public:
             GrayscaleImage_t(unsigned int width=0, unsigned int height=0, D* data=NULL) : Image_t<D>(width, height, 1, data) {};
-            GrayscaleImage_t(std::string filename) : Image_t<D>(filename) {};
+            GrayscaleImage_t(std::string filename);
             GrayscaleImage_t(const GrayscaleImage_t<D>& other) : Image_t<D>(other) {};
 
             GrayscaleImage_t<D>* crop(const Rectangle& rect) const;
