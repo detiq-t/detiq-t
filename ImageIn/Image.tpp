@@ -13,7 +13,7 @@ Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned in
 {
     _mat = new D[width * height * nChannels];
     if(data) {
-        std::copy(data, data+width * height * nChannels, _mat);
+        std::copy(data, data+(width * height * nChannels), _mat);
     }
 }
 

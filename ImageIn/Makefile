@@ -40,7 +40,7 @@ DEBUG ?= 1
 ### Variables: ###
 
 CPPDEPS = -MT$@ -MF`echo $@ | sed -e 's,\.o$$,.d,'` -MD -MP
-IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_0) $(____DEBUG_2) $(CPPFLAGS) \
+IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_OBJECTS =  \
 	ImageIn_BinaryImage.o \
@@ -50,10 +50,14 @@ IMAGEIN_OBJECTS =  \
 	ImageIn_JpgImage.o \
 	ImageIn_PngImage.o \
 	ImageIn_EasyBMP.o
-IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_0) $(____DEBUG_2) $(CPPFLAGS) \
+IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
+	$(CXXFLAGS)
+IMAGEIN_MAIN_OBJECTS =  \
+	ImageIn_main_main.o
+IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_TEST_OBJECTS =  \
-	ImageIn_test_main.o
+	ImageIn_test_test_image.o
 
 ### Conditionally set variables: ###
 
@@ -64,22 +68,22 @@ ifeq ($(DEBUG),1)
 ____DEBUG = 
 endif
 ifeq ($(DEBUG),0)
-____DEBUG_0 = -O2
+____DEBUG_2 = -O2
 endif
 ifeq ($(DEBUG),1)
-____DEBUG_0 = -O0
+____DEBUG_2 = -O0
 endif
 ifeq ($(DEBUG),0)
-____DEBUG_2 = 
+____DEBUG_5 = 
 endif
 ifeq ($(DEBUG),1)
-____DEBUG_2 = -g
+____DEBUG_5 = -g
 endif
 
 
 ### Targets: ###
 
-all: libimagein.a ImageIn_test
+all: libimagein.a ImageIn_main ImageIn_test
 
 install: 
 
@@ -89,6 +93,7 @@ clean:
 	rm -f ./*.o
 	rm -f ./*.d
 	rm -f libimagein.a
+	rm -f ImageIn_main
 	rm -f ImageIn_test
 
 libimagein.a: $(IMAGEIN_OBJECTS)
@@ -96,8 +101,11 @@ libimagein.a: $(IMAGEIN_OBJECTS)
 	$(AR) rcu $@ $(IMAGEIN_OBJECTS)
 	$(RANLIB) $@
 
+ImageIn_main: $(IMAGEIN_MAIN_OBJECTS) libimagein.a
+	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_5)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+
 ImageIn_test: $(IMAGEIN_TEST_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_2)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_5)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
 
 ImageIn_BinaryImage.o: ./BinaryImage.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
@@ -120,7 +128,10 @@ ImageIn_PngImage.o: ./PngImage.cpp
 ImageIn_EasyBMP.o: ./EasyBMP.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
-ImageIn_test_main.o: ./main.cpp
+ImageIn_main_main.o: ./main.cpp
+	$(CXX) -c -o $@ $(IMAGEIN_MAIN_CXXFLAGS) $(CPPDEPS) $<
+
+ImageIn_test_test_image.o: ./test_image.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_TEST_CXXFLAGS) $(CPPDEPS) $<
 
 .PHONY: all install uninstall clean
