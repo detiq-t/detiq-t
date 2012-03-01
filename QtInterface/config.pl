@@ -7,6 +7,8 @@ print "\nCREATION OF THE MAKEFILE\n\nScanning.......\n";
 # with Qwt                                          
 
 #Preparation
+`rm make clean 2> /dev/null`;
+`rm Makefile 2> /dev/null`;
 `qmake -project`;
 `qmake`;
 
