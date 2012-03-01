@@ -2,65 +2,75 @@
 
 using namespace std;
 
-void GenericInterface::addService (int id, Service* s) throw (BadIdException)
+void GenericInterface::addService(int id, Service* s) throw (BadIdException)
 {
   if (_services.find(id) == _services.end())
   {
     _services[id] = s;
-    s->display(this);
   }
   else
     throw new BadIdException(id);
 }
 
-void GenericInterface::changeService (int id, Service* s)
+void GenericInterface::changeService(int id, Service* s) throw (BadIdException)
 {
-  // delete s
+  if (_services.find(id) == _services.end())
+    throw new BadIdException(id);
+  else
+  {
+   delete _services[id];
+    _services[id] = s;
+  }
 }
 
-Service* GenericInterface::service (int id)
+Service* GenericInterface::getService(int id) throw (BadIdException)
 {
-  return 0;
+  if (_services.find(id) == _services.end())
+    throw new BadIdException(id);
+  else
+    return _services[id];
 }
 
-void GenericInterface::run (bool shw)
-{
-  bool fail (false);
 
-  for (map<int, Service*>::iterator it = _services.begin () ; it != _services.end () ; ++it)
+void GenericInterface::run(bool shw)
+{
+  bool fail(false);
+
+  for (map<int, Service*>::iterator it = _services.begin() ; it != _services.end() ; ++it)
   {
     try
     {
-      (*it).second->connect (this);
+      (*it).second->connect(this);
+      (*it).second->display(this);
     }
     catch (ServiceConnectionException e)
     {
-      Log::info (e.what ());
+      Log::info(e.what());
       fail = true;
     }
   }
 
   if (fail)
   {
-    QMessageBox::critical (this, "Intégrité de la fenêtre", "La construction de l'application ne s'est pas "
+    QMessageBox::critical(this, "Intégrité de la fenêtre", "La construction de l'application ne s'est pas "
                                                             "déroulée correctement, il est possible qu'elle "
                                                             "ne présente pas toutes les fonctionnalités "
                                                             "attendues");
   }
 
-  if (shw) this-> show ();
+  if (shw) this->show();
 }
 
-QMdiArea* GenericInterface::initCentralWidget ()
+QMdiArea* GenericInterface::initCentralWidget()
 {
-  static bool init (false);
+  static bool init(false);
   QMdiArea* res;
 
-  if(!init)
+  if (!init)
   {
     init = true;
     res = new QMdiArea;
-    setCentralWidget (res);
+    setCentralWidget(res);
   }
   else
     throw new AlreadyInitException;
@@ -72,13 +82,13 @@ QMenu* GenericInterface::menu(QString name)
 {
   QMenu* res;
 
-  if (_menus.find (name) != _menus.end ())
+  if (_menus.find(name) != _menus.end())
   {
     res = _menus[name];
   }
   else
   {
-    res = menuBar ()->addMenu (name);
+    res = menuBar()->addMenu(name);
     _menus[name] = res;
   }
 

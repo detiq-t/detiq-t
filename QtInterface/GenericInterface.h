@@ -46,7 +46,7 @@ public:
   * @param id the identifier of the service
   * @param s the service to add
   */
-  void addService (int id, Service* s) throw (BadIdException);
+  void addService(int id, Service* s) throw (BadIdException);
   /**
   * @brief Change the id service to a custom one.
   *
@@ -57,26 +57,26 @@ public:
   * @param id
   * @param s
   */
-  void changeService (int id, Service* s);
+  void changeService(int id, Service* s) throw (BadIdException);
 
   /**
-  * @brief Provides a direct access to the wanted service, mostly use by the Service::connect (GenericInterface*)
+  * @brief Provides a direct access to the wanted service, mostly used by the Service::connect(GenericInterface*)
   * function.
   *
   * @param id its id
   *
   * @return 
   */
-  Service* service (int id);
+  Service* getService(int id) throw (BadIdException);
 
   /**
-  * @brief This function has to be prefered to the Qt function void QMainWindow::show (), it connects the
-  * services to each other (simply calling the function void Service::connect (GenericInterfac*) of each 
-  * service adding to the GenericInterface.
+  * @brief This function has to be prefered to the Qt function void QMainWindow::show(), it connects the
+  * services to each other (by simply calling the function void Service::connect(GenericInterface*) of each 
+  * service added to the GenericInterface and then displays them.
   *
-  * @param shw Request to QMainWindow::show (), the default value is true. 
+  * @param shw Request to QMainWindow::show(), the default value is true. 
   */
-  virtual void run (bool shw = true);
+  virtual void run(bool shw = true);
 
   /**
   * @brief Create the Mdi Widget of the main window
