@@ -8,12 +8,7 @@
 class NavigationBar : public QListView
 {
 public:
-  NavigationBar() : QListView()
-  {
-    ImageDelegate* im = new ImageDelegate;
-    setItemDelegate(im);
-    setFixedWidth(80);
-  }
+  NavigationBar();
 };
 
 #endif

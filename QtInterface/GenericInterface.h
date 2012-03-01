@@ -16,7 +16,7 @@ class GenericInterface; /* Pre-declaration for the Service include */
 
 #include "Service.h"
 #include "InterfaceExceptions.h"
-#include "Log.h"
+#include "Utilities/Log.h"
 
 /**
 * @brief The Generic Interface provides to the ImageIn developper a way to built easily

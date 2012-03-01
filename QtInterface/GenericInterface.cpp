@@ -40,8 +40,19 @@ void GenericInterface::run(bool shw)
   {
     try
     {
-      (*it).second->connect(this);
       (*it).second->display(this);
+    }
+    catch (ServiceConnectionException e)
+    {
+      Log::info(e.what());
+      fail = true;
+    }
+  }
+  for (map<int, Service*>::iterator it = _services.begin() ; it != _services.end() ; ++it)
+  {
+    try
+    {
+      (*it).second->connect(this);
     }
     catch (ServiceConnectionException e)
     {
