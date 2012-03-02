@@ -140,7 +140,7 @@ elsif($#ARGV == -1)
         $inc = 1;
         $inc && $l && last;
       }
-      if($line =~ "(.*/)lib(qwt-+.*).so" && !$l)
+      if($line =~ "(.*/)lib(qwt.*).so" && !$l)
       {
         $pathLqwt = $1;
         $qwtname = $2;
