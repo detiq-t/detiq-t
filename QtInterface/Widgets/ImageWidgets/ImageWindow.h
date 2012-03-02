@@ -5,8 +5,8 @@
 #include <QLabel>
 #include <QStatusBar>
 
-//#include "../../ImageIn/Rectangle.h"
-//#include "../../ImageIn/Image.h"
+//#include <Rectangle.h>
+//#include <Image.h>
 
 //using namespace imagein;
 

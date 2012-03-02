@@ -12,8 +12,8 @@
 
 #include "ImageContextMenu.h"
 
-#include "../../ImageIn/Image.h"
-#include "../../ImageIn/Rectangle.h"
+#include <Image.h>
+#include <Rectangle.h>
 
 using namespace imagein;
 

@@ -11,7 +11,7 @@
 #include "ImageWindow.h"
 #include "RowView.h"
 
-//#include "../../ImageIn/Image.h"
+//#include <Image.h>
 //using namespace imagein;
 
 namespace genericinterface

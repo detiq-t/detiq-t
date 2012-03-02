@@ -20,9 +20,9 @@
 #include <qwt_series_data.h>
 #include <stdlib.h>
 
-#include "../../ImageIn/Image.h"
-#include "../../ImageIn/Rectangle.h"
-#include "../../ImageIn/Histogram.h"
+#include <Image.h>
+#include <Rectangle.h>
+#include <Histogram.h>
 
 #include "GraphicalHistogram.h"
 #include "AlternativeImageView.h"

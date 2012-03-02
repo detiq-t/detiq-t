@@ -11,9 +11,9 @@
 #include "ImageWindow.h"
 #include "HistogramView.h"
 
-#include "../../ImageIn/Image.h"
-#include "../../ImageIn/Rectangle.h"
-#include "../../ImageIn/Histogram.h"
+#include <Image.h>
+#include <Rectangle.h>
+#include <Histogram.h>
 
 using namespace imagein;
 

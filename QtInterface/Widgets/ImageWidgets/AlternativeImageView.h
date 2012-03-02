@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "../../ImageIn/Image.h"
+#include <Image.h>
 using namespace imagein;
 
 namespace genericinterface
