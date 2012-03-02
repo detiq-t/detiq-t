@@ -5,10 +5,8 @@
 
 #include <stdexcept>
 
-using namespace imagein;
-
 template <typename D>
-Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned int nChannels=0, D* data=NULL)
+imagein::Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned int nChannels=0, D* data=NULL)
  : _width(width), _height(height), _nChannels(nChannels)
 {
     _mat = new D[width * height * nChannels];
@@ -19,9 +17,9 @@ Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned in
 
 
 template <typename D>
-Image_t<D>::Image_t(std::string filename)
+imagein::Image_t<D>::Image_t(std::string filename)
 {
-    ImageFile* im = ImageFileAbsFactory::getFactory()->getImageFile(filename);
+    imagein::ImageFile* im = imagein::ImageFileAbsFactory::getFactory()->getImageFile(filename);
 
     _width = im->readWidth();
     _height = im->readHeight();
@@ -32,7 +30,7 @@ Image_t<D>::Image_t(std::string filename)
 }
 
 template <typename D>
-Image_t<D>::Image_t(const Image_t<D>& other)
+imagein::Image_t<D>::Image_t(const imagein::Image_t<D>& other)
  : _width(other._width), _height(other._height), _nChannels(other._nChannels)
 {
     _mat = new D[_width*_height*_nChannels];
@@ -40,13 +38,13 @@ Image_t<D>::Image_t(const Image_t<D>& other)
 }
 
 template <typename D>
-Image_t<D>::~Image_t()
+imagein::Image_t<D>::~Image_t()
 {
     delete[] _mat;
 }
 
 template <typename D>
-Image_t<D>& Image_t<D>::operator=(const Image_t& other)
+imagein::Image_t<D>& imagein::Image_t<D>::operator=(const imagein::Image_t<D>& other)
 {
     if (this == &other) return *this; // handle self assignment
 
@@ -62,7 +60,7 @@ Image_t<D>& Image_t<D>::operator=(const Image_t& other)
 }
 
 template <typename D>
-void Image_t<D>::setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel)
+void imagein::Image_t<D>::setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel)
 {
     if(x >= _width || y >= _height || channel > _nChannels) {
         throw std::out_of_range("Invalid coordinates for setPixel");
@@ -72,7 +70,7 @@ void Image_t<D>::setPixel(unsigned int x, unsigned int y, unsigned int channel, 
 }
 
 template <typename D>
-void Image_t<D>::setPixel(unsigned int x, unsigned int y, const D* pixel)
+void imagein::Image_t<D>::setPixel(unsigned int x, unsigned int y, const D* pixel)
 {
     if(x >= _width || y >= _height) {
         throw std::out_of_range("Invalid coordinates for setPixel");
@@ -82,9 +80,9 @@ void Image_t<D>::setPixel(unsigned int x, unsigned int y, const D* pixel)
 }
 
 template <typename D>
-void Image_t<D>::save(const std::string& filename) const
+void imagein::Image_t<D>::save(const std::string& filename) const
 {
-    ImageFile* im = ImageFileAbsFactory::getFactory()->getImageFile(filename);
+    imagein::ImageFile* im = imagein::ImageFileAbsFactory::getFactory()->getImageFile(filename);
 
     im->writeData(reinterpret_cast<const char* const>(_mat), _width, _height, _nChannels, sizeof(D)*8);
 
@@ -92,9 +90,9 @@ void Image_t<D>::save(const std::string& filename) const
 }
 
 template <typename D>
-Image_t<D>* Image_t<D>::crop(const Rectangle& rect) const
+imagein::Image_t<D>* imagein::Image_t<D>::crop(const imagein::Rectangle& rect) const
 {
-    Image_t<D>* ret = new Image_t<D>(rect.w, rect.h, this->_nChannels);
+    imagein::Image_t<D>* ret = new imagein::Image_t<D>(rect.w, rect.h, this->_nChannels);
 
     crop(rect, ret->_mat);
 
@@ -102,13 +100,13 @@ Image_t<D>* Image_t<D>::crop(const Rectangle& rect) const
 }
 
 template <typename D>
-void Image_t<D>::crop(const Rectangle& rect, D* mat) const
+void imagein::Image_t<D>::crop(const imagein::Rectangle& rect, D* mat) const
 {
     unsigned int topleft = rect.y*_width*_nChannels + rect.x*_nChannels;
     unsigned int bottomright = (rect.y+rect.h-1)*_width*_nChannels + (rect.x+rect.w)*_nChannels;
 
-    Image_t<D>::const_iterator it = this->begin() + topleft; //iterator pointing on the top-left corner of the rectangle
-    Image_t<D>::const_iterator end = this->begin() + bottomright; //iterator pointing just after the bottom-right corner of the rectangle
+    imagein::Image_t<D>::const_iterator it = this->begin() + topleft; //iterator pointing on the top-left corner of the rectangle
+    imagein::Image_t<D>::const_iterator end = this->begin() + bottomright; //iterator pointing just after the bottom-right corner of the rectangle
 
     D* di = mat; //pointer to the first element of data
 

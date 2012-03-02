@@ -4,10 +4,8 @@
 #include <iostream>
 #include <cstdlib>
 
-using namespace imagein;
-
 template <typename D>
-Histogram::Histogram(const Image_t<D>& img, unsigned int channel, const Rectangle& rect) : Array(pow(2, sizeof(D)*8))
+imagein::Histogram::Histogram(const imagein::Image_t<D>& img, unsigned int channel, const imagein::Rectangle& rect) : imagein::Array(pow(2, sizeof(D)*8))
 {
 
     for(unsigned int i=0; i<this->_width; i++) {
@@ -25,7 +23,7 @@ Histogram::Histogram(const Image_t<D>& img, unsigned int channel, const Rectangl
 }
 
 template <typename D>
-Histogram::Histogram(const Image_t<D>& img, const Rectangle& rect) : Array(pow(2, sizeof(D)))
+imagein::Histogram::Histogram(const imagein::Image_t<D>& img, const imagein::Rectangle& rect) : imagein::Array(pow(2, sizeof(D)))
 {
     for(unsigned int i=0; i<this->_width; i++) {
         this->_array[i] = 0;
