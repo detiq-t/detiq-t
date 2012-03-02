@@ -210,8 +210,8 @@ elsif($#ARGV == -1)
       {
         print NMAKEFILE "LIBS          += -L$pathLii -limagein\n";
         print "added line: LIBS          += -L$pathLii -limagein\n";
-        print NMAKEFILE "LIBS          += -L$pathLqwt$qwtname -ljpeg -lpng\n";
-        print "added line: LIBS          += -L$pathLqwt$qwtname -ljpeg -lpng\n";
+        print NMAKEFILE "LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
+        print "added line: LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
       }
     }
 
