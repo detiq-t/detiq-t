@@ -20,6 +20,8 @@ public:
   */
   NavigationDock();
 
+  QStringList getSelection();
+
 public slots:
   /**
   * @brief 
@@ -35,8 +37,10 @@ protected slots:
   * @param pos
   */
   void showContextMenu(const QPoint& pos);
+  void emitAction(const QModelIndex& index);
 
 signals:
+  void actionDone();
 
 private:
   QStringList _data;
