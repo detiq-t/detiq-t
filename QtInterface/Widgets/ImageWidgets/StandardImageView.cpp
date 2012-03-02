@@ -32,7 +32,12 @@ StandardImageView::StandardImageView(QWidget* parent, Image* image): _parent(par
 
 void StandardImageView::init()
 {
+	_plot  = new QwtPlot();
+    _grid = new QwtPlotGrid();
+    _grid->attach(_plot);
+    
     _zoomFactor = 1;
+    _ctrlPressed = false;
     this->setMouseTracking(true); //Switch on mouse tracking (no need to press button)
 	initMenu();
 }
@@ -57,16 +62,29 @@ void StandardImageView::showImage()
     //on récupère les bits de l'image qt, qu'on cast en QRgb (qui fait 32 bits -> une image RGBA)
     QRgb* data = reinterpret_cast<QRgb*>(im.bits());
     Image::const_iterator it = _image->begin();
+    std::cout << "Nombre de canaux : " << _image->getNbChannels() << std::endl;
     for(unsigned int i = 0 ; i < _image->getHeight()*_image->getWidth() ; ++i)
     {
         //Pour chaque pixel de l'image Qt, on récupère les données correspondantes de l'image ImageIn grace à l'itérateur
-        unsigned char red = *(it++);
-        unsigned char green = *(it++);
-        unsigned char blue = *(it++);
-        unsigned char alpha = *(it++);
+        if(_image->getNbChannels() == 4)
+        {
+			unsigned char red = *(it++);
+			unsigned char green = *(it++);
+			unsigned char blue = *(it++);
+			unsigned char alpha = *(it++);
 
-        //On utilise la fonction qRgba pour en faire un pointeur de qRgb
-        data[i] = qRgba(red, green, blue, alpha);
+			//On utilise la fonction qRgba pour en faire un pointeur de qRgb
+			data[i] = qRgba(red, green, blue, alpha);
+		}
+		else if(_image->getNbChannels() == 3)
+		{
+			unsigned char red = *(it++);
+			unsigned char green = *(it++);
+			unsigned char blue = *(it++);
+
+			//On utilise la fonction qRgba pour en faire un pointeur de qRgb
+			data[i] = qRgb(red, green, blue);		
+		}
     }
 
     //Qt ne peut pas afficher les QImage directement, on en fait un QPixmap...
@@ -79,7 +97,7 @@ void StandardImageView::showImage()
 
 void StandardImageView::wheelEvent(QWheelEvent* event)
 {
-	if (event->orientation() == Qt::Vertical)
+	if (_ctrlPressed && event->orientation() == Qt::Vertical)
 	{
 		if(event->delta() < 0 && _zoomFactor > 0.05) //Zoom out
 		{
@@ -92,6 +110,7 @@ void StandardImageView::wheelEvent(QWheelEvent* event)
 		QPixmap pixmap_img = _pixmap_img->scaled((int)_pixmap_img->width()*_zoomFactor, (int)_pixmap_img->height()*_zoomFactor);
 		this->setPixmap(pixmap_img);
 		this->setFixedSize(pixmap_img.size());
+		emit zoomChanged(_zoomFactor*100);
 	}
 }
 
@@ -107,9 +126,7 @@ void StandardImageView::mousePressEvent(QMouseEvent * event)
 		else
 		{
 			_menu->hide();
-			//TODO
-			// Gestion en fonction du zoom
-			emit pixelClicked(event->x(), event->y());
+			emit pixelClicked(event->x()/_zoomFactor, event->y()/_zoomFactor);
 		}
 	}
 }
@@ -118,8 +135,11 @@ void StandardImageView::mouseMoveEvent(QMouseEvent * event)
 {
     if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
     {
-		//TODO
-		// Gestion en fonction du zoom
-		emit pixelHovered(event->x(), event->y());
+		emit pixelHovered(event->x()/_zoomFactor, event->y()/_zoomFactor);
 	}
+}
+
+void StandardImageView::ctrlPressed()
+{
+	_ctrlPressed = !_ctrlPressed;
 }

@@ -58,13 +58,19 @@ void StandardImageWindow::init()
 	
     connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
     connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
+    connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
+    connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
 }
 
-void StandardImageWindow::showHistogram()
+void StandardImageWindow::showHistogram(Rectangle* rect)
 {
-	HistogramWindow* histo = new HistogramWindow();
-	_area->addSubWindow(histo);
-	histo->show();
+	Image* im = _imageView->getImage();
+	for(unsigned int i = 0; i < im->getNbChannels(); i++)
+	{
+		HistogramWindow* histo = new HistogramWindow(_imageView->getImage(), this, im->getHistogram(i, *rect));
+		_area->addSubWindow(histo);
+		histo->show();
+	}
 }
 
 void StandardImageWindow::showPixelsGrid()
@@ -91,10 +97,10 @@ void StandardImageWindow::showColumnProfile()
 void StandardImageWindow::initStatusBar()
 {
 	std::ostringstream oss;
-    oss << _imageView->getImage()->height();
+    oss << _imageView->getPixmap()->height();
     std::string height = oss.str();
     oss.str("");
-    oss << _imageView->getImage()->width();
+    oss << _imageView->getPixmap()->width();
     std::string width = oss.str();
 	
 	QFont font;
@@ -142,6 +148,11 @@ void StandardImageWindow::initStatusBar()
     font = _lHoveredPixelColor->font();
     font.setPointSize(8);
     _lHoveredPixelColor->setFont(font);
+    
+    _lZoom = new QLabel("Zoom: 100%");
+    font = _lZoom->font();
+    font.setPointSize(8);
+    _lZoom->setFont(font);
 
 	_statusBar->addWidget(_lImageName);
     _statusBar->addWidget(_lImageSize);
@@ -151,6 +162,7 @@ void StandardImageWindow::initStatusBar()
 	_statusBar->addWidget(_lHoveredPixelInfo);
 	_statusBar->addWidget(_lHoveredPixelPosition);
 	_statusBar->addWidget(_lHoveredPixelColor);
+	_statusBar->addWidget(_lZoom);
 }
 
 void StandardImageWindow::showSelectedPixelInformations(int x, int y)
@@ -173,4 +185,24 @@ void StandardImageWindow::showHoveredPixelInformations(int x, int y)
     oss << y;
     std::string ys = oss.str();
 	_lHoveredPixelPosition->setText(QString::fromStdString(xs + " * " + ys));
+}
+
+void StandardImageWindow::updateZoom(double z)
+{
+	std::ostringstream oss;
+    oss << z;
+    std::string zs = oss.str();
+	_lZoom->setText(QString::fromStdString("Zoom: " + zs + "%"));
+}
+
+void StandardImageWindow::keyPressEvent(QKeyEvent* event)
+{
+	if(event->key() == Qt::Key_Control)
+		emit ctrlPressed();
+}
+
+void StandardImageWindow::keyReleaseEvent(QKeyEvent* event)
+{
+	if(event->key() == Qt::Key_Control)
+		emit ctrlPressed();
 }

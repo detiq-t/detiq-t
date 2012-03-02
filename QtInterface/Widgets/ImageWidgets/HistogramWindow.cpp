@@ -2,25 +2,16 @@
 
 using namespace genericinterface;
 
-HistogramWindow::HistogramWindow(): ImageWindow()
+HistogramWindow::HistogramWindow(Image* image, StandardImageWindow* source, Histogram histogram): ImageWindow(source)
 {
-	_view = new HistogramView();
-	this->setWindowTitle("Histogram");
 	
-	init();
-	
-	this->show();
-}
-
-/*HistogramWindow::HistogramWindow(Image* image, StandardImageWindow* source): ImageWindow(source)
-{
-	_view = new HistogramView(image);
+	_view = new HistogramView(image, histogram);
 	this->setWindowTitle("Histogram - imageTitle");
 	
 	init();
 	
 	this->show();
-}*/
+}
 
 void HistogramWindow::init()
 {
@@ -32,7 +23,8 @@ void HistogramWindow::init()
 	initStatusBar();
 	
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_view);
+    layout->addWidget(_view->getHistogram());
+    _view->getHistogram()->show();
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	

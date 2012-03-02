@@ -3,17 +3,18 @@
 
 #include <QWidget>
 
-//#include "../../ImageIn/Image.h"
-//using namespace imagein;
+#include "../../ImageIn/Image.h"
+using namespace imagein;
 
 namespace genericinterface
 {
     class AlternativeImageView : public QWidget
     {
-    private:
-        //Image* _image;
+    protected:
+        Image* _image;
     public:
-		//AlternativeImageView(Image* image);
+		AlternativeImageView();
+		AlternativeImageView(Image* image);
     };
 }
 

@@ -2,4 +2,6 @@
 
 using namespace genericinterface;
 
-//AlternativeImageView::AlternativeImageView(Image* image): _image(image){}
+AlternativeImageView::AlternativeImageView(){}
+
+AlternativeImageView::AlternativeImageView(Image* image): _image(image){}

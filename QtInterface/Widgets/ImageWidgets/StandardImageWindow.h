@@ -8,12 +8,10 @@
 #include <QMdiSubWindow>
 #include <QScrollArea>
 #include <QFont>
+#include <QKeyEvent>
 
 #include <sstream>
 #include <iostream>
-
-#include <Image.h>
-#include <Rectangle.h>
 
 #include "ImageWindow.h"
 #include "HistogramWindow.h"
@@ -21,8 +19,8 @@
 #include "GridWindow.h"
 #include "RowWindow.h"
 
-//#include "../../ImageIn/Image.h"
-//#include "../../ImageIn/Rectangle.h"
+#include "../../ImageIn/Image.h"
+#include "../../ImageIn/Rectangle.h"
 
 using namespace imagein;
 
@@ -42,18 +40,25 @@ namespace genericinterface
         QLabel* _lSelectedPixelInfo;
         QLabel* _lSelectedPixelPosition;
         QLabel* _lSelectedPixelColor;
-
+        QLabel* _lZoom;
+        
 		void init();
         void initStatusBar();
+        void keyPressEvent(QKeyEvent* event);
+        void keyReleaseEvent(QKeyEvent* event);
     
     public slots:
-        void showHistogram();
+        void showHistogram(Rectangle* rect = NULL);
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();
         //void highlightRect(Rectangle* rect);
         void showHoveredPixelInformations(int x, int y);
         void showSelectedPixelInformations(int x, int y);
+        void updateZoom(double z);
+        
+	signals:
+		void ctrlPressed();
 
     public:
         StandardImageWindow(QMdiArea* area);

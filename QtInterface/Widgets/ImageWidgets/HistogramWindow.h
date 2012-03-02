@@ -6,14 +6,16 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <QFont>
-
 #include <sstream>
 
 #include "ImageWindow.h"
 #include "HistogramView.h"
 
-//#include "../../ImageIn/Image.h"
-//using namespace inmagein;
+#include "../../ImageIn/Image.h"
+#include "../../ImageIn/Rectangle.h"
+#include "../../ImageIn/Histogram.h"
+
+using namespace imagein;
 
 namespace genericinterface
 {
@@ -36,8 +38,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-		HistogramWindow();
-		//HistogramWindow(Image* image, StandardImageWindow* source);
+		HistogramWindow(Image* image, StandardImageWindow* source, Histogram histogram);
     };
 }
 
