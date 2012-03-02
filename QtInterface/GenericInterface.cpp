@@ -2,6 +2,12 @@
 
 using namespace std;
 
+GenericInterface::GenericInterface()
+{
+  addService(0, new WindowService);
+  addService(1, new FileService);
+}
+
 void GenericInterface::addService(int id, Service* s) throw (BadIdException)
 {
   if (_services.find(id) == _services.end())

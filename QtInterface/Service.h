@@ -2,7 +2,6 @@
 #define SERVICE_H_02022012
 
 class Service;
-
 #include "GenericInterface.h"
 #include "ServiceExceptions.h"
 

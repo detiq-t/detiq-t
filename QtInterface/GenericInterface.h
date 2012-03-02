@@ -13,10 +13,11 @@
 #include <QString>
 
 class GenericInterface; /* Pre-declaration for the Service include */
-
-#include "Service.h"
 #include "InterfaceExceptions.h"
 #include "Utilities/Log.h"
+#include "Service.h"
+#include "Services/WindowService.h"
+#include "Services/FileService.h"
 
 /**
 * @brief The Generic Interface provides to the ImageIn developper a way to built easily
@@ -28,6 +29,8 @@ class GenericInterface; /* Pre-declaration for the Service include */
 class GenericInterface : public QMainWindow
 {
 public:
+  GenericInterface();
+
   /**
   * @brief Add a new service to the generic interface
   *
@@ -37,8 +40,8 @@ public:
   *
   * <ul>
   *   <li> WindowService : 0
-  *   <li> IOService : 1
-  *   <li> UtilityService : 2
+  *   <li> FileService : 1
+  *   <li> UtilityService : -1
   * </ul>
   *
   * <p>
