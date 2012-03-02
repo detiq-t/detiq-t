@@ -32,9 +32,9 @@ StandardImageView::StandardImageView(QWidget* parent, Image* image): _parent(par
 
 void StandardImageView::init()
 {
-	_plot  = new QwtPlot();
+	/*_plot  = new QwtPlot();
     _grid = new QwtPlotGrid();
-    _grid->attach(_plot);
+    _grid->attach(_plot);*/
     
     _zoomFactor = 1;
     _ctrlPressed = false;

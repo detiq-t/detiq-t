@@ -8,7 +8,7 @@
 #include <QKeyEvent>
 #include <iostream>
 
-#include <qwt_plot.h>
+//#include <qwt_plot.h>
 
 #include "ImageContextMenu.h"
 
@@ -23,8 +23,8 @@ namespace genericinterface
     {
 		Q_OBJECT
     private:
-		QwtPlot* _plot;
-		QwtPlotGrid* _grid;
+		//QwtPlot* _plot;
+		//QwtPlotGrid* _grid;
 		
 		QWidget* _parent;
 		QPixmap* _pixmap_img;
