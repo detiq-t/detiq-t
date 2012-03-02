@@ -151,6 +151,17 @@ elsif($#ARGV == -1)
         $l = 1;
         $inc && $l && last;
       }
+      elsif($line =~ "(.*/)lib(qwt-+.*).so" && !$l)
+      {
+        $pathLqwt = $1;
+        $qwtname = $2;
+
+        print LQWT "$pathLqwt\n$qwtname\n";
+
+        print "qwt lib found: $pathLqwt\n";
+        $l = 1;
+        $inc && $l && last;
+      }
     }
 
     close TMP;
@@ -193,12 +204,6 @@ elsif($#ARGV == -1)
 
   while($line = <MAKEFILE>)
   {
-    if($line =~ "LIBS          += -lqwt\n" or $line =~ "INCPATH       += -I$pathqwt\n")
-    {
-      print "Error: Makefile already prepared\n";
-      last;
-    }
-
     if($oldline =~ "^LIBS")
     {
       if(!($line =~ "^LIBS"))
