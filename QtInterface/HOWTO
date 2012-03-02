@@ -23,18 +23,18 @@ config.pl génère de bout en bout votre Makefile. Vous *n'*avez *pas* besoin d'
 
 Actuellement, une première utilisation typique est la suivante (l'effacement des fichiers de Widgets est temporaire) :
 
-> src$ svn update
-> (...)
-> src$ cd ImageIn                        (1)
-> ImageIn$ make
-> (...)
-> ImageIn$ cd ../QtInterface/Widgets     (2)
-> Widgets$ rm -f *.*
-> Widgets$ cd ..
-> QtInterface$ ./config.pl
-> (...)
-> QtInterface$ make
-> (...)
+> src$ svn update  
+> (...)  
+> src$ cd ImageIn                        (1)  
+> ImageIn$ make  
+> (...)  
+> ImageIn$ cd ../QtInterface/Widgets     (2)  
+> Widgets$ rm -f *.*  
+> Widgets$ cd ..  
+> QtInterface$ ./config.pl  
+> (...)  
+> QtInterface$ make  
+> (...)  
 
 *(1) seulement si ImageIn n'est pas déjà compilée*
 
@@ -42,6 +42,7 @@ Actuellement, une première utilisation typique est la suivante (l'effacement de
 
 Ensuite, tout se fera très simplement. En cas d'ajout d'un nouveau fichier, etc, simplement faire :
 
-> QtInterface$ ./config.pl
-> (...)
-> QtInterface$ make
+> QtInterface$ ./config.pl  
+> (...)  
+> QtInterface$ make  
+
