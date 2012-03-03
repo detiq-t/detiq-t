@@ -38,7 +38,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-		HistogramWindow(Image* image, StandardImageWindow* source, Histogram histogram);
+		HistogramWindow(Image* image, StandardImageWindow* source, imagein::Histogram* histogram);
     };
 }
 

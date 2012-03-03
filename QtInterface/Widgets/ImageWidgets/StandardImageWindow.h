@@ -21,6 +21,7 @@
 
 #include <Image.h>
 #include <Rectangle.h>
+#include <Histogram.h>
 
 using namespace imagein;
 

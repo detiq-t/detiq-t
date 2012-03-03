@@ -3,8 +3,11 @@
 
 #include <QString>
 #include <QColor>
+#include <QPen>
+#include <QPalette>
 
 #include <qwt_plot_histogram.h>
+#include <qwt_column_symbol.h>
 #include <qwt_series_data.h>
 
 namespace genericinterface
@@ -12,7 +15,7 @@ namespace genericinterface
 	class GraphicalHistogram: public QwtPlotHistogram
 	{
 	public:
-		GraphicalHistogram(const QString &, const QColor &);
+		GraphicalHistogram();
 
 		void setColor(const QColor &);
 		void setValues(int numValues, int* values);

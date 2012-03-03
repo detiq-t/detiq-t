@@ -2,10 +2,10 @@
 
 using namespace genericinterface;
 
-GraphicalHistogram::GraphicalHistogram(const QString &title, const QColor &symbolColor): QwtPlotHistogram(title)
+GraphicalHistogram::GraphicalHistogram(): QwtPlotHistogram()
 {
     setStyle(QwtPlotHistogram::Columns);
-    setColor(symbolColor);
+    setColor(Qt::black);
 }
 
 void GraphicalHistogram::setColor(const QColor &color)
@@ -13,6 +13,13 @@ void GraphicalHistogram::setColor(const QColor &color)
     QColor c = color;
     c.setAlpha(180);
     setBrush(QBrush(c));
+    setPen(QPen(Qt::black));
+
+    QwtColumnSymbol* symbol = new QwtColumnSymbol(QwtColumnSymbol::Box);
+    symbol->setFrameStyle(QwtColumnSymbol::Raised);
+    symbol->setLineWidth(2);
+    symbol->setPalette(QPalette(color));
+    setSymbol(symbol);
 }
 
 void GraphicalHistogram::setValues(int numValues, int *values)

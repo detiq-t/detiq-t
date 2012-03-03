@@ -36,7 +36,7 @@ namespace genericinterface
     {
 		Q_OBJECT
 	private:
-		Histogram _histogram;
+		imagein::Histogram* _histogram;
 		QwtPlot* _qwtPlot;
 		void init();
         void mousePressEvent(QMouseEvent* event);
@@ -44,7 +44,7 @@ namespace genericinterface
 	
     public:
 		HistogramView();
-		HistogramView(Image* image, Histogram histogram);
+		HistogramView(Image* image, imagein::Histogram* histogram);
         int getMemorisedValue(int i);
         void setMemorisedValue(int i, int value);
         QwtPlot* getHistogram();

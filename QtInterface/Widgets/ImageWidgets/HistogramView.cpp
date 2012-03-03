@@ -2,7 +2,7 @@
 
 using namespace genericinterface;
 
-HistogramView::HistogramView(Image* image, Histogram histogram): AlternativeImageView(image), _histogram(histogram)
+HistogramView::HistogramView(Image* image, imagein::Histogram* histogram): AlternativeImageView(image), _histogram(histogram)
 {
 	//TODO
 	// Récupérer l'histogramme de l'image et l'afficher !
@@ -58,12 +58,12 @@ void HistogramView::populate()
     grid->setMajPen(QPen(Qt::black, 0, Qt::DotLine));
     grid->attach(_qwtPlot);
 
-    int values[_histogram.getWidth()];
+    int values[_histogram->getWidth()];
 
-	for(unsigned int i = 0; i < _histogram.getWidth(); ++i)
-		values[i] = _histogram[i];
+	for(unsigned int i = 0; i < _histogram->getWidth(); ++i)
+		values[i] = (*_histogram)[i];
 
-    GraphicalHistogram* graphicalHisto = new GraphicalHistogram("Summer", Qt::red);
+    GraphicalHistogram* graphicalHisto = new GraphicalHistogram();
     graphicalHisto->setValues(sizeof(values) / sizeof(int), values);
     graphicalHisto->attach(_qwtPlot);
 }

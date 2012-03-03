@@ -67,7 +67,14 @@ void StandardImageWindow::showHistogram(Rectangle* rect)
 	Image* im = _imageView->getImage();
 	for(unsigned int i = 0; i < im->getNbChannels(); i++)
 	{
-		HistogramWindow* histo = new HistogramWindow(_imageView->getImage(), this, im->getHistogram(i, *rect));
+		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle());
+		HistogramWindow* histo = new HistogramWindow(_imageView->getImage(), this, h);
+		
+		std::ostringstream oss;
+		oss << i;
+		std::string is = oss.str();
+		histo->setWindowTitle(QString::fromStdString("Histogram " + is));
+		
 		_area->addSubWindow(histo);
 		histo->show();
 	}
