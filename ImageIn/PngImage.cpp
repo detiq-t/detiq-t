@@ -116,7 +116,7 @@ void PngImage::initRead()
     }
 
     //TODO : error handling
-    _readPngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    _readPngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)_errorPtr, userErrorHandler, userErrorHandler);
     if (!_readPngPtr) {
         throw ImageFileException("Couldn't initialize png read struct", __LINE__, __FILE__);
     }
@@ -151,7 +151,7 @@ void PngImage::initWrite()
     }
 
     //TODO : Error handling
-    _writePngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
+    _writePngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, (png_voidp)_errorPtr, userErrorHandler, userErrorHandler);
 
     if(!_writePngPtr) {
         throw ImageFileException("Couldn't initialize png write struct", __LINE__, __FILE__);

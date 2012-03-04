@@ -24,14 +24,14 @@ namespace imagein {
             //! Retrieves the factory set by the user, or the default factory.
             static const ImageFileFactory* getFactory()
             {
-                return _factory;
+                return ImageFileAbsFactory::_factory;
             }
 
             //! Sets a new factory for use in Image class.
             static void setFactory(ImageFileFactory* factory)
             {
-                delete _factory;
-                _factory = factory;
+                delete ImageFileAbsFactory::_factory;
+                ImageFileAbsFactory::_factory = factory;
             }
 
         private:

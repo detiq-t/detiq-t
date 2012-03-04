@@ -29,6 +29,7 @@ namespace imagein
         private:
             png_structp _readPngPtr, _writePngPtr;
             png_infop _readInfoPtr, _writeInfoPtr;
+            png_error_ptr _errorPtr;
             std::fstream* _stream;
             bool _was_palette;
 
@@ -53,6 +54,11 @@ namespace imagein
 
                 //cast the pointer to std::ostream* and writes 'lenght' byte of data to it.
                 ((std::ostream*)a)->write((char*)data, length);
+            }
+
+            static void userErrorHandler(png_structp pngPtr, png_const_charp msg)
+            {
+                throw ImageFileException(std::string("Error while processing png data : ")+reinterpret_cast<const char*>(msg), __LINE__, __FILE__);
             }
     };
 
