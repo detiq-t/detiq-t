@@ -21,6 +21,7 @@ namespace genericinterface
 
   private slots:
     void addFile(const QString& path);
+	 void removeSubWindow(const QString& path, QMdiSubWindow* sw);
 
   public slots:
     void updateDisplay();
@@ -31,6 +32,25 @@ namespace genericinterface
     QMdiArea* _mdi;
     NavigationDock* _nav;
     WindowsMap _windows;
+  };
+
+
+  //TODO Détruire le Controller une fois l'image retirée de la WindowsMap ! 
+  class SubWindowController : public QObject
+  {
+  Q_OBJECT
+  public:
+    SubWindowController(const QString& path, QMdiSubWindow* sw);
+  
+  public slots:
+  	 void closeSubWindow();
+
+  signals:
+    void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
+
+  private:
+    QString _path;
+	 QMdiSubWindow* _sw;
   };
 }
 

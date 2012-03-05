@@ -24,11 +24,29 @@ void WindowService::addFile(const QString& path)
   {
     Image* image = new Image(path.toStdString());
     genericinterface::StandardImageWindow* w = new genericinterface::StandardImageWindow(_mdi, image);
-    _windows[path] << _mdi->addSubWindow(w);
+    //_windows[path] << _mdi->addSubWindow(w);
+	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
+	 _windows[path] << sw;
+	 SubWindowController* swc = new SubWindowController(path, sw);
+	 QObject::connect(sw, SIGNAL(close()), swc, SLOT(closeSubWindow()));
+	 QObject::connect(swc, SIGNAL(removeFromWindowsMap(Qstring&, QMdiSubWindow*)), this, SLOT(removeSubWindow(QString&,QmdiSubWindow*)));
+
     w->show();
 
     _nav->addImage(path);
   }
+}
+
+void WindowService::removeSubWindow(const QString& path, QMdiSubWindow* sw)
+{
+  for(int i=0; i<_windows[path].size(); i++)
+  {
+    if (_windows[path][i] == sw)
+	 {
+      _windows[path].removeAt(i);
+	 }
+  }
+  //TODO Détruire à ce moment le controller associé ?
 }
 
 void WindowService::updateDisplay()
@@ -52,4 +70,20 @@ void WindowService::updateDisplay()
       _windows[sel[u]][x]->show();
     }
   }
+}
+
+
+
+
+
+
+
+SubWindowController::SubWindowController(const QString& path, QMdiSubWindow* sw) : _path(path), _sw(sw)
+{} 
+
+
+
+void SubWindowController::closeSubWindow()
+{
+  emit removeFromWindowsMap(_path, _sw);
 }

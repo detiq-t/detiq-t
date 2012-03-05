@@ -7,6 +7,7 @@
 
 #include <QStringListModel>
 #include <QMenu>
+#include <QModelIndex>
 #include <QAction>
 
 #include "NavigationBar.h"
