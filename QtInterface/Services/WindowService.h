@@ -10,25 +10,28 @@
 
 typedef std::map<QString, QList<QMdiSubWindow*> > WindowsMap;
 
-class WindowService : public QObject, public Service
+namespace genericinterface
 {
-Q_OBJECT
-public:
-  void connect (GenericInterface* gi);
-  void display (GenericInterface* gi);
+  class WindowService : public QObject, public Service
+  {
+  Q_OBJECT
+  public:
+    void connect (GenericInterface* gi);
+    void display (GenericInterface* gi);
 
-private slots:
-  void addFile(const QString& path);
+  private slots:
+    void addFile(const QString& path);
 
-public slots:
-  void updateDisplay();
+  public slots:
+    void updateDisplay();
 
-signals:
+  signals:
 
-private:
-  QMdiArea* _mdi;
-  NavigationDock* _nav;
-  WindowsMap _windows;
-};
+  private:
+    QMdiArea* _mdi;
+    NavigationDock* _nav;
+    WindowsMap _windows;
+  };
+}
 
 #endif

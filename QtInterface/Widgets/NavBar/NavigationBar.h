@@ -5,10 +5,13 @@
 
 #include "ImageDelegate.h"
 
-class NavigationBar : public QListView
+namespace genericinterface
 {
-public:
-  NavigationBar();
-};
+  class NavigationBar : public QListView
+  {
+  public:
+    NavigationBar();
+  };
+}
 
 #endif

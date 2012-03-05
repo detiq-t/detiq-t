@@ -49,7 +49,7 @@ namespace genericinterface
         void keyReleaseEvent(QKeyEvent* event);
     
     public slots:
-        void showHistogram(Rectangle* rect = NULL);
+        void showHistogram(Rectangle* rect = 0);
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();

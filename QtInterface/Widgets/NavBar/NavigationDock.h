@@ -11,43 +11,46 @@
 
 #include "NavigationBar.h"
 
-class NavigationDock : public QWidget
+namespace genericinterface
 {
-Q_OBJECT
-public:
-  /**
-  * @brief Default constructor, layout the elements
-  */
-  NavigationDock();
+  class NavigationDock : public QWidget
+  {
+  Q_OBJECT
+  public:
+    /**
+    * @brief Default constructor, layout the elements
+    */
+    NavigationDock();
 
-  QStringList getSelection();
+    QStringList getSelection();
 
-public slots:
-  /**
-  * @brief 
-  *
-  * @param path
-  */
-  void addImage(const QString& path);
+  public slots:
+    /**
+    * @brief 
+    *
+    * @param path
+    */
+    void addImage(const QString& path);
 
-protected slots:
-  /**
-  * @brief 
-  *
-  * @param pos
-  */
-  void showContextMenu(const QPoint& pos);
-  void emitAction(const QModelIndex& index);
+  protected slots:
+    /**
+    * @brief 
+    *
+    * @param pos
+    */
+    void showContextMenu(const QPoint& pos);
+    void emitAction(const QModelIndex& index);
 
-signals:
-  void actionDone();
+  signals:
+    void actionDone();
 
-private:
-  QStringList _data;
-  QStringListModel* _model;
-  NavigationBar* _view;
-  QMenu* _contextMenu;
+  private:
+    QStringList _data;
+    QStringListModel* _model;
+    NavigationBar* _view;
+    QMenu* _contextMenu;
 
-};
+  };
+}
 
 #endif

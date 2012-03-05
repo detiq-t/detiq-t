@@ -12,58 +12,60 @@
 * @date 2012-02-15
 */
 
-
-/**
-* @brief When you add a new Service to the GenericInterface, be careful with the
-* choice of your ID, if it is already used, the Interface will throw a BadIdException
-*/
-class BadIdException : public std::exception
+namespace genericinterface
 {
-  public:
-    /**
-    * @brief The constructor of the exception
-    *
-    * @param id The id which caused the creation of the exception
-    */
-    BadIdException (int id)
-    {
-      _id = id;
-    }
 
-    /**
-    * @brief Getter for the error message
-    *
-    * @return a simple phrase explain which id caused the error
-    */
-    virtual const char* what () const throw ()
-    {
-      std::ostringstream err;
-      err << "the id " << _id << " is already used";
+  /**
+  * @brief When you add a new Service to the GenericInterface, be careful with the
+  * choice of your ID, if it is already used, the Interface will throw a BadIdException
+  */
+  class BadIdException : public std::exception
+  {
+    public:
+      /**
+      * @brief The constructor of the exception
+      *
+      * @param id The id which caused the creation of the exception
+      */
+      BadIdException (int id)
+      {
+        _id = id;
+      }
 
-      return err.str ().c_str ();
-    }
-  private:
-    /**
-    * @brief The wrong id
-    */
-    int _id;
-};
+      /**
+      * @brief Getter for the error message
+      *
+      * @return a simple phrase explain which id caused the error
+      */
+      virtual const char* what () const throw ()
+      {
+        std::ostringstream err;
+        err << "the id " << _id << " is already used";
 
-class AlreadyInitException : public std::exception
-{
-  public:
-    /**
-    * @brief Getter for the error message
-    *
-    * @return a simple phrase explain which id caused the error
-    */
-    virtual const char* what () const throw ()
-    {
-      std::ostringstream err;
-      err << "the central widget has already been initialized";
+        return err.str ().c_str ();
+      }
+    private:
+      /**
+      * @brief The wrong id
+      */
+      int _id;
+  };
 
-      return err.str ().c_str ();
-    }
-};
+  class AlreadyInitException : public std::exception
+  {
+    public:
+      /**
+      * @brief Getter for the error message
+      *
+      * @return a simple phrase explain which id caused the error
+      */
+      virtual const char* what () const throw ()
+      {
+        std::ostringstream err;
+        err << "the central widget has already been initialized";
 
+        return err.str ().c_str ();
+      }
+  };
+}
 #endif

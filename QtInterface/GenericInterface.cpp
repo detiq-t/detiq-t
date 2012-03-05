@@ -1,6 +1,7 @@
 #include "GenericInterface.h"
 
 using namespace std;
+using namespace genericinterface;
 
 GenericInterface::GenericInterface()
 {

@@ -1,5 +1,7 @@
 #include "WindowService.h"
 
+using namespace genericinterface;
+
 
 void WindowService::connect (GenericInterface* gi)
 {

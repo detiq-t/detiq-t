@@ -1,5 +1,7 @@
 #include "NavigationDock.h"
 
+using namespace genericinterface;
+
 NavigationDock::NavigationDock() : QWidget()
 {
   /* Creation of the attributs */

@@ -1,5 +1,7 @@
 #include "FileService.h"
 
+using namespace genericinterface;
+
 void FileService::connect (GenericInterface* gi)
 {
   _gi = gi;
