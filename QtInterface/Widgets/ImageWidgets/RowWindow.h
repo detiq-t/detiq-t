@@ -11,8 +11,7 @@
 #include "ImageWindow.h"
 #include "RowView.h"
 
-//#include <Image.h>
-//using namespace imagein;
+#include <Image.h>
 
 namespace genericinterface
 {
@@ -35,8 +34,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-		RowWindow(bool vertical=false);
-		//RowWindow(Image* image, StandardImageWindow* source, bool vertical=false);
+		RowWindow(imagein::Image* image, StandardImageWindow* source, imagein::Histogram* histogram, bool vertical=false);
     };
 }
 

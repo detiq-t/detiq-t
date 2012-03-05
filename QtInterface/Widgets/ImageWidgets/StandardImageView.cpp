@@ -2,24 +2,7 @@
 
 using namespace genericinterface;
 
-StandardImageView::StandardImageView(QWidget* parent): QLabel(), _parent(parent)//, _image(NULL)
-{
-    _highlight = new Rectangle();
-    _selection = new Rectangle();
-    _visibleArea = new Rectangle();
-    init();
-}
-
-StandardImageView::StandardImageView(QWidget* parent, QString file): QLabel(), _parent(parent)
-{
-	_pixmap_img = new QPixmap(file);
-	this->setPixmap(*_pixmap_img);
-	this->setFixedSize(_pixmap_img->size());
-	
-	init();
-}
-
-StandardImageView::StandardImageView(QWidget* parent, Image* image): _parent(parent), _image(image)
+StandardImageView::StandardImageView(QWidget* parent, Image* image): QLabel(), _parent(parent), _image(image)
 {
     _highlight = new Rectangle();
     _selection = new Rectangle();
@@ -32,11 +15,7 @@ StandardImageView::StandardImageView(QWidget* parent, Image* image): _parent(par
 
 void StandardImageView::init()
 {
-	/*_plot  = new QwtPlot();
-    _grid = new QwtPlotGrid();
-    _grid->attach(_plot);*/
-    
-    _zoomFactor = 1;
+	_zoomFactor = 1;
     _ctrlPressed = false;
     this->setMouseTracking(true); //Switch on mouse tracking (no need to press button)
 	initMenu();
@@ -91,8 +70,7 @@ void StandardImageView::showImage()
     _pixmap_img = new QPixmap();
     _pixmap_img->convertFromImage(im);
 
-    //this->setStyleSheet("background-color: black;"); //L'arrière plan pour vérifier que la transparence a bien été préservée
-    this->setPixmap(*_pixmap_img);
+	this->setPixmap(*_pixmap_img);
 }
 
 void StandardImageView::wheelEvent(QWheelEvent* event)
@@ -108,6 +86,7 @@ void StandardImageView::wheelEvent(QWheelEvent* event)
 			_zoomFactor += 0.05;
 		}
 		QPixmap pixmap_img = _pixmap_img->scaled((int)_pixmap_img->width()*_zoomFactor, (int)_pixmap_img->height()*_zoomFactor);
+		
 		this->setPixmap(pixmap_img);
 		this->setFixedSize(pixmap_img.size());
 		emit zoomChanged(_zoomFactor*100);

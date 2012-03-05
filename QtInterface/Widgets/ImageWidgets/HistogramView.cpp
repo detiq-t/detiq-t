@@ -4,8 +4,6 @@ using namespace genericinterface;
 
 HistogramView::HistogramView(Image* image, imagein::Histogram* histogram): AlternativeImageView(image), _histogram(histogram)
 {
-	//TODO
-	// Récupérer l'histogramme de l'image et l'afficher !
 	_qwtPlot = new QwtPlot();
 	init();
 }

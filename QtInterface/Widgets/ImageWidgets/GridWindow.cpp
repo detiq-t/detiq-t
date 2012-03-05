@@ -2,17 +2,7 @@
 
 using namespace genericinterface;
 
-GridWindow::GridWindow(): ImageWindow()
-{
-	_view = new GridView();
-	this->setWindowTitle("Pixels Grid");
-	
-	init();
-	
-	this->show();
-}
-
-/*GridWindow::GridWindow(Image* image, StandardImageWindow* source): ImageWindow(source)
+GridWindow::GridWindow(Image* image, StandardImageWindow* source): ImageWindow(source)
 {
 	_view = new GridView(image);
 	this->setWindowTitle("Pixels Grid - imageTitle");
@@ -20,19 +10,20 @@ GridWindow::GridWindow(): ImageWindow()
 	init();
 	
 	this->show();
-}*/
+}
 
 void GridWindow::init()
 {
-	QScrollArea* scrollArea = new QScrollArea();
-	scrollArea->setWidget(_view);
+	/*QScrollArea* scrollArea = new QScrollArea();
+	scrollArea->setWidget(_view->getGraphicsView());
 	scrollArea->setBackgroundRole(QPalette::Dark);
-	scrollArea->setAlignment(Qt::AlignCenter);
+	scrollArea->setAlignment(Qt::AlignCenter);*/
 	
 	initStatusBar();
 	
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_view);
+	
+    layout->addWidget(_view->getGraphicsView());
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	

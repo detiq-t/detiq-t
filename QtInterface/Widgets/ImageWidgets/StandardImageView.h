@@ -8,8 +8,6 @@
 #include <QKeyEvent>
 #include <iostream>
 
-//#include <qwt_plot.h>
-
 #include "ImageContextMenu.h"
 
 #include <Image.h>
@@ -23,9 +21,6 @@ namespace genericinterface
     {
 		Q_OBJECT
     private:
-		//QwtPlot* _plot;
-		//QwtPlotGrid* _grid;
-		
 		QWidget* _parent;
 		QPixmap* _pixmap_img;
 		double _zoomFactor;
@@ -43,8 +38,6 @@ namespace genericinterface
         void wheelEvent(QWheelEvent* event);
 
     public:
-        StandardImageView(QWidget* parent);
-        StandardImageView(QWidget* parent, QString file);
         StandardImageView(QWidget* parent, Image* image);
         //??? getClickedPixel();
         inline Image* getImage() const {return new Image(*_image);}

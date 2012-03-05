@@ -38,7 +38,9 @@ namespace genericinterface
 	private:
 		imagein::Histogram* _histogram;
 		QwtPlot* _qwtPlot;
+		
 		void init();
+		void populate();
         void mousePressEvent(QMouseEvent* event);
         void mouseMoveEvent(QMouseEvent* event);
 	
@@ -53,9 +55,6 @@ namespace genericinterface
 		void valueClickedLeft(int value);
 		void valueClickedRight(int value);
 		void valueHovered(int value);
-
-	private:
-		void populate();
     };
 }
 

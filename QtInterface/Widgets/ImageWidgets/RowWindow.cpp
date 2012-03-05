@@ -1,23 +1,11 @@
 #include "RowWindow.h"
 
 using namespace genericinterface;
+using namespace imagein;
 
-RowWindow::RowWindow(bool vertical): ImageWindow()
+RowWindow::RowWindow(Image* image, StandardImageWindow* source, Histogram* histogram, bool vertical): ImageWindow(source)
 {
-	_view = new RowView(vertical);
-	if(vertical)
-		this->setWindowTitle("Column Profile");
-	else
-		this->setWindowTitle("Line Profile");
-	
-	init();
-	
-	this->show();
-}
-
-/*RowWindow::RowWindow(Image* image, StandardImageWindow* source, bool vertical): ImageWindow(source)
-{
-	_view = new RowView(image, vertical);
+	_view = new RowView(image, histogram);
 	if(vertical)
 		this->setWindowTitle("Column Profile - imageTitle");
 	else
@@ -26,7 +14,7 @@ RowWindow::RowWindow(bool vertical): ImageWindow()
 	init();
 	
 	this->show();
-}*/
+}
 
 void RowWindow::init()
 {
@@ -38,7 +26,7 @@ void RowWindow::init()
 	initStatusBar();
 	
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_view);
+    layout->addWidget(_view->getHistogram());
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	

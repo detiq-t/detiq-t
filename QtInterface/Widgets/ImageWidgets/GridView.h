@@ -1,12 +1,11 @@
 #ifndef GRIDVIEW_H
 #define GRIDVIEW_H
 
-#include <QMouseEvent>
-
+#include "GraphicsView.h"
 #include "AlternativeImageView.h"
 
-//#include <Image.h>
-//using namespace imagein;
+#include <Image.h>
+using namespace imagein;
 
 namespace genericinterface
 {
@@ -14,14 +13,15 @@ namespace genericinterface
     {
 		Q_OBJECT
 	private:
-		void init();
-        void mousePressEvent(QMouseEvent * event);
-        void mouseMoveEvent(QMouseEvent * event);
+		GraphicsView* _view;
         
 	public:
-		GridView();
-		//GridView(QWidget* parent, Image* image);
+		GridView(Image* image);
+		GraphicsView* getGraphicsView();
 		
+	public slots:
+        //void ctrlPressed();
+        
 	signals:
 		void pixelClickedLeft(int x, int y);
 		void pixelClickedRight(int x, int y);

@@ -6,7 +6,9 @@ HistogramWindow::HistogramWindow(Image* image, StandardImageWindow* source, imag
 {
 	_view = new HistogramView(image, histogram);
 	this->setWindowTitle("Histogram - imageTitle");
+	
 	init();
+	
 	this->show();
 }
 
@@ -21,7 +23,6 @@ void HistogramWindow::init()
 	
 	QVBoxLayout* layout = new QVBoxLayout();
     layout->addWidget(_view->getHistogram());
-    _view->getHistogram()->show();
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	

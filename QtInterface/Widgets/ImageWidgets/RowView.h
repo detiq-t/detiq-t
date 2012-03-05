@@ -5,10 +5,20 @@
 #include <QScrollArea>
 #include <QMouseEvent>
 
+#include <qpen.h>
+#include <qwt_plot.h>
+#include <qwt_plot_layout.h>
+#include <qwt_plot_grid.h>
+#include <qwt_plot_histogram.h>
+#include <qwt_legend.h>
+#include <qwt_legend_item.h>
+#include <qwt_column_symbol.h>
+#include <qwt_series_data.h>
+
+#include "GraphicalHistogram.h"
 #include "AlternativeImageView.h"
 
-//#include <Image.h>
-//using namespace imagein;
+#include <Image.h>
 
 namespace genericinterface
 {
@@ -16,14 +26,17 @@ namespace genericinterface
     {
 		Q_OBJECT
 	private:
-        bool _vertical;
+		imagein::Histogram* _histogram;
+		QwtPlot* _qwtPlot;
+        
 		void init();
+		void populate();
         void mousePressEvent(QMouseEvent * event);
         void mouseMoveEvent(QMouseEvent * event);
 
     public:
-		RowView(bool v=0);
-        //RowView(QWidget* parent, Image* image, bool v=0);
+		RowView(imagein::Image* image, imagein::Histogram* histogram);
+        QwtPlot* getHistogram();
 		
 	signals:
 		void valueClickedLeft(int value);

@@ -12,8 +12,8 @@
 #include "ImageWindow.h"
 #include "GridView.h"
 
-//#include <Image.h>
-//using namespace imagein;
+#include <Image.h>
+using namespace imagein;
 
 namespace genericinterface
 {
@@ -42,8 +42,7 @@ namespace genericinterface
         void showRightClickedPixel(int x, int y);
         
     public:
-		GridWindow();
-		//GridWindow(Image* image, StandardImageWindow* source);
+		GridWindow(Image* image, StandardImageWindow* source);
     };
 }
 

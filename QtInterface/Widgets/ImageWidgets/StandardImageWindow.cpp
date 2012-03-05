@@ -2,26 +2,6 @@
 
 using namespace genericinterface;
 
-StandardImageWindow::StandardImageWindow(QMdiArea* area): ImageWindow(), _area(area)
-{
-    this->setWindowTitle("Image");
-    _imageView = new StandardImageView(this);
-	
-	init();
-	
-    this->show();
-}
-
-StandardImageWindow::StandardImageWindow(QMdiArea* area, QString file): ImageWindow(), _area(area)
-{
-    this->setWindowTitle("Image");
-	_imageView = new StandardImageView(this, file);
-	
-	init();
-	
-	this->show();
-}
-
 StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image): ImageWindow(), _area(area)
 {
     this->setWindowTitle("Image - imageTitle");
@@ -44,6 +24,8 @@ StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image, StandardI
 
 void StandardImageWindow::init()
 {
+	_selectedPixel = new QPoint();
+	
 	QScrollArea* scrollArea = new QScrollArea();
 	scrollArea->setWidget(_imageView);
 	scrollArea->setBackgroundRole(QPalette::Dark);
@@ -82,23 +64,47 @@ void StandardImageWindow::showHistogram(Rectangle* rect)
 
 void StandardImageWindow::showPixelsGrid()
 {
-	GridWindow* grid = new GridWindow();
+	GridWindow* grid = new GridWindow(_imageView->getImage(), this);
 	_area->addSubWindow(grid);
 	grid->show();
 }
 
 void StandardImageWindow::showLineProfile()
 {
-	RowWindow* row = new RowWindow();
-	_area->addSubWindow(row);
-	row->show();
+	std::cout << _selectedPixel->y() << std::endl;
+	Image* im = _imageView->getImage();
+	for(unsigned int i = 0; i < im->getNbChannels(); i++)
+	{
+		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle(0, _selectedPixel->y(), im->getWidth(), _selectedPixel->y() + 1));
+		RowWindow* histo = new RowWindow(_imageView->getImage(), this, h);
+		
+		std::ostringstream oss;
+		oss << i;
+		std::string is = oss.str();
+		histo->setWindowTitle(QString::fromStdString("Line Profile " + is));
+		
+		_area->addSubWindow(histo);
+		histo->show();
+	}
 }
 
 void StandardImageWindow::showColumnProfile()
 {
-	RowWindow* column = new RowWindow(true);
-	_area->addSubWindow(column);
-	column->show();
+	std::cout << _selectedPixel->x() << std::endl;
+	Image* im = _imageView->getImage();
+	for(unsigned int i = 0; i < im->getNbChannels(); i++)
+	{
+		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle(_selectedPixel->x(), 0, _selectedPixel->x() + 1, im->getHeight()));
+		RowWindow* histo = new RowWindow(_imageView->getImage(), this, h, true);
+		
+		std::ostringstream oss;
+		oss << i;
+		std::string is = oss.str();
+		histo->setWindowTitle(QString::fromStdString("Column Profile " + is));
+		
+		_area->addSubWindow(histo);
+		histo->show();
+	}
 }
 
 void StandardImageWindow::initStatusBar()
@@ -174,6 +180,8 @@ void StandardImageWindow::initStatusBar()
 
 void StandardImageWindow::showSelectedPixelInformations(int x, int y)
 {
+	_selectedPixel->setX(x);
+	_selectedPixel->setY(y);
 	std::ostringstream oss;
     oss << x;
     std::string xs = oss.str();

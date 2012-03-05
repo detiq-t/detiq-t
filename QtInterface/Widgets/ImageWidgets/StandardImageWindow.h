@@ -9,6 +9,7 @@
 #include <QScrollArea>
 #include <QFont>
 #include <QKeyEvent>
+#include <QPoint>
 
 #include <sstream>
 #include <iostream>
@@ -42,6 +43,7 @@ namespace genericinterface
         QLabel* _lSelectedPixelPosition;
         QLabel* _lSelectedPixelColor;
         QLabel* _lZoom;
+        QPoint* _selectedPixel;
         
 		void init();
         void initStatusBar();
@@ -62,8 +64,6 @@ namespace genericinterface
 		void ctrlPressed();
 
     public:
-        StandardImageWindow(QMdiArea* area);
-        StandardImageWindow(QMdiArea* area, QString file);
         StandardImageWindow(QMdiArea* area, Image* image);
         StandardImageWindow(QMdiArea* area, Image* image, StandardImageWindow* source);
     };

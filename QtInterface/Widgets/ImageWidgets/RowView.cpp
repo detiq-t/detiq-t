@@ -2,28 +2,68 @@
 
 using namespace genericinterface;
 
-RowView::RowView(bool v): _vertical(v){
+RowView::RowView(imagein::Image* image, imagein::Histogram* histogram): AlternativeImageView(image), _histogram(histogram)
+{
+	_qwtPlot = new QwtPlot();
 	init();
 }
-
-/*RowView::RowView(QWidget* parent, Image* image, bool v): AlternativeImageView(parent, image), _vertical(v)
-{
-	//TODO
-	* Récupérer le profil de la ligne ou colonne sélectionnée et l'afficher
-	if(_vertical)
-	{
-	
-	}
-	else
-	{
-	
-	}
-	init();
-}*/
 
 void RowView::init()
 {
     this->setMouseTracking(true); //Switch on mouse tracking (no need to press button)
+
+    _qwtPlot->setCanvasBackground(QColor(Qt::gray));
+    _qwtPlot->plotLayout()->setAlignCanvasToScales(true);
+
+    _qwtPlot->setAxisTitle(QwtPlot::yLeft, "Number of specimen");
+    _qwtPlot->setAxisTitle(QwtPlot::xBottom, "Pixel value");
+
+	QwtLegend* legend = new QwtLegend();
+    legend->setItemMode(QwtLegend::CheckableItem);
+    _qwtPlot->insertLegend(legend, QwtPlot::RightLegend);
+
+    populate();
+
+    _qwtPlot->replot(); // creating the legend items
+
+    QwtPlotItemList items = _qwtPlot->itemList(QwtPlotItem::Rtti_PlotHistogram);
+    for(int i = 0; i < items.size(); i++)
+    {
+        if(i == 0)
+        {
+            QwtLegendItem* legendItem = qobject_cast<QwtLegendItem*>(legend->find(items[i]));
+            if(legendItem)
+                legendItem->setChecked(true);
+
+            items[i]->setVisible(true);
+        }
+        else
+        {
+            items[i]->setVisible(false);
+        }
+    }
+
+    _qwtPlot->setAutoReplot(true);
+}
+
+void RowView::populate()
+{
+    QwtPlotGrid* grid = new QwtPlotGrid();
+    grid->enableX(false);
+    grid->enableY(true);
+    grid->enableXMin(false);
+    grid->enableYMin(false);
+    grid->setMajPen(QPen(Qt::black, 0, Qt::DotLine));
+    grid->attach(_qwtPlot);
+
+    int values[_histogram->getWidth()];
+
+	for(unsigned int i = 0; i < _histogram->getWidth(); ++i)
+		values[i] = (*_histogram)[i];
+
+    GraphicalHistogram* graphicalHisto = new GraphicalHistogram();
+    graphicalHisto->setValues(sizeof(values) / sizeof(int), values);
+    graphicalHisto->attach(_qwtPlot);
 }
 
 void RowView::mousePressEvent(QMouseEvent * event)
@@ -51,4 +91,9 @@ void RowView::mouseMoveEvent(QMouseEvent * event)
 		//	Récupérer la valeur
 		emit valueHovered(0);
 	}
+}
+
+QwtPlot* RowView::getHistogram()
+{
+	return _qwtPlot;
 }
