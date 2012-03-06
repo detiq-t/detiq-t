@@ -11,13 +11,13 @@ void FileService::connect (GenericInterface* gi)
 
 void FileService::display (GenericInterface* gi)
 {
-  _open = gi->menu("&Fichiers")->addAction("&Ouvrir");
+  _open = gi->menu("&File")->addAction("&Open");
 }
 
 
 void FileService::chooseFile()
 {
-  QString file = QFileDialog::getOpenFileName(_gi, "Ouvrir un fichier", QString(), "Images (*.png *.bmp *.jpg *.jpeg)");
+  QString file = QFileDialog::getOpenFileName(_gi, "Open a file", QString(), "Images (*.png *.bmp *.jpg *.jpeg)");
 
   emit fileChosen(file);
 }

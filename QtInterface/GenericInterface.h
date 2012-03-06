@@ -11,6 +11,7 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QString>
+#include <QApplication>
 
 namespace genericinterface
 {
@@ -33,7 +34,7 @@ namespace genericinterface
 {
   class GenericInterface : public QMainWindow
   {
-  public:
+    public:
     GenericInterface();
 
     /**
@@ -110,6 +111,12 @@ namespace genericinterface
     */
     std::map<int, Service*> _services;
     std::map<QString, QMenu*> _menus;
+
+  private:
+    /**
+	 * @brief Add the last elements of the interface : exit button, about qt, etc.
+	 */
+    void finalizeInterface();
   };
 }
 

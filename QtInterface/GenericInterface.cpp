@@ -76,6 +76,9 @@ void GenericInterface::run(bool shw)
                                                             "attendues");
   }
 
+  // Now that everything is added and connected, we had the last elements
+  this->finalizeInterface();
+
   if (shw) this->show();
 }
 
@@ -111,4 +114,14 @@ QMenu* GenericInterface::menu(QString name)
   }
 
   return res;
+}
+
+void GenericInterface::finalizeInterface()
+{
+  // Add the Exit action
+  QAction* actionExit = this->menu("&File")->addAction("&Exit");
+  QObject::connect(actionExit, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+  QAction* actionQt = this->menu("?")->addAction("About Qt");
+  QObject::connect(actionQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }

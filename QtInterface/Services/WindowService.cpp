@@ -56,13 +56,15 @@ void WindowService::addWidget(const QString & path, QWidget* widget)
 
 void WindowService::removeSubWindow(const QString& path, QMdiSubWindow* sw)
 {
-  for(int i=0; i<_windows[path].size(); i++)
+  int i;
+  for(i=0; i<_windows[path].size(); i++)
   {
     if (_windows[path][i] == sw)
 	 {
-      _windows[path].removeAt(i);
+	   break;
 	 }
   }
+  _windows[path].removeAt(i);
   //TODO Détruire à ce moment le controller associé ?
 }
 
