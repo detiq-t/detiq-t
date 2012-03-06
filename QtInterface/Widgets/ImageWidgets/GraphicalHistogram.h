@@ -15,9 +15,9 @@ namespace genericinterface
 	class GraphicalHistogram: public QwtPlotHistogram
 	{
 	public:
-		GraphicalHistogram();
+		GraphicalHistogram(const QString& title, const QColor& color);
 
-		void setColor(const QColor &);
+		void setColor(const QColor& color);
 		void setValues(int numValues, int* values);
 	};
 }

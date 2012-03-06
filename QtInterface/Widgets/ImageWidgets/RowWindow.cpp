@@ -3,9 +3,9 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(Image* image, ImageWindow* source, Histogram* histogram, bool vertical): ImageWindow(source)
+RowWindow::RowWindow(Image* image, Rectangle* rect, ImageWindow* source, bool vertical): ImageWindow(source)
 {
-	_view = new RowView(image, histogram);
+	_view = new RowView(image, rect);
 	if(vertical)
 		this->setWindowTitle("Column Profile - imageTitle");
 	else

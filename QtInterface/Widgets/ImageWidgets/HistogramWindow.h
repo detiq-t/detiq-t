@@ -15,8 +15,6 @@
 #include <Rectangle.h>
 #include <Histogram.h>
 
-using namespace imagein;
-
 namespace genericinterface
 {
     class HistogramWindow : public ImageWindow
@@ -38,7 +36,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-        HistogramWindow(Image* image, ImageWindow* source, imagein::Histogram* histogram);
+        HistogramWindow(imagein::Image* image, imagein::Rectangle* rect, ImageWindow* source);
     };
 }
 

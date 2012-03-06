@@ -23,15 +23,15 @@ void StandardImageView::init()
 
 void StandardImageView::initMenu()
 {
-	_menu = new ImageContextMenu();
-	_menu->setParent(this);
+	_menu = new ImageContextMenu(this);
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	
 	_menu->addAction("Histogram", _parent, SLOT(showHistogram()));
 	_menu->addAction("Pixels Grid", _parent, SLOT(showPixelsGrid()));
 	_menu->addAction("Column Profile", _parent, SLOT(showColumnProfile()));
 	_menu->addAction("Line Profile", _parent, SLOT(showLineProfile()));
 
-	_menu->hide();	
+	QObject::connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), _menu, SLOT(showContextMenu(const QPoint&)));
 }
 
 void StandardImageView::showImage()
@@ -97,14 +97,8 @@ void StandardImageView::mousePressEvent(QMouseEvent * event)
 {
     if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
     {
-		if(event->button() == Qt::RightButton)
+		if(event->button() == Qt::LeftButton)
 		{
-			_menu->move(event->x(), event->y());
-			_menu->show();
-		}
-		else
-		{
-			_menu->hide();
 			emit pixelClicked(event->x()/_zoomFactor, event->y()/_zoomFactor);
 		}
 	}
@@ -120,5 +114,6 @@ void StandardImageView::mouseMoveEvent(QMouseEvent * event)
 
 void StandardImageView::ctrlPressed()
 {
+	std::cout << "Pouet" << std::endl;
 	_ctrlPressed = !_ctrlPressed;
 }

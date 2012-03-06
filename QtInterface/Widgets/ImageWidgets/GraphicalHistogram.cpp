@@ -2,10 +2,10 @@
 
 using namespace genericinterface;
 
-GraphicalHistogram::GraphicalHistogram(): QwtPlotHistogram()
+GraphicalHistogram::GraphicalHistogram(const QString& title, const QColor& color): QwtPlotHistogram(title)
 {
     setStyle(QwtPlotHistogram::Columns);
-    setColor(Qt::black);
+    setColor(color);
 }
 
 void GraphicalHistogram::setColor(const QColor &color)

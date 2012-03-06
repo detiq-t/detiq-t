@@ -3,13 +3,19 @@
 
 #include <QMenu>
 #include <QMouseEvent>
+#include <QPoint>
+#include <iostream>
 
 namespace genericinterface
 {
     class ImageContextMenu : public QMenu
     {
+		Q_OBJECT
 	public:
-		ImageContextMenu();
+		ImageContextMenu(QWidget* parent=NULL);
+        
+    public slots:
+		void showContextMenu(const QPoint& pos);
     };
 }
 

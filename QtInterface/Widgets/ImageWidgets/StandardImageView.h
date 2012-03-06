@@ -30,6 +30,7 @@ namespace genericinterface
         Rectangle* _visibleArea;
         ImageContextMenu* _menu;
         bool _ctrlPressed;
+        
         void init();
         void initMenu();
         void showImage();

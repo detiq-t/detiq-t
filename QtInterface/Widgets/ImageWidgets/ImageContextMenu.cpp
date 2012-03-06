@@ -2,4 +2,9 @@
 
 using namespace genericinterface;
 
-ImageContextMenu::ImageContextMenu(): QMenu(){}
+ImageContextMenu::ImageContextMenu(QWidget* parent): QMenu(parent){}
+
+void ImageContextMenu::showContextMenu(const QPoint& pos)
+{
+	this->popup(parentWidget()->mapToGlobal(pos));
+}

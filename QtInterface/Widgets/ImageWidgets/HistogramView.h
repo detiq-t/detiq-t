@@ -1,13 +1,8 @@
 #ifndef HISTOGRAMVIEW_H
 #define HISTOGRAMVIEW_H
 
+#include <QScrollArea>
 #include <QMouseEvent>
-#include <QPainter>
-#include <QPen>
-#include <QString>
-#include <QFontMetrics>
-#include <QPointF>
-#include <QBrush>
 
 #include <qpen.h>
 #include <qwt_plot.h>
@@ -27,16 +22,13 @@
 #include "GraphicalHistogram.h"
 #include "AlternativeImageView.h"
 
-
-using namespace imagein;
-
 namespace genericinterface
 {
     class HistogramView : public AlternativeImageView
     {
 		Q_OBJECT
 	private:
-		imagein::Histogram* _histogram;
+		imagein::Rectangle* _rectangle;
 		QwtPlot* _qwtPlot;
 		
 		void init();
@@ -45,8 +37,7 @@ namespace genericinterface
         void mouseMoveEvent(QMouseEvent* event);
 	
     public:
-		HistogramView();
-		HistogramView(Image* image, imagein::Histogram* histogram);
+		HistogramView(imagein::Image* image, imagein::Rectangle* rect);
         int getMemorisedValue(int i);
         void setMemorisedValue(int i, int value);
         QwtPlot* getHistogram();
@@ -55,6 +46,9 @@ namespace genericinterface
 		void valueClickedLeft(int value);
 		void valueClickedRight(int value);
 		void valueHovered(int value);
+		
+	private Q_SLOTS:
+		void showItem(QwtPlotItem*, bool on);
     };
 }
 

@@ -1,7 +1,6 @@
 #ifndef ROWVIEW_H
 #define ROWVIEW_H
 
-#include <QWidget>
 #include <QScrollArea>
 #include <QMouseEvent>
 
@@ -14,11 +13,14 @@
 #include <qwt_legend_item.h>
 #include <qwt_column_symbol.h>
 #include <qwt_series_data.h>
+#include <stdlib.h>
+
+#include <Image.h>
+#include <Rectangle.h>
+#include <Histogram.h>
 
 #include "GraphicalHistogram.h"
 #include "AlternativeImageView.h"
-
-#include <Image.h>
 
 namespace genericinterface
 {
@@ -26,22 +28,25 @@ namespace genericinterface
     {
 		Q_OBJECT
 	private:
-		imagein::Histogram* _histogram;
+		imagein::Rectangle* _rectangle;
 		QwtPlot* _qwtPlot;
         
 		void init();
 		void populate();
-        void mousePressEvent(QMouseEvent * event);
-        void mouseMoveEvent(QMouseEvent * event);
+        void mousePressEvent(QMouseEvent* event);
+        void mouseMoveEvent(QMouseEvent* event);
 
     public:
-		RowView(imagein::Image* image, imagein::Histogram* histogram);
+		RowView(imagein::Image* image, imagein::Rectangle* rect);
         QwtPlot* getHistogram();
 		
 	signals:
 		void valueClickedLeft(int value);
 		void valueClickedRight(int value);
 		void valueHovered(int value);
+		
+	private Q_SLOTS:
+		void showItem(QwtPlotItem*, bool on);
     };
 }
 

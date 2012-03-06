@@ -100,18 +100,8 @@ list<HistogramWindow*> StandardImageWindow::getHistogram()
   Image* im = _imageView->getImage();
   list<HistogramWindow*> histos;
 
-  for(unsigned int i = 0; i < im->getNbChannels(); i++)
-  {
-    imagein::Histogram* h = new imagein::Histogram(*im, i, rect);
-    HistogramWindow* histo = new HistogramWindow(im, this, h);
-    
-    std::ostringstream oss;
-    oss << i;
-    std::string is = oss.str();
-    histo->setWindowTitle(QString::fromStdString("Histogram " + is));
-
-    histos.push_back(histo);
-  }
+  HistogramWindow* histo = new HistogramWindow(im, &rect, this);
+  histos.push_back(histo);
 
   return histos;
 }
@@ -125,40 +115,22 @@ void StandardImageWindow::showPixelsGrid()
 
 void StandardImageWindow::showLineProfile()
 {
-	std::cout << _selectedPixel->y() << std::endl;
 	Image* im = _imageView->getImage();
-	for(unsigned int i = 0; i < im->getNbChannels(); i++)
-	{
-		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle(0, _selectedPixel->y(), im->getWidth(), _selectedPixel->y() + 1));
-		RowWindow* histo = new RowWindow(_imageView->getImage(), this, h);
-		
-		std::ostringstream oss;
-		oss << i;
-		std::string is = oss.str();
-		histo->setWindowTitle(QString::fromStdString("Line Profile " + is));
-		
-		_area->addSubWindow(histo);
-		histo->show();
-	}
+	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
+	RowWindow* histo = new RowWindow(im, rect, this);
+			
+	_area->addSubWindow(histo);
+	//histo->show();
 }
 
 void StandardImageWindow::showColumnProfile()
 {
-	std::cout << _selectedPixel->x() << std::endl;
 	Image* im = _imageView->getImage();
-	for(unsigned int i = 0; i < im->getNbChannels(); i++)
-	{
-		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle(_selectedPixel->x(), 0, _selectedPixel->x() + 1, im->getHeight()));
-		RowWindow* histo = new RowWindow(_imageView->getImage(), this, h, true);
-		
-		std::ostringstream oss;
-		oss << i;
-		std::string is = oss.str();
-		histo->setWindowTitle(QString::fromStdString("Column Profile " + is));
-		
-		_area->addSubWindow(histo);
-		histo->show();
-	}
+	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
+	RowWindow* histo = new RowWindow(im, rect, this, true);
+			
+	_area->addSubWindow(histo);
+	histo->show();
 }
 
 void StandardImageWindow::initStatusBar()

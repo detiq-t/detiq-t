@@ -1,10 +1,11 @@
 #include "HistogramWindow.h"
 
 using namespace genericinterface;
+using namespace imagein;
 
-HistogramWindow::HistogramWindow(Image* image, ImageWindow* source, imagein::Histogram* histogram): ImageWindow(source)
+HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source)
 {
-	_view = new HistogramView(image, histogram);
+	_view = new HistogramView(image, rect);
 	this->setWindowTitle("Histogram - imageTitle");
 	
 	init();
