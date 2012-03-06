@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(Image* image, StandardImageWindow* source, Histogram* histogram, bool vertical): ImageWindow(source)
+RowWindow::RowWindow(Image* image, ImageWindow* source, Histogram* histogram, bool vertical): ImageWindow(source)
 {
 	_view = new RowView(image, histogram);
 	if(vertical)

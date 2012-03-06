@@ -18,6 +18,7 @@ namespace genericinterface
   public:
     void connect (GenericInterface* gi);
     void display (GenericInterface* gi);
+    void addWidget(const QString & path, QWidget* widget);
 
   private slots:
     void addFile(const QString& path);
@@ -29,6 +30,7 @@ namespace genericinterface
   signals:
 
   private:
+    GenericInterface* _gi;
     QMdiArea* _mdi;
     NavigationDock* _nav;
     WindowsMap _windows;

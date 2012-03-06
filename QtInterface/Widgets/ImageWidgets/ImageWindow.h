@@ -4,24 +4,25 @@
 #include <QWidget>
 #include <QLabel>
 #include <QStatusBar>
+#include <QString>
 
 //#include <Rectangle.h>
 //#include <Image.h>
 
-//using namespace imagein;
-
 namespace genericinterface
 {
-    class StandardImageWindow;
+    //class StandardImageWindow;
     class ImageWindow : public QWidget
     {
     protected:
         //Rectangle* _applicationArea;
         QStatusBar* _statusBar;
-        StandardImageWindow* _sourceWindow;
+        ImageWindow* _sourceWindow;
+        QString _path; /*!< The path of the source image */
+
     public:
         ImageWindow();
-        ImageWindow(StandardImageWindow* source);
+        ImageWindow(ImageWindow* source);
     };
 }
 

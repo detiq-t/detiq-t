@@ -1,6 +1,42 @@
 #include "StandardImageWindow.h"
 
 using namespace genericinterface;
+using namespace imagein;
+using namespace std;
+
+StandardImageWindow::StandardImageWindow(const QString & path, GenericInterface* gi): ImageWindow(), _gi(gi)
+{
+    _path = path;
+    Image* im = new Image(path.toStdString());
+    this->setWindowTitle("Image - " + path);
+    _imageView = new StandardImageView(this, im);
+	
+    init();
+
+    this->show();
+}
+
+#ifdef DEPRECIATE 
+
+StandardImageWindow::StandardImageWindow(QMdiArea* area): ImageWindow(), _area(area)
+{
+    this->setWindowTitle("Image");
+    _imageView = new StandardImageView(this);
+	
+	init();
+	
+    this->show();
+}
+
+StandardImageWindow::StandardImageWindow(QMdiArea* area, QString file): ImageWindow(), _area(area)
+{
+    this->setWindowTitle("Image");
+	_imageView = new StandardImageView(this, file);
+	
+	init();
+	
+	this->show();
+}
 
 StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image): ImageWindow(), _area(area)
 {
@@ -21,6 +57,8 @@ StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image, StandardI
 
     this->show();
 }
+
+#endif
 
 void StandardImageWindow::init()
 {
@@ -44,22 +82,38 @@ void StandardImageWindow::init()
     connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
 }
 
-void StandardImageWindow::showHistogram(Rectangle* rect)
+void StandardImageWindow::showHistogram()
 {
-	Image* im = _imageView->getImage();
-	for(unsigned int i = 0; i < im->getNbChannels(); i++)
-	{
-		imagein::Histogram* h = new imagein::Histogram(*_imageView->getImage(), i, Rectangle());
-		HistogramWindow* histo = new HistogramWindow(_imageView->getImage(), this, h);
-		
-		std::ostringstream oss;
-		oss << i;
-		std::string is = oss.str();
-		histo->setWindowTitle(QString::fromStdString("Histogram " + is));
-		
-		_area->addSubWindow(histo);
-		histo->show();
-	}
+  list<HistogramWindow*> histos = getHistogram();
+
+  for(list<HistogramWindow*>::iterator it = histos.begin(); it != histos.end(); ++it)
+  {
+    dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, *it);
+  }
+}
+
+list<HistogramWindow*> StandardImageWindow::getHistogram()
+{
+  //Rectangle rect = _imageView->getRectangle();
+  Rectangle rect;
+
+  Image* im = _imageView->getImage();
+  list<HistogramWindow*> histos;
+
+  for(unsigned int i = 0; i < im->getNbChannels(); i++)
+  {
+    imagein::Histogram* h = new imagein::Histogram(*im, i, rect);
+    HistogramWindow* histo = new HistogramWindow(im, this, h);
+    
+    std::ostringstream oss;
+    oss << i;
+    std::string is = oss.str();
+    histo->setWindowTitle(QString::fromStdString("Histogram " + is));
+
+    histos.push_back(histo);
+  }
+
+  return histos;
 }
 
 void StandardImageWindow::showPixelsGrid()

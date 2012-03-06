@@ -24,21 +24,21 @@ namespace genericinterface
 		Q_OBJECT
     private:
         HistogramView* _view;
-		QLabel* _lImageName;
-		QLabel* _lHoveredValue;
-		QLabel* _lSelectedValue1;
-		QLabel* _lSelectedValue2;
+        QLabel* _lImageName;
+        QLabel* _lHoveredValue;
+        QLabel* _lSelectedValue1;
+        QLabel* _lSelectedValue2;
 		
 		void init();
         void initStatusBar();
         
     public slots:
-		void showHoveredValue(int value);
+        void showHoveredValue(int value);
         void showLeftClickedValue(int value);
         void showRightClickedValue(int value);
         
     public:
-		HistogramWindow(Image* image, StandardImageWindow* source, imagein::Histogram* histogram);
+        HistogramWindow(Image* image, ImageWindow* source, imagein::Histogram* histogram);
     };
 }
 

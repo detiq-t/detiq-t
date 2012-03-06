@@ -21,9 +21,9 @@ namespace genericinterface
     {
 		Q_OBJECT
     private:
-		QWidget* _parent;
-		QPixmap* _pixmap_img;
-		double _zoomFactor;
+        QWidget* _parent;
+        QPixmap* _pixmap_img;
+        double _zoomFactor;
         Image* _image;
         Rectangle* _highlight;
         Rectangle* _selection;
@@ -40,8 +40,10 @@ namespace genericinterface
     public:
         StandardImageView(QWidget* parent, Image* image);
         //??? getClickedPixel();
+        //ATTENTION A LA FUITE MEMOIRE !
         inline Image* getImage() const {return new Image(*_image);}
         inline QPixmap* getPixmap() const {return new QPixmap(*_pixmap_img);}
+        inline Rectangle getRectangle() const { return Rectangle(*_selection); }
 
 	public slots:
         //void showRectangle(Rectangle* rect);

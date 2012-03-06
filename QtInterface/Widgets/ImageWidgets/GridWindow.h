@@ -42,7 +42,7 @@ namespace genericinterface
         void showRightClickedPixel(int x, int y);
         
     public:
-		GridWindow(Image* image, StandardImageWindow* source);
+		GridWindow(Image* image, ImageWindow* source);
     };
 }
 

@@ -2,13 +2,13 @@
 
 using namespace genericinterface;
 
-ImageWindow::ImageWindow(): QWidget(), _sourceWindow(NULL)
+ImageWindow::ImageWindow(): QWidget(), _sourceWindow(0)
 {
     //_applicationArea = new Rectangle();
     _statusBar = new QStatusBar();
 }
 
-ImageWindow::ImageWindow(StandardImageWindow* source): QWidget(), _sourceWindow(source)
+ImageWindow::ImageWindow(ImageWindow* source): QWidget(), _sourceWindow(source)
 {
     //_applicationArea = new Rectangle();
     _statusBar = new QStatusBar();

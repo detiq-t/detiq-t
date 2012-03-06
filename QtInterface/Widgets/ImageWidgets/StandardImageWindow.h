@@ -13,6 +13,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <list>
 
 #include "ImageWindow.h"
 #include "HistogramWindow.h"
@@ -20,11 +21,13 @@
 #include "GridWindow.h"
 #include "RowWindow.h"
 
+#include "../../GenericInterface.h"
+
 #include <Image.h>
 #include <Rectangle.h>
 #include <Histogram.h>
 
-using namespace imagein;
+#include <QString>
 
 namespace genericinterface
 {
@@ -32,7 +35,9 @@ namespace genericinterface
     {
 		Q_OBJECT
     private:
-		QMdiArea* _area;
+        GenericInterface* _gi;
+
+        QMdiArea* _area;
         StandardImageView* _imageView;
         QLabel* _lImageSize;
         QLabel* _lImageName;
@@ -45,13 +50,14 @@ namespace genericinterface
         QLabel* _lZoom;
         QPoint* _selectedPixel;
         
-		void init();
+        void init();
         void initStatusBar();
         void keyPressEvent(QKeyEvent* event);
         void keyReleaseEvent(QKeyEvent* event);
     
     public slots:
-        void showHistogram(Rectangle* rect = 0);
+        void showHistogram();
+
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();
@@ -64,8 +70,15 @@ namespace genericinterface
 		void ctrlPressed();
 
     public:
-        StandardImageWindow(QMdiArea* area, Image* image);
-        StandardImageWindow(QMdiArea* area, Image* image, StandardImageWindow* source);
+        StandardImageWindow(const QString & path, GenericInterface* gi);
+
+        std::list<HistogramWindow*> getHistogram();
+
+
+        //StandardImageWindow(QMdiArea* area); [> depreciate <]
+        //StandardImageWindow(QMdiArea* area, QString file); [> depreciate <]
+        //StandardImageWindow(QMdiArea* area, imagein::Image* image); [> depreciate <]
+        //StandardImageWindow(QMdiArea* area, imagein::Image* image, StandardImageWindow* source); [> depreciate <]
     };
 }
 

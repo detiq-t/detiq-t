@@ -2,7 +2,7 @@
 
 using namespace genericinterface;
 
-GridWindow::GridWindow(Image* image, StandardImageWindow* source): ImageWindow(source)
+GridWindow::GridWindow(Image* image, ImageWindow* source): ImageWindow(source)
 {
 	_view = new GridView(image);
 	this->setWindowTitle("Pixels Grid - imageTitle");

@@ -2,7 +2,7 @@
 
 using namespace genericinterface;
 
-HistogramWindow::HistogramWindow(Image* image, StandardImageWindow* source, imagein::Histogram* histogram): ImageWindow(source)
+HistogramWindow::HistogramWindow(Image* image, ImageWindow* source, imagein::Histogram* histogram): ImageWindow(source)
 {
 	_view = new HistogramView(image, histogram);
 	this->setWindowTitle("Histogram - imageTitle");

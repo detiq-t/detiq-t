@@ -5,6 +5,7 @@ using namespace genericinterface;
 
 void WindowService::connect (GenericInterface* gi)
 {
+  _gi = gi;
 }
 
 void WindowService::display (GenericInterface* gi)
@@ -22,18 +23,34 @@ void WindowService::addFile(const QString& path)
 {
   if(_windows.find(path) == _windows.end())
   {
-    Image* image = new Image(path.toStdString());
-    genericinterface::StandardImageWindow* w = new genericinterface::StandardImageWindow(_mdi, image);
+    genericinterface::StandardImageWindow* w = new genericinterface::StandardImageWindow(path, _gi);
     //_windows[path] << _mdi->addSubWindow(w);
 	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
 	 _windows[path] << sw;
 	 SubWindowController* swc = new SubWindowController(path, sw);
-	 QObject::connect(sw, SIGNAL(close()), swc, SLOT(closeSubWindow()));
-	 QObject::connect(swc, SIGNAL(removeFromWindowsMap(Qstring&, QMdiSubWindow*)), this, SLOT(removeSubWindow(QString&,QmdiSubWindow*)));
+	 QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
+	 QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
 
     w->show();
 
     _nav->addImage(path);
+  }
+}
+
+void WindowService::addWidget(const QString & path, QWidget* widget)
+{
+  if(_windows.find(path) != _windows.end())
+  {
+    QMdiSubWindow* sw = _mdi->addSubWindow(widget);
+
+    _windows[path] << sw;
+
+    SubWindowController* swc = new SubWindowController(path, sw);
+
+    QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
+    QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+
+    widget->show();
   }
 }
 
