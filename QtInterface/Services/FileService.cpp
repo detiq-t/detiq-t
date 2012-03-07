@@ -19,5 +19,6 @@ void FileService::chooseFile()
 {
   QString file = QFileDialog::getOpenFileName(_gi, "Open a file", QString(), "Images (*.png *.bmp *.jpg *.jpeg)");
 
-  emit fileChosen(file);
+  if(file != "")
+    emit fileChosen(file);
 }

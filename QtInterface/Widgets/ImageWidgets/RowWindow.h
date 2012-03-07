@@ -20,21 +20,21 @@ namespace genericinterface
 		Q_OBJECT
     private:
         RowView* _view;
-		QLabel* _lImageName;
-		QLabel* _lHoveredValue;
-		QLabel* _lSelectedValue1;
-		QLabel* _lSelectedValue2;
+        QLabel* _lImageName;
+        QLabel* _lHoveredValue;
+        QLabel* _lSelectedValue1;
+        QLabel* _lSelectedValue2;
 		
 		void init();
         void initStatusBar();
         
     public slots:
-		void showHoveredValue(int value);
+        void showHoveredValue(int value);
         void showLeftClickedValue(int value);
         void showRightClickedValue(int value);
         
     public:
-		RowWindow(imagein::Image* image, imagein::Rectangle* rect, ImageWindow* source, bool vertical=false);
+        RowWindow(imagein::Image* image, imagein::Rectangle* rect, ImageWindow* source, bool vertical=false);
     };
 }
 
