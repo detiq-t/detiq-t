@@ -5,24 +5,24 @@
 #include <QLabel>
 #include <QStatusBar>
 #include <QString>
+#include <iostream>
 
-//#include <Rectangle.h>
+#include <Rectangle.h>
 //#include <Image.h>
 
 namespace genericinterface
 {
-    //class StandardImageWindow;
-    class ImageWindow : public QWidget
+	class ImageWindow : public QWidget
     {
+		Q_OBJECT
     protected:
-        //Rectangle* _applicationArea;
+        imagein::Rectangle* _applicationArea;
         QStatusBar* _statusBar;
         ImageWindow* _sourceWindow;
         QString _path; /*!< The path of the source image */
 
     public:
-        ImageWindow();
-        ImageWindow(ImageWindow* source);
+        ImageWindow(ImageWindow* source = NULL, imagein::Rectangle* rect = new imagein::Rectangle());
     };
 }
 

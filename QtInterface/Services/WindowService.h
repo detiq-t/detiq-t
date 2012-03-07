@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDockWidget>
 
+#include "../Widgets/ImageWidgets/ImageWindow.h"
 #include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/NavBar/NavigationDock.h"
 #include "../GenericInterface.h"
@@ -18,7 +19,7 @@ namespace genericinterface
   public:
     void connect (GenericInterface* gi);
     void display (GenericInterface* gi);
-    void addWidget(const QString & path, QWidget* widget);
+    void addWidget(const QString & path, ImageWindow* widget);
 
   private slots:
     void addFile(const QString& path);

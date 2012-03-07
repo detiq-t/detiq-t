@@ -61,7 +61,6 @@ namespace genericinterface
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();
-        //void highlightRect(Rectangle* rect);
         void showHoveredPixelInformations(int x, int y);
         void showSelectedPixelInformations(int x, int y);
         void updateZoom(double z);
@@ -71,14 +70,8 @@ namespace genericinterface
 
     public:
         StandardImageWindow(const QString & path, GenericInterface* gi);
-
+		//void showHighlightRect(Rectangle* rect);
         std::list<HistogramWindow*> getHistogram();
-
-
-        //StandardImageWindow(QMdiArea* area); [> depreciate <]
-        //StandardImageWindow(QMdiArea* area, QString file); [> depreciate <]
-        //StandardImageWindow(QMdiArea* area, imagein::Image* image); [> depreciate <]
-        //StandardImageWindow(QMdiArea* area, imagein::Image* image, StandardImageWindow* source); [> depreciate <]
     };
 }
 

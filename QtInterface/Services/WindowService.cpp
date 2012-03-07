@@ -37,7 +37,7 @@ void WindowService::addFile(const QString& path)
   }
 }
 
-void WindowService::addWidget(const QString & path, QWidget* widget)
+void WindowService::addWidget(const QString & path, ImageWindow* widget)
 {
   if(_windows.find(path) != _windows.end())
   {
@@ -49,6 +49,8 @@ void WindowService::addWidget(const QString & path, QWidget* widget)
 
     QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
     QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+	
+	//QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
 
     widget->show();
   }

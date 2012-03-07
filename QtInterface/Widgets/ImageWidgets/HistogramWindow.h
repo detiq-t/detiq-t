@@ -8,6 +8,11 @@
 #include <QFont>
 #include <sstream>
 
+namespace genericinterface
+{
+	class HistogramWindow;
+}
+
 #include "ImageWindow.h"
 #include "HistogramView.h"
 
@@ -26,6 +31,8 @@ namespace genericinterface
         QLabel* _lHoveredValue;
         QLabel* _lSelectedValue1;
         QLabel* _lSelectedValue2;
+        
+        imagein::Rectangle* _rectangle;
 		
 		void init();
         void initStatusBar();

@@ -3,9 +3,9 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source)
+HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source), _rectangle(rect)
 {
-	_view = new HistogramView(image, rect);
+	_view = new HistogramView(image, _rectangle);
 	this->setWindowTitle("Histogram - imageTitle");
 	
 	init();

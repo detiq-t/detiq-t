@@ -114,6 +114,5 @@ void StandardImageView::mouseMoveEvent(QMouseEvent * event)
 
 void StandardImageView::ctrlPressed()
 {
-	std::cout << "Pouet" << std::endl;
 	_ctrlPressed = !_ctrlPressed;
 }

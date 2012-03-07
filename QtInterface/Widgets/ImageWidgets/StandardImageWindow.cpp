@@ -16,50 +16,6 @@ StandardImageWindow::StandardImageWindow(const QString & path, GenericInterface*
     this->show();
 }
 
-#ifdef DEPRECIATE 
-
-StandardImageWindow::StandardImageWindow(QMdiArea* area): ImageWindow(), _area(area)
-{
-    this->setWindowTitle("Image");
-    _imageView = new StandardImageView(this);
-	
-	init();
-	
-    this->show();
-}
-
-StandardImageWindow::StandardImageWindow(QMdiArea* area, QString file): ImageWindow(), _area(area)
-{
-    this->setWindowTitle("Image");
-	_imageView = new StandardImageView(this, file);
-	
-	init();
-	
-	this->show();
-}
-
-StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image): ImageWindow(), _area(area)
-{
-    this->setWindowTitle("Image - imageTitle");
-    _imageView = new StandardImageView(this, image);
-	
-	init();
-
-    this->show();
-}
-
-StandardImageWindow::StandardImageWindow(QMdiArea* area, Image* image, StandardImageWindow* source): ImageWindow(source), _area(area)
-{
-    this->setWindowTitle("Image - imageTitle");
-    _imageView = new StandardImageView(this, image);
-	
-	init();
-
-    this->show();
-}
-
-#endif
-
 void StandardImageWindow::init()
 {
 	_selectedPixel = new QPoint();
@@ -257,3 +213,8 @@ void StandardImageWindow::keyReleaseEvent(QKeyEvent* event)
 	if(event->key() == Qt::Key_Control)
 		emit ctrlPressed();
 }
+
+/*void StandardImageWindow::showHighlightRect(Rectangle* rect)
+{
+	
+}*/

@@ -1,15 +1,9 @@
 #include "ImageWindow.h"
 
 using namespace genericinterface;
+using namespace imagein;
 
-ImageWindow::ImageWindow(): QWidget(), _sourceWindow(0)
+ImageWindow::ImageWindow(ImageWindow* source, Rectangle* rect): QWidget(), _sourceWindow(source), _applicationArea(rect)
 {
-    //_applicationArea = new Rectangle();
-    _statusBar = new QStatusBar();
-}
-
-ImageWindow::ImageWindow(ImageWindow* source): QWidget(), _sourceWindow(source)
-{
-    //_applicationArea = new Rectangle();
     _statusBar = new QStatusBar();
 }
