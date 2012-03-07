@@ -3,8 +3,11 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(Image* image, Rectangle* rect, ImageWindow* source, bool vertical): ImageWindow(source)
+RowWindow::RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, bool vertical)
 {
+  _path = path;
+  _gi = gi;
+
 	_view = new RowView(image, rect);
 	if(vertical)
 		this->setWindowTitle("Column Profile - imageTitle");

@@ -11,6 +11,8 @@
 #include "ImageWindow.h"
 #include "RowView.h"
 
+#include "../../GenericInterface.h"
+
 #include <Image.h>
 
 namespace genericinterface
@@ -24,6 +26,7 @@ namespace genericinterface
         QLabel* _lHoveredValue;
         QLabel* _lSelectedValue1;
         QLabel* _lSelectedValue2;
+        GenericInterface* _gi;
 		
 		void init();
         void initStatusBar();
@@ -34,7 +37,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-        RowWindow(imagein::Image* image, imagein::Rectangle* rect, ImageWindow* source, bool vertical=false);
+        RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, bool vertical=false);
     };
 }
 

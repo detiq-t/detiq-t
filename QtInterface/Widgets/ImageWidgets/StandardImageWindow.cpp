@@ -117,20 +117,30 @@ void StandardImageWindow::showLineProfile()
 {
 	Image* im = _imageView->getImage();
 	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
-	RowWindow* histo = new RowWindow(im, rect, this);
+	//RowWindow* histo = new RowWindow(im, rect, this);
+  RowWindow* histo = new RowWindow(im, rect, _path, _gi);
+
+  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
 			
-	_area->addSubWindow(histo);
+	//_area->addSubWindow(histo);
 	//histo->show();
 }
 
 void StandardImageWindow::showColumnProfile()
 {
 	Image* im = _imageView->getImage();
-	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
-	RowWindow* histo = new RowWindow(im, rect, this, true);
+	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
+	//RowWindow* histo = new RowWindow(im, rect, this);
+  RowWindow* histo = new RowWindow(im, rect, _path, _gi);
+
+  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+
+	//Image* im = _imageView->getImage();
+	//imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
+	//RowWindow* histo = new RowWindow(im, rect, this, true);
 			
-	_area->addSubWindow(histo);
-	histo->show();
+	//_area->addSubWindow(histo);
+	//histo->show();
 }
 
 void StandardImageWindow::initStatusBar()
