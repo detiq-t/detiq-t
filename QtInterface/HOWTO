@@ -46,3 +46,9 @@ Ensuite, tout se fera très simplement. En cas d'ajout d'un nouveau fichier, etc
 > (...)  
 > QtInterface$ make  
 
+PAQUETS A INSTALLER :
+build-essential
+libjpeg-dev
+libpng-dev
+libqt4-dev
+libqwt-dev
