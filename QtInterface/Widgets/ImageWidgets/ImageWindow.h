@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include <Rectangle.h>
-//#include <Image.h>
 
 namespace genericinterface
 {
@@ -22,7 +21,13 @@ namespace genericinterface
         QString _path; /*!< The path of the source image */
 
     public:
-        ImageWindow(ImageWindow* source = NULL, imagein::Rectangle* rect = new imagein::Rectangle());
+        ImageWindow(ImageWindow* source = NULL, imagein::Rectangle* rect = NULL);
+        
+    public slots:
+		void activated();
+	
+	signals:
+		void highlightRectChange(imagein::Rectangle*);
     };
 }
 

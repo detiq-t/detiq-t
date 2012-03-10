@@ -3,9 +3,9 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source), _rectangle(rect)
+HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source, rect)
 {
-	_view = new HistogramView(image, _rectangle);
+	_view = new HistogramView(image, rect);
 	this->setWindowTitle("Histogram - imageTitle");
 	
 	init();
@@ -27,9 +27,9 @@ void HistogramWindow::init()
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	
-    connect(_view, SIGNAL(valueClickedLeft(int)), this, SLOT(showLeftClickedValue(int)));
-    connect(_view, SIGNAL(valueClickedRight(int)), this, SLOT(showRightClickedValue(int)));
-    connect(_view, SIGNAL(valueHovered(int)), this, SLOT(showHoveredValue(int)));
+    connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
+    connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
+    connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
 }
 
 void HistogramWindow::initStatusBar()
@@ -58,10 +58,31 @@ void HistogramWindow::initStatusBar()
     font.setPointSize(8);
     _lSelectedValue2->setFont(font);
 
-	_statusBar->addWidget(_lImageName);
-	_statusBar->addWidget(_lHoveredValue);
-	_statusBar->addWidget(_lSelectedValue1);
-	_statusBar->addWidget(_lSelectedValue2);
+	QVBoxLayout* layout = new QVBoxLayout();
+	layout->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget = new QWidget();
+	
+	QHBoxLayout* layout1 = new QHBoxLayout();
+	layout1->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget1 = new QWidget();
+	layout1->addWidget(_lImageName);
+	layout1->addSpacing(15);
+	layout1->addWidget(_lHoveredValue);
+    widget1->setLayout(layout1);
+    layout->addWidget(widget1);
+	
+	QHBoxLayout* layout2 = new QHBoxLayout();
+	layout2->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget2 = new QWidget();
+	layout2->addWidget(_lSelectedValue1);
+	layout2->addSpacing(15);
+	layout2->addWidget(_lSelectedValue2);
+    widget2->setLayout(layout2);
+    layout->addWidget(widget2);
+    
+    widget->setLayout(layout);
+	
+    _statusBar->addWidget(widget);
 }
 
 void HistogramWindow::showHoveredValue(int value)
@@ -69,7 +90,7 @@ void HistogramWindow::showHoveredValue(int value)
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lHoveredValue->setText(QString::fromStdString("Hovered: " + value));
+	_lHoveredValue->setText(QString::fromStdString("Hovered: " + xs));
 }
 
 void HistogramWindow::showLeftClickedValue(int value)
@@ -77,7 +98,7 @@ void HistogramWindow::showLeftClickedValue(int value)
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lHoveredValue->setText(QString::fromStdString("Value1: " + value));
+	_lSelectedValue1->setText(QString::fromStdString("Value1: " + xs));
 }
 
 void HistogramWindow::showRightClickedValue(int value)
@@ -85,5 +106,5 @@ void HistogramWindow::showRightClickedValue(int value)
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lHoveredValue->setText(QString::fromStdString("Value2: " + value));
+	_lSelectedValue2->setText(QString::fromStdString("Value2: " + xs));
 }

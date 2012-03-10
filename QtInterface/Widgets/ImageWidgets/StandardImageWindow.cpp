@@ -20,22 +20,18 @@ void StandardImageWindow::init()
 {
 	_selectedPixel = new QPoint();
 	
-	QScrollArea* scrollArea = new QScrollArea();
-	scrollArea->setWidget(_imageView);
-	scrollArea->setBackgroundRole(QPalette::Dark);
-	scrollArea->setAlignment(Qt::AlignCenter);
-	
 	initStatusBar();
     
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(scrollArea);
+    layout->addWidget(_imageView->getGraphicsView());
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	
-    connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
-    connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
-    connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
-    connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
+    QObject::connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
+    QObject::connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
+    QObject::connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
+    QObject::connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
+    QObject::connect(this, SIGNAL(highlightRectChange(imagein::Rectangle*)), _imageView, SLOT(showHighlightRect(imagein::Rectangle*)));
 }
 
 void StandardImageWindow::showHistogram()
@@ -50,13 +46,10 @@ void StandardImageWindow::showHistogram()
 
 list<HistogramWindow*> StandardImageWindow::getHistogram()
 {
-  //Rectangle rect = _imageView->getRectangle();
-  Rectangle rect;
-
   Image* im = _imageView->getImage();
   list<HistogramWindow*> histos;
 
-  HistogramWindow* histo = new HistogramWindow(im, &rect, this);
+  HistogramWindow* histo = new HistogramWindow(im, _imageView->getRectangle(), this);
   histos.push_back(histo);
 
   return histos;
@@ -73,34 +66,22 @@ void StandardImageWindow::showLineProfile()
 {
 	Image* im = _imageView->getImage();
 	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
-	//RowWindow* histo = new RowWindow(im, rect, this);
-  RowWindow* histo = new RowWindow(im, rect, _path, _gi);
+	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this);
 
-  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
-			
-	//_area->addSubWindow(histo);
-	//histo->show();
+	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
 }
 
 void StandardImageWindow::showColumnProfile()
 {
 	Image* im = _imageView->getImage();
-	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
-	//RowWindow* histo = new RowWindow(im, rect, this);
-  RowWindow* histo = new RowWindow(im, rect, _path, _gi);
+	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
+	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this, true);
 
-  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
-
-	//Image* im = _imageView->getImage();
-	//imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
-	//RowWindow* histo = new RowWindow(im, rect, this, true);
-			
-	//_area->addSubWindow(histo);
-	//histo->show();
+	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
 }
 
 void StandardImageWindow::initStatusBar()
-{
+{	
 	std::ostringstream oss;
     oss << _imageView->getPixmap()->height();
     std::string height = oss.str();
@@ -159,15 +140,42 @@ void StandardImageWindow::initStatusBar()
     font.setPointSize(8);
     _lZoom->setFont(font);
 
-	_statusBar->addWidget(_lImageName);
-    _statusBar->addWidget(_lImageSize);
-	_statusBar->addWidget(_lSelectedPixelInfo);
-	_statusBar->addWidget(_lSelectedPixelPosition);
-	_statusBar->addWidget(_lSelectedPixelColor);
-	_statusBar->addWidget(_lHoveredPixelInfo);
-	_statusBar->addWidget(_lHoveredPixelPosition);
-	_statusBar->addWidget(_lHoveredPixelColor);
-	_statusBar->addWidget(_lZoom);
+
+	QVBoxLayout* layout = new QVBoxLayout();
+	layout->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget = new QWidget();
+	
+	QHBoxLayout* layoutImage = new QHBoxLayout();
+	layoutImage->setContentsMargins(0, 0, 0, 0);
+    QWidget* widgetImage = new QWidget();
+	layoutImage->addWidget(_lImageName);
+    layoutImage->addWidget(_lImageSize);
+	layoutImage->addSpacing(15);
+	layoutImage->addWidget(_lZoom);
+    widgetImage->setLayout(layoutImage);
+    layout->addWidget(widgetImage);
+	
+	QHBoxLayout* layoutSelectedPixel = new QHBoxLayout();
+	layoutSelectedPixel->setContentsMargins(0, 0, 0, 0);
+    QWidget* widgetSelectedPixel = new QWidget();
+	layoutSelectedPixel->addWidget(_lSelectedPixelInfo);
+    layoutSelectedPixel->addWidget(_lSelectedPixelPosition);
+    layoutSelectedPixel->addWidget(_lSelectedPixelColor);
+    widgetSelectedPixel->setLayout(layoutSelectedPixel);
+    layout->addWidget(widgetSelectedPixel);
+	
+	QHBoxLayout* layoutHoveredPixel = new QHBoxLayout();
+	layoutHoveredPixel->setContentsMargins(0, 0, 0, 0);
+    QWidget* widgetHoveredPixel = new QWidget();
+	layoutHoveredPixel->addWidget(_lHoveredPixelInfo);
+    layoutHoveredPixel->addWidget(_lHoveredPixelPosition);
+    layoutHoveredPixel->addWidget(_lHoveredPixelColor);
+    widgetHoveredPixel->setLayout(layoutHoveredPixel);
+    layout->addWidget(widgetHoveredPixel);    
+    
+    widget->setLayout(layout);
+	
+    _statusBar->addWidget(widget);
 }
 
 void StandardImageWindow::showSelectedPixelInformations(int x, int y)
@@ -181,6 +189,15 @@ void StandardImageWindow::showSelectedPixelInformations(int x, int y)
     oss << y;
     std::string ys = oss.str();
 	_lSelectedPixelPosition->setText(QString::fromStdString(xs + " * " + ys));
+	
+	_lSelectedPixelColor->setText("Color:");
+	Image* im = _imageView->getImage();
+	for(unsigned int i = 0; i < im->getNbChannels(); i++)
+	{
+		oss.str("");
+		oss << (unsigned int) im->getPixel(x, y, i);
+		_lSelectedPixelColor->setText(_lSelectedPixelColor->text() + QString::fromStdString(" " + oss.str()));
+	}
 }
 
 void StandardImageWindow::showHoveredPixelInformations(int x, int y)
@@ -192,6 +209,15 @@ void StandardImageWindow::showHoveredPixelInformations(int x, int y)
     oss << y;
     std::string ys = oss.str();
 	_lHoveredPixelPosition->setText(QString::fromStdString(xs + " * " + ys));
+	
+	_lHoveredPixelColor->setText("Color:");
+	Image* im = _imageView->getImage();
+	for(unsigned int i = 0; i < im->getNbChannels(); i++)
+	{
+		oss.str("");
+		oss << (unsigned int) im->getPixel(x, y, i);
+		_lHoveredPixelColor->setText(_lHoveredPixelColor->text() + QString::fromStdString(" " + oss.str()));
+	}
 }
 
 void StandardImageWindow::updateZoom(double z)
@@ -214,7 +240,7 @@ void StandardImageWindow::keyReleaseEvent(QKeyEvent* event)
 		emit ctrlPressed();
 }
 
-/*void StandardImageWindow::showHighlightRect(Rectangle* rect)
+void StandardImageWindow::showHighlightRect(Rectangle* rect)
 {
-	
-}*/
+	emit(highlightRectChange(rect));
+}

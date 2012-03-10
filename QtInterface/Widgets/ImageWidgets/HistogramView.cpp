@@ -6,6 +6,7 @@ using namespace imagein;
 HistogramView::HistogramView(Image* image, imagein::Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
 {
 	_qwtPlot = new QwtPlot();
+	
 	init();
 }
 
@@ -26,8 +27,23 @@ void HistogramView::init()
     _qwtPlot->insertLegend(legend, QwtPlot::RightLegend);
 
     populate();
+    
+    _qwtLeftPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    _qwtLeftPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _qwtLeftPicker->setRubberBandPen(QColor(Qt::yellow));
+    _qwtLeftPicker->setRubberBand(QwtPicker::CrossRubberBand);
+    _qwtLeftPicker->setTrackerPen(QColor(Qt::white));
+    
+    _qwtRightPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    _qwtRightPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _qwtRightPicker->setRubberBandPen(QColor(Qt::yellow));
+    _qwtRightPicker->setRubberBand(QwtPicker::CrossRubberBand);
+    _qwtRightPicker->setTrackerPen(QColor(Qt::white));
+	_qwtRightPicker->setMousePattern(QwtPicker::MouseSelect1, Qt::RightButton);
 
     connect(_qwtPlot, SIGNAL(legendChecked(QwtPlotItem*, bool)), this, SLOT(showItem(QwtPlotItem*, bool)));
+    connect(_qwtLeftPicker, SIGNAL(selected(const QPointF&)), SLOT(leftClick(const QPointF&)));
+    connect(_qwtRightPicker, SIGNAL(selected(const QPointF&)), SLOT(rightClick(const QPointF&)));
 
     _qwtPlot->replot(); // creating the legend items
 
@@ -92,33 +108,6 @@ void HistogramView::populate()
 	}
 }
 
-void HistogramView::mousePressEvent(QMouseEvent * event)
-{
-    if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
-    {
-		//TODO
-		//	Récupérer les valeurs
-		if(event->button() == Qt::RightButton)
-		{
-			emit valueClickedRight(2);
-		}
-		else
-		{
-			emit valueClickedLeft(1);
-		}
-	}
-}
-
-void HistogramView::mouseMoveEvent(QMouseEvent * event)
-{
-    if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
-    {
-		//TODO
-		//	Récupérer la valeur
-		emit valueHovered(0);
-	}
-}
-
 void HistogramView::showItem( QwtPlotItem *item, bool on )
 {
     item->setVisible( on );
@@ -128,3 +117,18 @@ QwtPlot* HistogramView::getHistogram()
 {
 	return _qwtPlot;
 }
+
+void HistogramView::leftClick(const QPointF &pos)
+{
+    emit(leftClickedValue((int)pos.x()));
+}
+
+void HistogramView::rightClick(const QPointF &pos)
+{
+    emit(rightClickedValue((int)pos.x()));
+}
+
+/*QwtText HistogramView::trackerText(const QPoint& pos) const
+{
+	return QwtText((int)_qwtPlot->invTransform(QwtPlot::xBottom, pos.x()));
+}*/

@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDockWidget>
 
+#include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/ImageWidgets/ImageWindow.h"
 #include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/NavBar/NavigationDock.h"

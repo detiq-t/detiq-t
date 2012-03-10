@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QString>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QScrollArea>
@@ -65,12 +66,14 @@ namespace genericinterface
         void showSelectedPixelInformations(int x, int y);
         void updateZoom(double z);
         
+        void showHighlightRect(imagein::Rectangle* rect);
+        
 	signals:
 		void ctrlPressed();
+		void highlightRectChange(imagein::Rectangle*);
 
     public:
         StandardImageWindow(const QString & path, GenericInterface* gi);
-		//void showHighlightRect(Rectangle* rect);
         std::list<HistogramWindow*> getHistogram();
     };
 }

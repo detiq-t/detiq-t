@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, bool vertical)
+RowWindow::RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, ImageWindow* source, bool vertical): ImageWindow(source, rect)
 {
   _path = path;
   _gi = gi;
@@ -63,11 +63,32 @@ void RowWindow::initStatusBar()
     font = _lSelectedValue2->font();
     font.setPointSize(8);
     _lSelectedValue2->setFont(font);
+
+	QVBoxLayout* layout = new QVBoxLayout();
+	layout->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget = new QWidget();
+	
+	QHBoxLayout* layout1 = new QHBoxLayout();
+	layout1->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget1 = new QWidget();
+	layout1->addWidget(_lImageName);
+	layout1->addSpacing(15);
+	layout1->addWidget(_lHoveredValue);
+    widget1->setLayout(layout1);
+    layout->addWidget(widget1);
+	
+	QHBoxLayout* layout2 = new QHBoxLayout();
+	layout2->setContentsMargins(0, 0, 0, 0);
+    QWidget* widget2 = new QWidget();
+	layout2->addWidget(_lSelectedValue1);
+	layout2->addSpacing(15);
+	layout2->addWidget(_lSelectedValue2);
+    widget2->setLayout(layout2);
+    layout->addWidget(widget2);
     
-	_statusBar->addWidget(_lImageName);    
-	_statusBar->addWidget(_lHoveredValue);
-	_statusBar->addWidget(_lSelectedValue1);
-	_statusBar->addWidget(_lSelectedValue2);
+    widget->setLayout(layout);
+	
+    _statusBar->addWidget(widget);
 }
 
 void RowWindow::showHoveredValue(int value)

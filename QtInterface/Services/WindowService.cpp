@@ -1,7 +1,7 @@
 #include "WindowService.h"
 
 using namespace genericinterface;
-
+using namespace imagein;
 
 void WindowService::connect (GenericInterface* gi)
 {
@@ -23,7 +23,7 @@ void WindowService::addFile(const QString& path)
 {
   if(_windows.find(path) == _windows.end())
   {
-    genericinterface::StandardImageWindow* w = new genericinterface::StandardImageWindow(path, _gi);
+    StandardImageWindow* w = new StandardImageWindow(path, _gi);
     //_windows[path] << _mdi->addSubWindow(w);
 	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
 	 _windows[path] << sw;
@@ -49,9 +49,13 @@ void WindowService::addWidget(const QString & path, ImageWindow* widget)
 
     QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
     QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
-	
-	//QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
 
+	QMdiSubWindow* source = _windows[path][0];
+	if(source != sw)
+	{
+		QObject::connect(widget, SIGNAL(highlightRectChange(imagein::Rectangle*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(imagein::Rectangle*)));
+		QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
+	}
     widget->show();
   }
 }
@@ -92,12 +96,6 @@ void WindowService::updateDisplay()
     }
   }
 }
-
-
-
-
-
-
 
 SubWindowController::SubWindowController(const QString& path, QMdiSubWindow* sw) : _path(path), _sw(sw)
 {} 

@@ -37,7 +37,7 @@ namespace genericinterface
         void showRightClickedValue(int value);
         
     public:
-        RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, bool vertical=false);
+        RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, ImageWindow* source, bool vertical=false);
     };
 }
 

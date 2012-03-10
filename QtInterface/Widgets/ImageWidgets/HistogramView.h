@@ -8,6 +8,8 @@
 #include <qwt_plot.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_grid.h>
+#include <qwt_plot_picker.h>
+#include <qwt_picker_machine.h>
 #include <qwt_plot_histogram.h>
 #include <qwt_legend.h>
 #include <qwt_legend_item.h>
@@ -30,11 +32,12 @@ namespace genericinterface
 	private:
 		imagein::Rectangle* _rectangle;
 		QwtPlot* _qwtPlot;
+		QwtPlotPicker* _qwtLeftPicker;
+		QwtPlotPicker* _qwtRightPicker;
 		
 		void init();
 		void populate();
-        void mousePressEvent(QMouseEvent* event);
-        void mouseMoveEvent(QMouseEvent* event);
+		//QwtText trackerText(const QPoint& pos) const;
 	
     public:
 		HistogramView(imagein::Image* image, imagein::Rectangle* rect);
@@ -43,12 +46,14 @@ namespace genericinterface
         QwtPlot* getHistogram();
 		
 	signals:
-		void valueClickedLeft(int value);
-		void valueClickedRight(int value);
-		void valueHovered(int value);
+		void leftClickedValue(int value);
+		void rightClickedValue(int value);
+		void hoveredValue(int value);
 		
 	private Q_SLOTS:
 		void showItem(QwtPlotItem*, bool on);
+		void leftClick(const QPointF&);
+		void rightClick(const QPointF&);
     };
 }
 
