@@ -33,7 +33,17 @@ char* PngImage::readData()
     }
 
     unsigned int w=readWidth(), h=readHeight(), c=readNbChannels(), d=readDepth();
-
+       
+    //handle depths other than 8-13-24-32
+    if (d <= 8)
+        d = 8;
+    else if (d <= 16)
+        d = 16;
+    else if (d <= 24)
+        d = 24;
+    else
+        d = 32;
+ 
     char* data = new char[ w * h * c * d/8]; //The actual array that will contain the data
     png_bytep* rowPtrs = new png_bytep[h];
     unsigned int rowSize = w*c*d/8;
