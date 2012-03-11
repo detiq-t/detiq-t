@@ -1,8 +1,9 @@
 #ifndef RGBIMAGE_H
 #define RGBIMAGE_H
 
-#include "Image.h"
+#include "stdint.h"
 
+#include "Image.h"
 
 namespace imagein
 {

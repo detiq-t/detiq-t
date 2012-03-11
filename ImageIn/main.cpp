@@ -9,8 +9,12 @@ using namespace imagein;
 
 int main(int argc, char* argv[])
 {
+    //Image ref("../QtInterface/Widgets/NavBar/test.png");
     Image ref("samples/Basketball_bug.png");
-    ref.save("samples/Basketball_bug_wrote.png");
+    
+    cout << "cp" << endl;
+
+    ref.save("samples/temp.png");
     
     return 0;
 }

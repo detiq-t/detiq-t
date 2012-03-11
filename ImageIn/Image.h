@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "stdint.h"
+
 #include "Rectangle.h"
 #include "Histogram.h"
 

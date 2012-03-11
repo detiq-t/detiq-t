@@ -19,6 +19,8 @@
 *                                                *
 *************************************************/
 
+#include "stdint.h"
+
 #ifndef _EasyBMP_Custom_Math_Functions_
 #define _EasyBMP_Custom_Math_Functions_
 inline double Square( double number )

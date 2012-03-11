@@ -1,5 +1,7 @@
 #include "PngImage.h"
 
+#include "stdint.h"
+
 #include "ImageFileException.h"
 
 using namespace imagein;

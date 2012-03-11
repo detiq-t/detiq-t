@@ -1,6 +1,8 @@
 #ifndef JPGIMAGE_H
 #define JPGIMAGE_H
 
+#include "stdint.h"
+
 #include "ImageFile.h"
 
 
