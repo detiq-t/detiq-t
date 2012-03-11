@@ -35,4 +35,4 @@ namespace imagein
     };
 }
 
-#endif // FILENOTFOUNDEXCEPTION_H
+#endif // BADIMAGEEXCEPTION_H

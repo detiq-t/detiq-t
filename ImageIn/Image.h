@@ -169,6 +169,8 @@ namespace imagein
     };
 
     typedef Image_t<uint8_t> Image_8; //!< 8 bits depth Image. Provided for convenience.
+    typedef Image_t<uint16_t> Image_16; //!< 8 bits depth Image. Provided for convenience.
+    typedef Image_t<uint32_t> Image_32; //!< 8 bits depth Image. Provided for convenience.
     typedef Image_8 Image; //!< Standard Image is 8 bits depth.
 }
 
