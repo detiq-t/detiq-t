@@ -104,7 +104,7 @@ void PngImage::writeData(const char* const data, unsigned int width, unsigned in
     }
 
     //then the end of the file.
-    //png_write_end(_writePngPtr, _writeInfoPtr);
+    png_write_end(_writePngPtr, _writeInfoPtr);
 }
 
 void PngImage::initRead()
