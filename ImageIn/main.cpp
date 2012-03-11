@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "Image.h"
+#include "Algorithm.h"
+#include "AlgorithmCollection.h"
 
 using namespace std;
 using namespace imagein;
