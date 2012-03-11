@@ -23,7 +23,7 @@ BmpImage::BmpImage(std::string filename)
     }
 }
 
-char* BmpImage::readData()
+void* BmpImage::readData()
 {
 	// We create a new BMP object (from EasyBMP library)
 	if(workImg != NULL) delete workImg;
@@ -38,7 +38,7 @@ char* BmpImage::readData()
     }
 	// We get the image's parameters and create a char matrix with them
 	unsigned int w=readWidth(), h=readHeight(), c=readNbChannels();
-	char* data = new char[w * h * c];
+	uint8_t* data = new uint8_t[w * h * c];
 	// We run through the BMP object's matrix of pixels and load each channel into our char matrix
 	unsigned int i, j;
 	RGBApixel px;
@@ -47,17 +47,19 @@ char* BmpImage::readData()
 			// Getting the current pixel
 			px = workImg->GetPixel(i,j);
 			// Every pixel is in a RGBA form, we will always get the RGB components, and the Alpha component when necessary
-			data[c*(i+j*w)] = (char)px.Red;
-			data[c*(i+j*w)+1] = (char)px.Green;
-			data[c*(i+j*w)+2] = (char)px.Blue;
-			if(c==4) data[c*(i+j*w)+3] = (char)px.Alpha; // In case there are 4 channels, we get the Alpha channel too
+			data[c*(i+j*w)] = px.Red;
+			data[c*(i+j*w)+1] = px.Green;
+			data[c*(i+j*w)+2] = px.Blue;
+			if(c==4) data[c*(i+j*w)+3] = px.Alpha; // In case there are 4 channels, we get the Alpha channel too
 		}
 	}
 	return data;
 }
 
-void BmpImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
+void BmpImage::writeData(const void* const data_, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
 {
+	const uint8_t* const data = reinterpret_cast<const uint8_t* const>(data_);
+	
 	// We create a new BMP object (from EasyBMP library)
 	if(workImg != NULL) delete workImg;
 	workImg = new BMP();

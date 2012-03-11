@@ -168,8 +168,8 @@ namespace imagein
             D* _mat;
     };
 
-    typedef Image_t<unsigned char> Image_8; //!< 8 bits depth Image. Provided for convenience.
-    typedef Image_t<unsigned char> Image; //!< Standard Image is 8 bits depth.
+    typedef Image_t<uint8_t> Image_8; //!< 8 bits depth Image. Provided for convenience.
+    typedef Image_8 Image; //!< Standard Image is 8 bits depth.
 }
 
 #include "Image.tpp"

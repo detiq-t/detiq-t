@@ -18,9 +18,9 @@ namespace imagein
             inline unsigned int readWidth();
             inline unsigned int readNbChannels();
             inline unsigned int readDepth();
-            char* readData();
+            void* readData();
 
-            void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
+            void writeData(const void* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth);
 
         private:
             BMP* workImg; // The EasyBMP library object that will be used to read and write in a BMP file

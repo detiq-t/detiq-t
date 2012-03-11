@@ -89,7 +89,7 @@ namespace imagein
              * \throw FileNotFoundException if the file doesn't exist.
              * \return an array of char representing the image data.
              */
-            virtual char* readData()=0;
+            virtual void* readData()=0;
 
             /*!
              * \brief Writes image data into a file.
@@ -100,7 +100,7 @@ namespace imagein
              * \param nChannels The number of channels for each pixel.
              * \param depth The size (in bits) of the data in each value of a pixel. Must represent an integer number of bytes (8, 16, 24...)
              */
-            virtual void writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)=0;
+            virtual void writeData(const void* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)=0;
 
         protected:
             std::string _filename;

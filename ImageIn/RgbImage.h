@@ -27,7 +27,7 @@ namespace imagein
             virtual ~RgbImage_t() {};
     };
 
-    typedef RgbImage_t<unsigned char> RgbImage_8; //!< 8 bits depth RGB Image.
+    typedef RgbImage_t<uint8_t> RgbImage_8; //!< 8 bits depth RGB Image.
     typedef RgbImage_8 RgbImage; //!< Standard Image is 8 bits depth
 }
 

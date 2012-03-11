@@ -25,8 +25,8 @@ namespace imagein
             virtual ~GrayscaleImage_t() {};
     };
 
-    typedef GrayscaleImage_t<unsigned char> GrayscaleImage_8; //!< 8 bits depth grayscale image
-    typedef GrayscaleImage_t<unsigned short> GrayscaleImage_16; //!< 16 bits depth grayscale image
+    typedef GrayscaleImage_t<uint8_t> GrayscaleImage_8; //!< 8 bits depth grayscale image
+    typedef GrayscaleImage_t<uint16_t> GrayscaleImage_16; //!< 16 bits depth grayscale image
     typedef GrayscaleImage_8 GrayscaleImage; //!< Standard Image is 8 bits depth
 }
 

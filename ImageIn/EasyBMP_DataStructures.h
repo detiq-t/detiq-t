@@ -32,9 +32,9 @@ int IntPow( int base, int exponent );
 
 #ifndef _EasyBMP_Defined_WINGDI
 #define _EasyBMP_Defined_WINGDI
- typedef unsigned char  ebmpBYTE;
- typedef unsigned short ebmpWORD;
- typedef unsigned int  ebmpDWORD;
+ typedef uint8_t  ebmpBYTE;
+ typedef uint16_t ebmpWORD;
+ typedef uint32_t  ebmpDWORD;
 #endif
 
 #ifndef _EasyBMP_DataStructures_h_

@@ -26,7 +26,7 @@ PngImage::~PngImage()
     }
 }
 
-char* PngImage::readData()
+void* PngImage::readData()
 {
     if(!_readPngPtr) {
         initRead();
@@ -44,12 +44,12 @@ char* PngImage::readData()
     else
         d = 32;
  
-    char* data = new char[ w * h * c * d/8]; //The actual array that will contain the data
+    png_bytep data = new png_byte[ w * h * c * d/8]; //The actual array that will contain the data
     png_bytep* rowPtrs = new png_bytep[h];
     unsigned int rowSize = w*c*d/8;
 
     for (size_t i = 0; i < h; ++i) {
-        rowPtrs[i] = (png_bytep)data + i*rowSize;
+        rowPtrs[i] = data + i*rowSize;
     }
     //now rowPtrs is an array of pointers, pointing on the beginning of each row
 
@@ -61,8 +61,10 @@ char* PngImage::readData()
     return data;
 }
 
-void PngImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
+void PngImage::writeData(const void* const data_, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth)
 {
+	const uint8_t* const data = reinterpret_cast<const uint8_t* const>(data_);
+	
     if(!_writePngPtr) {
         initWrite();
     }

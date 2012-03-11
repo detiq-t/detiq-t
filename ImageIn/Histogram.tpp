@@ -13,6 +13,7 @@ imagein::Histogram::Histogram(const imagein::Image_t<D>& img, unsigned int chann
     }
     unsigned int maxw = rect.w > 0 ? rect.x+rect.w : img.getWidth();
     unsigned int maxh = rect.h > 0 ? rect.y+rect.h : img.getHeight();
+	
     for(unsigned int j=rect.y; j<maxh; j++) {
         for(unsigned int i=rect.x; i<maxw; i++) {
             D pixel = img.getPixel(i, j, channel);

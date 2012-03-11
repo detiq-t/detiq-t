@@ -177,7 +177,7 @@ unsigned int JpgImage::readDepth(){
     return sizeof(JSAMPLE);
 }
 
-char* JpgImage::readData(){
+void* JpgImage::readData(){
     struct jpeg_decompress_struct cinfo;
     FILE* fileHandler;
     /* We open the file to give a handler to the JPEG library */
@@ -209,9 +209,9 @@ char* JpgImage::readData(){
     unsigned int height = cinfo.output_height;
     unsigned int nChannels = cinfo.output_components;
     unsigned int depth = sizeof(JSAMPLE)*8;
-    unsigned int rowSize = width*nChannels*((depth/8)/sizeof(unsigned char));
+    unsigned int rowSize = width*nChannels*(sizeof(JSAMPLE)/sizeof(uint8_t));
 
-    unsigned char* data = new unsigned char[height*rowSize];
+    uint8_t* data = new uint8_t[height*rowSize];
 
     //int row_stride = cinfo->output_width * cinfo->output_components;
     //JSAMPARRAY buffer = (*cinfo->mem->alloc_sarray) ((j_common_ptr) cinfo, JPOOL_IMAGE, row_stride, 1);
@@ -220,7 +220,7 @@ char* JpgImage::readData(){
     /* We read the decompression results */
     //for (unsigned int i=0; i < 1; i++) {
     while(cinfo.output_scanline < cinfo.output_height) {
-        unsigned char* pos = &data[cinfo.output_scanline*rowSize];
+        uint8_t* pos = &data[cinfo.output_scanline*rowSize];
         jpeg_read_scanlines(&cinfo, &pos, 1);
     }
 
@@ -245,10 +245,13 @@ char* JpgImage::readData(){
      */
 
     /* And we're done! */
-    return (char*)data;
+    return data;
 }
 
-void JpgImage::writeData(const char* const data, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth){
+void JpgImage::writeData(const void* const data_, unsigned int width, unsigned int height, unsigned int nChannels, unsigned int depth){
+
+	const uint8_t* const data = reinterpret_cast<const uint8_t* const>(data_);
+	
     /* This struct contains the JPEG compression parameters and pointers to
     * working space (which is allocated as needed by the JPEG library).
     * It is possible to have several such structures, representing multiple
@@ -268,7 +271,7 @@ void JpgImage::writeData(const char* const data, unsigned int width, unsigned in
     /* More stuff */
     FILE * outfile;		/* target file */
     JSAMPROW row_pointer[1];	/* pointer to JSAMPLE row[s] */
-    int row_stride;		/* physical row width in image buffer */
+    uintptr_t row_stride;		/* physical row width in image buffer */
 
     /* Step 1: allocate and initialize JPEG compression object */
 
@@ -344,13 +347,15 @@ void JpgImage::writeData(const char* const data, unsigned int width, unsigned in
     * more if you wish, though.
     */
     row_stride = width * nChannels;	/* JSAMPLEs per row in image_buffer */
+	/* if the depth of the image in too large for JPEG, we use the offset to take the most significant Byte */
+	uintptr_t offset = depth > 8 ? depth/8-1 : 0;
 
     while (cinfo.next_scanline < cinfo.image_height) {
         /* jpeg_write_scanlines expects an array of pointers to scanlines.
          * Here the array is only one element long, but you could pass
          * more than one scanline at a time if that's more convenient.
          */
-        row_pointer[0] = (unsigned char*)& data[cinfo.next_scanline * row_stride];
+        row_pointer[0] = (uint8_t*)& data[cinfo.next_scanline * row_stride + offset];
         jpeg_write_scanlines(&cinfo, row_pointer, 1);
     }
 
