@@ -2,6 +2,7 @@
 #include <cmath>
 
 #include "Image.h"
+#include "ProjectionHistogram.h"
 
 using namespace imagein;
 using namespace std;
@@ -149,6 +150,10 @@ int main(int argc, char* argv[])
         }
 
     }
+	
+	/*
+	 * Testing tools
+	 */
 
     {//copy ctor
 
@@ -257,4 +262,44 @@ int main(int argc, char* argv[])
             nFail++;
         }
     }
+	
+	{ // Projection histogram
+		//reference data
+		int width = 320;
+		int height = 240;
+		int nbChannels = 3;
+		unsigned char* dataProj = new unsigned char[width * height * nbChannels];
+		for(int i = 0 ; i < width ; ++i) { 
+			for(int j = 0; j < height ; ++j) {
+				if(j>i) {
+					dataProj[j*width*nbChannels + i*nbChannels] = 0;
+					dataProj[j*width*nbChannels + i*nbChannels +1] = 0;
+					dataProj[j*width*nbChannels + i*nbChannels +2] = 0;
+				}
+				else {
+					dataProj[j*width*nbChannels + i*nbChannels] = 255;
+					dataProj[j*width*nbChannels + i*nbChannels +1] = 255;
+					dataProj[j*width*nbChannels + i*nbChannels +2] = 255;
+				}
+			}
+		}
+		Image refProj(width, height, nbChannels, dataProj);
+		// testing horizontal histogram
+		bool verifH = true;
+		ProjectionHistogram<uint8_t> ph(refProj,0,true);
+		for(int i = 0; i < ph.getWidth() ; ++i) {
+			if(ph[i]!=i) verifH = false;
+		}
+		// testing vertical histogram
+		bool verifV = true;
+		ProjectionHistogram<uint8_t> pv(refProj,0,false);
+		for(int i = 0; i < pv.getWidth() ; ++i) {
+			if(pv[i]!=max((height-1)-i,0)) verifV = false;
+		}
+		// conclusion
+		if(verifH && verifV)
+			cout << "[OK]   projection" << endl;
+		else
+			cout << "[FAIL] projection" << endl;
+	}
 }

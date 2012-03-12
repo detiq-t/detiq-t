@@ -1,9 +1,7 @@
 //#include "ProjectionHistogram.h"
 
-using namespace imagein;
-
 template <typename D>
-ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel) {
+imagein::ProjectionHistogram<D>::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel) {
     // We recreate the Array depending on the orientation of the projection and the size of the cropped Image
     if(horizontal) _width = rect.h;
     else _width = rect.w;
@@ -23,10 +21,11 @@ ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool ho
             }
         }
     }
+	delete workImg;
 }
 
 template <typename D>
-ProjectionHistogram::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, unsigned int channel) {
+imagein::ProjectionHistogram<D>::ProjectionHistogram(const Image_t<D>& img, D value, bool horizontal, unsigned int channel) {
 	// We recreate the Array depending on the orientation of the projection and the size of the cropped Image
     if(horizontal) _width = img.getHeight();
     else _width = img.getWidth();
