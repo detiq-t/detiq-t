@@ -26,8 +26,27 @@ void RowView::init()
     _qwtPlot->insertLegend(legend, QwtPlot::RightLegend);
 
     populate();
+    
+    _qwtPlot->canvas()->setMouseTracking(true);
+    
+    _principalPicker = new HistogramPicker(QwtPlotPicker::VLineRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    _principalPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _principalPicker->setTrackerPen(QColor(Qt::white));
+    _principalPicker->setRubberBandPen(QColor(Qt::yellow));
+    
+    _leftPicker = new HistogramPicker(_qwtPlot->canvas());
+    _leftPicker->setStateMachine(new QwtPickerDragPointMachine());
+    
+    _rightPicker = new HistogramPicker(_qwtPlot->canvas());
+    _rightPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _rightPicker->setRubberBand(QwtPlotPicker::VLineRubberBand);
+    _rightPicker->setRubberBandPen(QColor(Qt::yellow));
+	_rightPicker->setMousePattern(QwtPicker::MouseSelect1, Qt::RightButton);
 
     connect(_qwtPlot, SIGNAL(legendChecked(QwtPlotItem*, bool)), this, SLOT(showItem(QwtPlotItem*, bool)));
+    connect(_rightPicker, SIGNAL(selected(const QPointF&)), this, SLOT(rightClick(const QPointF&)));
+    connect(_leftPicker, SIGNAL(selected(const QPointF&)), this, SLOT(leftClick(const QPointF&)));
+    connect(_principalPicker, SIGNAL(moved(const QPointF&)), this, SLOT(move(const QPointF&)));
 
     _qwtPlot->replot(); // creating the legend items
 
@@ -92,39 +111,32 @@ void RowView::populate()
 	}
 }
 
-void RowView::mousePressEvent(QMouseEvent * event)
-{
-    if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
-    {
-		//TODO
-		//	Récupérer les valeurs
-		if(event->button() == Qt::RightButton)
-		{
-			emit valueClickedRight(2);
-		}
-		else
-		{
-			emit valueClickedLeft(1);
-		}
-	}
-}
-
-void RowView::mouseMoveEvent(QMouseEvent * event)
-{
-    if(event->x() > 0 && event->x() < width() && event->y() > 0 && event->y() < height())
-    {
-		//TODO
-		//	Récupérer la valeur
-		emit valueHovered(0);
-	}
-}
-
 void RowView::showItem( QwtPlotItem *item, bool on )
 {
     item->setVisible( on );
 }
 
-QwtPlot* RowView::getHistogram()
+imagein::Histogram* RowView::getHistogram(int channel) const
+{
+	return new imagein::Histogram(*_image, channel, *_rectangle);
+}
+
+QwtPlot* RowView::getGraphicalHistogram() const
 {
 	return _qwtPlot;
+}
+
+void RowView::leftClick(const QPointF& pos)
+{
+    emit(leftClickedValue((int)pos.x()));
+}
+
+void RowView::rightClick(const QPointF& pos)
+{
+    emit(rightClickedValue((int)pos.x()));
+}
+
+void RowView::move(const QPointF& pos) const
+{
+	emit(hoveredValue((int)pos.x()));
 }

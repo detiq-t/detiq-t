@@ -23,7 +23,7 @@ void HistogramWindow::init()
 	initStatusBar();
 	
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_view->getHistogram());
+    layout->addWidget(_view->getGraphicalHistogram());
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	
@@ -85,12 +85,12 @@ void HistogramWindow::initStatusBar()
     _statusBar->addWidget(widget);
 }
 
-void HistogramWindow::showHoveredValue(int value)
+void HistogramWindow::showHoveredValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lHoveredValue->setText(QString::fromStdString("Hovered: " + xs));
+	_lHoveredValue->setText(QString::fromStdString("Hovered: " + xs + "\t") + valueFromHistogram(value));
 }
 
 void HistogramWindow::showLeftClickedValue(int value)
@@ -98,7 +98,7 @@ void HistogramWindow::showLeftClickedValue(int value)
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lSelectedValue1->setText(QString::fromStdString("Value1: " + xs));
+	_lSelectedValue1->setText(QString::fromStdString("Value1: " + xs + "\t") + valueFromHistogram(value));
 }
 
 void HistogramWindow::showRightClickedValue(int value)
@@ -106,5 +106,42 @@ void HistogramWindow::showRightClickedValue(int value)
 	std::ostringstream oss;
     oss << value;
     std::string xs = oss.str();
-	_lSelectedValue2->setText(QString::fromStdString("Value2: " + xs));
+	_lSelectedValue2->setText(QString::fromStdString("Value2: " + xs + "\t") + valueFromHistogram(value));
+}
+
+QString HistogramWindow::valueFromHistogram(int value) const
+{
+	std::ostringstream oss;
+	QString s = QString("");
+	for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
+	{
+		int n = (*(_view->getHistogram(i)))[value];
+		oss.str("");
+		oss << n;
+		
+		if(_view->getImage()->getNbChannels() == 1)
+		{
+			if(i == 0)
+				s += QString::fromStdString(" C: " + oss.str());		
+		}
+		else if(_view->getImage()->getNbChannels() == 2)
+		{
+			if(i == 0)
+				s += QString::fromStdString(" C: " + oss.str());
+			else if(i == 1)
+				s += QString::fromStdString(" A: " + oss.str());			
+		}
+		else if(_view->getImage()->getNbChannels() >= 3)
+		{
+			if(i == 0)
+				s += QString::fromStdString(" R: " + oss.str());
+			else if(i == 1)
+				s += QString::fromStdString(" G: " + oss.str());
+			else if(i == 2)
+				s += QString::fromStdString(" B: " + oss.str());
+			else if(i == 3)
+				s += QString::fromStdString(" A: " + oss.str());
+		}
+	}
+	return s;
 }

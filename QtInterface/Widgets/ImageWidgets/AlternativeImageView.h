@@ -15,6 +15,7 @@ namespace genericinterface
     public:
 		AlternativeImageView();
 		AlternativeImageView(Image* image);
+		inline Image* getImage(){ return _image; }
     };
 }
 

@@ -28,9 +28,10 @@ namespace genericinterface
 		
 		void init();
         void initStatusBar();
+        QString valueFromHistogram(int value) const;
         
     public slots:
-        void showHoveredValue(int value);
+        void showHoveredValue(int value) const;
         void showLeftClickedValue(int value);
         void showRightClickedValue(int value);
         

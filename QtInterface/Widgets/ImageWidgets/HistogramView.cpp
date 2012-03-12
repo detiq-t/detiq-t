@@ -6,7 +6,6 @@ using namespace imagein;
 HistogramView::HistogramView(Image* image, imagein::Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
 {
 	_qwtPlot = new QwtPlot();
-	
 	init();
 }
 
@@ -28,22 +27,26 @@ void HistogramView::init()
 
     populate();
     
-    _qwtLeftPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
-    _qwtLeftPicker->setStateMachine(new QwtPickerDragPointMachine());
-    _qwtLeftPicker->setRubberBandPen(QColor(Qt::yellow));
-    _qwtLeftPicker->setRubberBand(QwtPicker::CrossRubberBand);
-    _qwtLeftPicker->setTrackerPen(QColor(Qt::white));
+    _qwtPlot->canvas()->setMouseTracking(true);
     
-    _qwtRightPicker = new QwtPlotPicker(QwtPlot::xBottom, QwtPlot::yLeft, QwtPlotPicker::CrossRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
-    _qwtRightPicker->setStateMachine(new QwtPickerDragPointMachine());
-    _qwtRightPicker->setRubberBandPen(QColor(Qt::yellow));
-    _qwtRightPicker->setRubberBand(QwtPicker::CrossRubberBand);
-    _qwtRightPicker->setTrackerPen(QColor(Qt::white));
-	_qwtRightPicker->setMousePattern(QwtPicker::MouseSelect1, Qt::RightButton);
+    _principalPicker = new HistogramPicker(QwtPlotPicker::VLineRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    _principalPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _principalPicker->setTrackerPen(QColor(Qt::white));
+    _principalPicker->setRubberBandPen(QColor(Qt::yellow));
+    
+    _leftPicker = new HistogramPicker(_qwtPlot->canvas());
+    _leftPicker->setStateMachine(new QwtPickerDragPointMachine());
+    
+    _rightPicker = new HistogramPicker(_qwtPlot->canvas());
+    _rightPicker->setStateMachine(new QwtPickerDragPointMachine());
+    _rightPicker->setRubberBand(QwtPlotPicker::VLineRubberBand);
+    _rightPicker->setRubberBandPen(QColor(Qt::yellow));
+	_rightPicker->setMousePattern(QwtPicker::MouseSelect1, Qt::RightButton);
 
     connect(_qwtPlot, SIGNAL(legendChecked(QwtPlotItem*, bool)), this, SLOT(showItem(QwtPlotItem*, bool)));
-    connect(_qwtLeftPicker, SIGNAL(selected(const QPointF&)), SLOT(leftClick(const QPointF&)));
-    connect(_qwtRightPicker, SIGNAL(selected(const QPointF&)), SLOT(rightClick(const QPointF&)));
+    connect(_rightPicker, SIGNAL(selected(const QPointF&)), this, SLOT(rightClick(const QPointF&)));
+    connect(_leftPicker, SIGNAL(selected(const QPointF&)), this, SLOT(leftClick(const QPointF&)));
+    connect(_principalPicker, SIGNAL(moved(const QPointF&)), this, SLOT(move(const QPointF&)));
 
     _qwtPlot->replot(); // creating the legend items
 
@@ -85,6 +88,8 @@ void HistogramView::populate()
 		for(unsigned int j = 0; j < histogram.getWidth(); ++j)
 			values[j] = histogram[j];
 		
+		std::cout << "width: " << histogram.getWidth() << std::endl;
+		
 		GraphicalHistogram* graphicalHisto;
 		switch(i)
 		{
@@ -108,27 +113,32 @@ void HistogramView::populate()
 	}
 }
 
-void HistogramView::showItem( QwtPlotItem *item, bool on )
+void HistogramView::showItem(QwtPlotItem *item, bool on)
 {
-    item->setVisible( on );
+    item->setVisible(on);
 }
 
-QwtPlot* HistogramView::getHistogram()
+imagein::Histogram* HistogramView::getHistogram(int channel) const
+{
+	return new imagein::Histogram(*_image, channel, *_rectangle);
+}
+
+QwtPlot* HistogramView::getGraphicalHistogram() const
 {
 	return _qwtPlot;
 }
 
-void HistogramView::leftClick(const QPointF &pos)
+void HistogramView::leftClick(const QPointF& pos)
 {
     emit(leftClickedValue((int)pos.x()));
 }
 
-void HistogramView::rightClick(const QPointF &pos)
+void HistogramView::rightClick(const QPointF& pos)
 {
     emit(rightClickedValue((int)pos.x()));
 }
 
-/*QwtText HistogramView::trackerText(const QPoint& pos) const
+void HistogramView::move(const QPointF& pos) const
 {
-	return QwtText((int)_qwtPlot->invTransform(QwtPlot::xBottom, pos.x()));
-}*/
+	emit(hoveredValue((int)pos.x()));
+}
