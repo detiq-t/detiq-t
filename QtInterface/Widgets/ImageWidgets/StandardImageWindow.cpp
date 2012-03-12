@@ -6,32 +6,34 @@ using namespace std;
 
 StandardImageWindow::StandardImageWindow(const QString & path, GenericInterface* gi): ImageWindow(), _gi(gi)
 {
-    _path = path;
-    Image* im = new Image(path.toStdString());
-    this->setWindowTitle("Image - " + path);
-    _imageView = new StandardImageView(this, im);
-	
-    init();
+	_path = path;
+	Image* im = new Image(path.toStdString());
+	this->setWindowTitle("Image - " + path);
+	_imageView = new StandardImageView(this, im);
+	_isRootImage = false;
 
-    this->show();
+	init();
+	
+	this->show();
 }
+
 
 void StandardImageWindow::init()
 {
-	_selectedPixel = new QPoint();
+  _selectedPixel = new QPoint();
+  
+  initStatusBar();
+
+  QVBoxLayout* layout = new QVBoxLayout();
+  layout->addWidget(_imageView->getGraphicsView());
+  layout->addWidget(_statusBar);
+  this->setLayout(layout);
 	
-	initStatusBar();
-    
-	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_imageView->getGraphicsView());
-	layout->addWidget(_statusBar);
-	this->setLayout(layout);
-	
-    QObject::connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
-    QObject::connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
-    QObject::connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
-    QObject::connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
-    QObject::connect(this, SIGNAL(highlightRectChange(imagein::Rectangle*)), _imageView, SLOT(showHighlightRect(imagein::Rectangle*)));
+  QObject::connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
+  QObject::connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
+  QObject::connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
+  QObject::connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
+  QObject::connect(this, SIGNAL(highlightRectChange(imagein::Rectangle*)), _imageView, SLOT(showHighlightRect(imagein::Rectangle*)));
 }
 
 void StandardImageWindow::showHistogram()
@@ -243,4 +245,25 @@ void StandardImageWindow::keyReleaseEvent(QKeyEvent* event)
 void StandardImageWindow::showHighlightRect(Rectangle* rect)
 {
 	emit(highlightRectChange(rect));
+}
+
+void StandardImageWindow::setAsRoot()
+{
+  _isRootImage = true;
+}
+
+void StandardImageWindow::closeEvent(QCloseEvent* event)
+{
+  if (_isRootImage)
+  {
+    int answer = QMessageBox::question(this, "Attention", "You're going to close all the relative windows, are you sure you want to continue?", QMessageBox::Yes | QMessageBox::No);
+	 if (answer == QMessageBox::Yes)
+	 {
+	   event->accept();
+    }
+	 else
+	   event->ignore();
+  }
+  else
+    event->accept();  // if the image isn't a root image we can close it without quastion
 }

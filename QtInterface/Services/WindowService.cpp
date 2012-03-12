@@ -1,22 +1,24 @@
 #include "WindowService.h"
-
+#include <iostream>
+using namespace std;
 using namespace genericinterface;
 using namespace imagein;
 
-void WindowService::connect (GenericInterface* gi)
+void WindowService::connect(GenericInterface* gi)
 {
   _gi = gi;
 }
 
-void WindowService::display (GenericInterface* gi)
+void WindowService::display(GenericInterface* gi)
 {
   _mdi = gi->initCentralWidget();
 
-  QDockWidget* dock = new QDockWidget("Barre de navigation", gi);
+  QDockWidget* dock = new QDockWidget(gi);
   gi->addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   dock->setWidget(_nav = new NavigationDock);
   QObject::connect(_nav, SIGNAL(actionDone()), this, SLOT(updateDisplay()));
+  QObject::connect(_nav, SIGNAL(removeRootImage(const QString&)), this, SLOT(removeRootImage(const QString&)));
 }
 
 void WindowService::addFile(const QString& path)
@@ -24,12 +26,13 @@ void WindowService::addFile(const QString& path)
   if(_windows.find(path) == _windows.end())
   {
     StandardImageWindow* w = new StandardImageWindow(path, _gi);
-    //_windows[path] << _mdi->addSubWindow(w);
 	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
-	 _windows[path] << sw;
-	 SubWindowController* swc = new SubWindowController(path, sw);
+    w->setAsRoot();
+    _windows[path] << sw;
+	 SubWindowController* swc = new SubWindowController(path, sw, true);
 	 QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
 	 QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+    QObject::connect(swc, SIGNAL(removeFromWindowsMapAllPath(const QString&)), this, SLOT(removePath(const QString&)));
 
     w->show();
 
@@ -45,33 +48,46 @@ void WindowService::addWidget(const QString & path, ImageWindow* widget)
 
     _windows[path] << sw;
 
-    SubWindowController* swc = new SubWindowController(path, sw);
+    SubWindowController* swc = new SubWindowController(path, sw, false);
 
     QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
     QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
 
-	QMdiSubWindow* source = _windows[path][0];
-	if(source != sw)
-	{
-		QObject::connect(widget, SIGNAL(highlightRectChange(imagein::Rectangle*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(imagein::Rectangle*)));
+    QMdiSubWindow* source = _windows[path][0];
+	 if(source != sw)
+	 {
+	   QObject::connect(widget, SIGNAL(highlightRectChange(imagein::Rectangle*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(imagein::Rectangle*)));
 		QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
-	}
+	 }
     widget->show();
   }
 }
-
+ 
 void WindowService::removeSubWindow(const QString& path, QMdiSubWindow* sw)
 {
   int i;
-  for(i=0; i<_windows[path].size(); i++)
+  bool subWindowFound = false;
+  for (i=0; i<_windows[path].size() && !subWindowFound; i++)
   {
     if (_windows[path][i] == sw)
-	 {
-	   break;
-	 }
+    {
+      subWindowFound = true;
+    }
   }
-  _windows[path].removeAt(i);
-  //TODO Détruire à ce moment le controller associé ?
+  _windows[path].removeAt(i-1);
+  //this->updateDisplay();
+}
+
+void WindowService::removePath(const QString& path)
+{
+  for(int i=1; i<_windows[path].size(); i++)
+  {
+    _windows[path][i]->close();
+  }
+  _windows[path].removeAt(0); // The first element of the list is necessary the root image
+  _windows.erase(path);
+  _nav->removeImage(path);
+  //this->updateDisplay();
 }
 
 void WindowService::updateDisplay()
@@ -97,12 +113,32 @@ void WindowService::updateDisplay()
   }
 }
 
-SubWindowController::SubWindowController(const QString& path, QMdiSubWindow* sw) : _path(path), _sw(sw)
-{} 
+void WindowService::removeRootImage(const QString& path)
+{
+  if (_windows.find(path) != _windows.end())
+    _windows[path][0]->close();
+}
 
 
+
+
+
+
+SubWindowController::SubWindowController(const QString& path, QMdiSubWindow* sw, bool isRootImage) : _path(path), _sw(sw)
+{
+  _isRootImage = isRootImage;
+} 
 
 void SubWindowController::closeSubWindow()
 {
-  emit removeFromWindowsMap(_path, _sw);
+  if (_isRootImage)
+  {
+    emit removeFromWindowsMapAllPath(_path);
+  }
+  else
+  {
+    emit removeFromWindowsMap(_path, _sw);
+  }
+
+  delete this;
 }

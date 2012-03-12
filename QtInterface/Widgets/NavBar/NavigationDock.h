@@ -32,6 +32,7 @@ namespace genericinterface
     * @param path
     */
     void addImage(const QString& path);
+	 void removeImage(const QString& path);
 
   protected slots:
     /**
@@ -41,9 +42,11 @@ namespace genericinterface
     */
     void showContextMenu(const QPoint& pos);
     void emitAction(const QModelIndex& index);
+	 void closeSelection();
 
   signals:
     void actionDone();
+	 void removeRootImage(const QString& path);
 
   private:
     QStringList _data;

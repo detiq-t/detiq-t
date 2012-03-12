@@ -18,16 +18,18 @@ namespace genericinterface
   {
   Q_OBJECT
   public:
-    void connect (GenericInterface* gi);
-    void display (GenericInterface* gi);
+    void connect(GenericInterface* gi);
+    void display(GenericInterface* gi);
     void addWidget(const QString & path, ImageWindow* widget);
 
   private slots:
     void addFile(const QString& path);
-	 void removeSubWindow(const QString& path, QMdiSubWindow* sw);
+    void removeSubWindow(const QString& path, QMdiSubWindow* sw);
+    void removePath(const QString& path);
 
   public slots:
     void updateDisplay();
+	 void removeRootImage(const QString& path);
 
   signals:
 
@@ -39,22 +41,23 @@ namespace genericinterface
   };
 
 
-  //TODO Détruire le Controller une fois l'image retirée de la WindowsMap ! 
   class SubWindowController : public QObject
   {
   Q_OBJECT
   public:
-    SubWindowController(const QString& path, QMdiSubWindow* sw);
+     SubWindowController(const QString& path, QMdiSubWindow* sw, bool isRootImage);
   
   public slots:
   	 void closeSubWindow();
 
   signals:
     void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
+	 void removeFromWindowsMapAllPath(const QString& path);
 
   private:
     QString _path;
 	 QMdiSubWindow* _sw;
+	 bool _isRootImage;
   };
 }
 

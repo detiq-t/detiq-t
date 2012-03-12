@@ -11,12 +11,15 @@ NavigationDock::NavigationDock() : QWidget()
   _view->setModel(_model);
   _view->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  QObject::connect(_view, SIGNAL(clicked (const QModelIndex&)), this, SLOT(emitAction(const QModelIndex&)));
+  QObject::connect(_view, SIGNAL(clicked(const QModelIndex&)), this, SLOT(emitAction(const QModelIndex&)));
 
   _contextMenu = new QMenu(this);
 
   /* Context Menu */
-  QAction* test = _contextMenu->addAction("test");
+  //QAction* test = _contextMenu->addAction("Close all windows associated to this image");
+  _contextMenu->addAction("Close all image from the selection", this, SLOT(closeSelection()));
+//  QObject::connect(this, SIGNAL(), this, SLOT(closeSelection()));
+
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   QObject::connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
@@ -51,12 +54,27 @@ void NavigationDock::addImage(const QString& path)
   _model->setStringList(_data);
 }
 
-void NavigationDock::emitAction(const QModelIndex& index)
+void NavigationDock::removeImage(const QString& path)
 {
-  emit actionDone();
+  _data.removeAll(path);
+  _model->setStringList(_data);
 }
 
 void NavigationDock::showContextMenu(const QPoint& pos)
 {
   _contextMenu->popup(mapToGlobal(pos));
+}
+
+void NavigationDock::emitAction(const QModelIndex& index)
+{
+  emit actionDone();
+}
+
+void NavigationDock::closeSelection()
+{
+  QStringList selection = this->getSelection();
+  for (int i=0; i<selection.size(); i++)
+  {
+    emit removeRootImage(selection[i]);
+  }
 }

@@ -50,12 +50,16 @@ namespace genericinterface
         QLabel* _lSelectedPixelColor;
         QLabel* _lZoom;
         QPoint* _selectedPixel;
-        
+        bool _isRootImage;
+
         void init();
         void initStatusBar();
         void keyPressEvent(QKeyEvent* event);
         void keyReleaseEvent(QKeyEvent* event);
-    
+   
+    protected:
+	     void closeEvent(QCloseEvent* event);
+
     public slots:
         void showHistogram();
 
@@ -70,11 +74,12 @@ namespace genericinterface
         
 	signals:
 		void ctrlPressed();
-		void highlightRectChange(imagein::Rectangle*);
+		void highlightRectChange(imagein::Rectangle*);    
 
     public:
         StandardImageWindow(const QString & path, GenericInterface* gi);
         std::list<HistogramWindow*> getHistogram();
+		  void setAsRoot();
     };
 }
 
