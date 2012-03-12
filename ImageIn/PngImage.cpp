@@ -1,6 +1,6 @@
 #include "PngImage.h"
 
-#include "stdint.h"
+#include "mystdint.h"
 
 #include "ImageFileException.h"
 

@@ -1,8 +1,6 @@
 #ifndef GRAYSCALEIMAGE_H
 #define GRAYSCALEIMAGE_H
 
-#include "stdint.h"
-
 #include "Image.h"
 
 namespace imagein

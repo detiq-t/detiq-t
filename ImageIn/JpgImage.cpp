@@ -9,6 +9,8 @@ extern "C" {
 #include <cstdio>
 #include <cstdlib>
 
+#include "mystdint.h"
+
 /*
  * JPEG ERROR HANDLING EXPLANATION
  *
