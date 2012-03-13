@@ -16,10 +16,13 @@
 #include <Image.h>
 #include <Rectangle.h>
 
-using namespace imagein;
-
 namespace genericinterface
 {
+	/*!
+     * \brief Display an image from imagein
+     *
+     * Display an image from imagein and manages mouse events
+     */
     class StandardImageView : public QObject, public QGraphicsPixmapItem
     {
 		Q_OBJECT
@@ -30,9 +33,9 @@ namespace genericinterface
 		QGraphicsRectItem* _highlight;
         QPixmap* _pixmap_img;
         
-        Image* _image;
-        Rectangle* _selection;
-        Rectangle* _visibleArea;
+        const imagein::Image* _image;
+        imagein::Rectangle* _selection;
+        imagein::Rectangle* _visibleArea;
         ImageContextMenu* _menu;
         
         bool _ctrlPressed;
@@ -49,22 +52,55 @@ namespace genericinterface
         void wheelEvent(QGraphicsSceneWheelEvent* event);
 
     public:
-        StandardImageView(QWidget* parent, Image* image);
-        //??? getClickedPixel();
-        //ATTENTION A LA FUITE MEMOIRE !
-        inline Image* getImage() const { return new Image(*_image); }
-        inline QPixmap* getPixmap() const { return new QPixmap(*_pixmap_img); }
-        inline Rectangle* getRectangle() const { return _selection; }
+		/*!
+		 * \brief Default constructor
+		 * 
+		 * Display image.
+		 * 
+		 * \param parent The parent widget
+		 * \param image The image to display
+		 */
+        StandardImageView(QWidget* parent, const imagein::Image* image);
+        
+		//! Returns the image
+        inline const imagein::Image* getImage() const { return _image; }
+        
+		//! Returns the pixmap
+        inline const QPixmap* getPixmap() const { return _pixmap_img; }
+        
+		//! Returns the selection rectangle
+        inline const imagein::Rectangle* getRectangle() const { return _selection; }
+        
+		//! Returns the graphics view
         inline QGraphicsView* getGraphicsView() const { return _view; }
 
 	public slots:
         void ctrlPressed();
-        void showHighlightRect(imagein::Rectangle* rect);
+        void showHighlightRect(const imagein::Rectangle* rect);
 		
 	signals:
-		void pixelClicked(int x, int y);
-		void pixelHovered(int x, int y);
-		void zoomChanged(double z);
+		/*!
+		 * \brief Signal emits when the mouse left button is clicked
+		 * 
+		 * \param x X coordinate of click
+		 * \param y Y coordinate of click
+		 */
+		void pixelClicked(int x, int y) const;
+		
+		/*!
+		 * \brief Signal emits when the mouse move over the view
+		 * 
+		 * \param x X coordinate of mouse
+		 * \param y Y coordinate of mouse
+		 */
+		void pixelHovered(int x, int y) const;
+		
+		/*!
+		 * \brief Signal emits when zoom is changed
+		 * 
+		 * \param z The zoom factor
+		 */
+		void zoomChanged(double z) const;
     };
 }
 

@@ -3,14 +3,12 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(Image* image, imagein::Rectangle* rect, ImageWindow* source): ImageWindow(source, rect)
+HistogramWindow::HistogramWindow(const Image* image, const imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(source, rect)
 {
 	_view = new HistogramView(image, rect);
 	this->setWindowTitle("Histogram - imageTitle");
 	
 	init();
-	
-	this->show();
 }
 
 void HistogramWindow::init()
@@ -30,6 +28,8 @@ void HistogramWindow::init()
     connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
     connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
     connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
+	
+	this->show();
 }
 
 void HistogramWindow::initStatusBar()
@@ -93,7 +93,7 @@ void HistogramWindow::showHoveredValue(int value) const
 	_lHoveredValue->setText(QString::fromStdString("Hovered: " + xs + "\t") + valueFromHistogram(value));
 }
 
-void HistogramWindow::showLeftClickedValue(int value)
+void HistogramWindow::showLeftClickedValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;
@@ -101,7 +101,7 @@ void HistogramWindow::showLeftClickedValue(int value)
 	_lSelectedValue1->setText(QString::fromStdString("Value1: " + xs + "\t") + valueFromHistogram(value));
 }
 
-void HistogramWindow::showRightClickedValue(int value)
+void HistogramWindow::showRightClickedValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;

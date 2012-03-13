@@ -5,11 +5,7 @@ using namespace genericinterface;
 GraphicalHistogram::GraphicalHistogram(const QString& title, const QColor& color): QwtPlotHistogram(title)
 {
     setStyle(QwtPlotHistogram::Columns);
-    setColor(color);
-}
-
-void GraphicalHistogram::setColor(const QColor &color)
-{
+    
     QColor c = color;
     c.setAlpha(180);
     setBrush(QBrush(c));

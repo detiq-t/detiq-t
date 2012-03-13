@@ -11,23 +11,41 @@
 
 namespace genericinterface
 {
+	/*!
+     * \brief Inherited class by all Windows
+     *
+     * The ImageWindow class contains the status bar and inherit QWidget.
+     */
 	class ImageWindow : public QWidget
     {
 		Q_OBJECT
     protected:
-        imagein::Rectangle* _applicationArea;
+        const imagein::Rectangle* _applicationArea;
         QStatusBar* _statusBar;
-        ImageWindow* _sourceWindow;
+        const ImageWindow* _sourceWindow;
         QString _path; /*!< The path of the source image */
 
     public:
-        ImageWindow(ImageWindow* source = NULL, imagein::Rectangle* rect = NULL);
+		/*!
+		* \brief Default constructor.
+		* 
+		* Constructs an empty QWidget and initialized the source window and the application area from parameters.
+		*
+		* \param source The source window
+		* \param rect The application area (Rectangle used for Histogram, Algorithm...)
+		*/
+        ImageWindow(const ImageWindow* source = NULL, const imagein::Rectangle* rect = NULL);
         
     public slots:
 		void activated();
 	
 	signals:
-		void highlightRectChange(imagein::Rectangle*);
+		/*!
+		 * \brief Signal emits when this is activated
+		 * 
+		 * \param rect Rectangle to display on the source window
+		 */
+		void highlightRectChange(const imagein::Rectangle* rect);
     };
 }
 

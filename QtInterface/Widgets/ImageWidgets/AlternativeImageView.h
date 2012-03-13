@@ -8,14 +8,29 @@ using namespace imagein;
 
 namespace genericinterface
 {
+	/*!
+     * \brief Inherited class by all Views except StandardImageView
+     *
+     * The AlternativeImageView class contain the Image and inherits QWidget.
+     */
     class AlternativeImageView : public QWidget
     {
     protected:
-        Image* _image;
+        const Image* _image;
+        
     public:
-		AlternativeImageView();
-		AlternativeImageView(Image* image);
-		inline Image* getImage(){ return _image; }
+		/*!
+		* \brief Default constructor.
+		* 
+		* Constructs an empty QWidget.
+		* The image must be initialized for every view.
+		*
+		* \param image The view entry-level image
+		*/
+		AlternativeImageView(const Image* image);
+		
+		//! Returns the image
+		inline const Image* getImage() const { return _image; }
     };
 }
 

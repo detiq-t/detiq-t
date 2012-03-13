@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowView::RowView(Image* image, Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
+RowView::RowView(const Image* image, const Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
 {
 	_qwtPlot = new QwtPlot();
 	init();
@@ -111,27 +111,17 @@ void RowView::populate()
 	}
 }
 
-void RowView::showItem( QwtPlotItem *item, bool on )
+void RowView::showItem( QwtPlotItem *item, bool on ) const
 {
     item->setVisible( on );
 }
 
-imagein::Histogram* RowView::getHistogram(int channel) const
-{
-	return new imagein::Histogram(*_image, channel, *_rectangle);
-}
-
-QwtPlot* RowView::getGraphicalHistogram() const
-{
-	return _qwtPlot;
-}
-
-void RowView::leftClick(const QPointF& pos)
+void RowView::leftClick(const QPointF& pos) const
 {
     emit(leftClickedValue((int)pos.x()));
 }
 
-void RowView::rightClick(const QPointF& pos)
+void RowView::rightClick(const QPointF& pos) const
 {
     emit(rightClickedValue((int)pos.x()));
 }

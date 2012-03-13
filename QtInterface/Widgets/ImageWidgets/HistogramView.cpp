@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramView::HistogramView(Image* image, imagein::Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
+HistogramView::HistogramView(const Image* image, const imagein::Rectangle* rect): AlternativeImageView(image), _rectangle(rect)
 {
 	_qwtPlot = new QwtPlot();
 	init();
@@ -113,27 +113,17 @@ void HistogramView::populate()
 	}
 }
 
-void HistogramView::showItem(QwtPlotItem *item, bool on)
+void HistogramView::showItem(QwtPlotItem *item, bool on) const
 {
     item->setVisible(on);
 }
 
-imagein::Histogram* HistogramView::getHistogram(int channel) const
-{
-	return new imagein::Histogram(*_image, channel, *_rectangle);
-}
-
-QwtPlot* HistogramView::getGraphicalHistogram() const
-{
-	return _qwtPlot;
-}
-
-void HistogramView::leftClick(const QPointF& pos)
+void HistogramView::leftClick(const QPointF& pos) const
 {
     emit(leftClickedValue((int)pos.x()));
 }
 
-void HistogramView::rightClick(const QPointF& pos)
+void HistogramView::rightClick(const QPointF& pos) const
 {
     emit(rightClickedValue((int)pos.x()));
 }

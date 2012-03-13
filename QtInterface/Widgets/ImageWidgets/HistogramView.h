@@ -30,11 +30,17 @@
 
 namespace genericinterface
 {
+	/*!
+     * \brief Create and display a graphical histogram
+     *
+     * Creates and display a graphical histogram from an image and a rectangle.
+     * This class manages via HistogramPicker the mouse events.
+     */
     class HistogramView : public AlternativeImageView
     {
 		Q_OBJECT
 	private:
-		imagein::Rectangle* _rectangle;
+		const imagein::Rectangle* _rectangle;
 		QwtPlot* _qwtPlot;
 		HistogramPicker* _principalPicker;
 		HistogramPicker* _leftPicker;
@@ -44,22 +50,49 @@ namespace genericinterface
 		void populate();
 	
     public:
-		HistogramView(imagein::Image* image, imagein::Rectangle* rect);
-        int getMemorisedValue(int i);
-        void setMemorisedValue(int i, int value);
-        imagein::Histogram* getHistogram(int channel) const;
-        QwtPlot* getGraphicalHistogram() const;
+		/*!
+		 * \brief Default constructor
+		 * 
+		 * Initializes and display the histogram from the parameters. 
+		 * 
+		 * \param image The image concerned by the histogram
+		 * \param rect The part of the image where the histogram is applied
+		 */
+		HistogramView(const imagein::Image* image, const imagein::Rectangle* rect);
+		
+		//! Returns the image's histogram on the param channel
+        inline const imagein::Histogram* getHistogram(int channel) const { return new imagein::Histogram(*_image, channel, *_rectangle); }
+        
+		//! Returns the graphical histogram
+        inline QwtPlot* getGraphicalHistogram() const { return _qwtPlot; }
 		
 	signals:
-		void leftClickedValue(int value);
-		void rightClickedValue(int value);
+		/*!
+		 * \brief Signal emits when the mouse left button is clicked
+		 * 
+		 * \param value Value selected
+		 */
+		void leftClickedValue(int value) const;
+		
+		/*!
+		 * \brief Signal emits when the mouse right button is clicked
+		 * 
+		 * \param value Value selected
+		 */
+		void rightClickedValue(int value) const;
+		
+		/*!
+		 * \brief Signal emits when the mouse move over the histogram
+		 * 
+		 * \param value Value hovered
+		 */
 		void hoveredValue(int value) const;
 		
-	private Q_SLOTS:
-		void showItem(QwtPlotItem*, bool on);
+	private slots:
+		void showItem(QwtPlotItem*, bool on) const;
 		void move(const QPointF&) const;
-		void leftClick(const QPointF&);
-		void rightClick(const QPointF&);
+		void leftClick(const QPointF&) const;
+		void rightClick(const QPointF&) const;
     };
 }
 

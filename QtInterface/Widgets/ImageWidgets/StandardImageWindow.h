@@ -32,6 +32,11 @@
 
 namespace genericinterface
 {
+	/*!
+     * \brief Contains the StandardImageWindow
+     *
+     * Creates and display the StandardImageWindow, and update the status bar.
+     */
     class StandardImageWindow : public ImageWindow
     {
 		Q_OBJECT
@@ -54,6 +59,7 @@ namespace genericinterface
 
         void init();
         void initStatusBar();
+        std::list<HistogramWindow*> getHistogram();
         void keyPressEvent(QKeyEvent* event);
         void keyReleaseEvent(QKeyEvent* event);
    
@@ -66,20 +72,36 @@ namespace genericinterface
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();
-        void showHoveredPixelInformations(int x, int y);
-        void showSelectedPixelInformations(int x, int y);
-        void updateZoom(double z);
+        void showHoveredPixelInformations(int x, int y) const;
+        void showSelectedPixelInformations(int x, int y) const;
+        void updateZoom(double z) const;
         
-        void showHighlightRect(imagein::Rectangle* rect);
+        void showHighlightRect(const imagein::Rectangle* rect);
         
 	signals:
+		//! Signal emits when crtl key is pressed
 		void ctrlPressed();
-		void highlightRectChange(imagein::Rectangle*);    
+		
+		/*!
+		 * \brief Signal emits when the highlight rect have to changes
+		 * 
+		 * \param rect The rectangle to display
+		 */
+		void highlightRectChange(const imagein::Rectangle* rect);    
 
     public:
+		/*!
+		 * \brief Default constructor
+		 * 
+		 * Display StandardImageWindow with StandardImageView from image path.
+		 * 
+		 * \param path The image path
+		 * \param gi The interface associated with this
+		 */
         StandardImageWindow(const QString & path, GenericInterface* gi);
-        std::list<HistogramWindow*> getHistogram();
-		  void setAsRoot();
+        
+        //! Set the view as root
+		inline void setAsRoot() { _isRootImage = true; }
     };
 }
 

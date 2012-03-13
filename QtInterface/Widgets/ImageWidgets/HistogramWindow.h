@@ -16,6 +16,11 @@
 
 namespace genericinterface
 {
+	/*!
+     * \brief Contains the HistogramView
+     *
+     * Creates and display the HistogramView, and update the status bar.
+     */
     class HistogramWindow : public ImageWindow
     {
 		Q_OBJECT
@@ -32,11 +37,20 @@ namespace genericinterface
         
     public slots:
         void showHoveredValue(int value) const;
-        void showLeftClickedValue(int value);
-        void showRightClickedValue(int value);
+        void showLeftClickedValue(int value) const;
+        void showRightClickedValue(int value) const;
         
     public:
-        HistogramWindow(imagein::Image* image, imagein::Rectangle* rect, ImageWindow* source);
+		/*!
+		 * \brief Default constructor
+		 * 
+		 * Initializes and display the HistogramView from the parameters. 
+		 * 
+		 * \param image The image concerned by the histogram
+		 * \param rect The part of the image where the histogram is applied
+		 * \param source The ImageWindow source (window which contains the image)
+		 */
+        HistogramWindow(const imagein::Image* image, const imagein::Rectangle* rect, const ImageWindow* source);
     };
 }
 

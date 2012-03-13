@@ -1,8 +1,9 @@
 #include "StandardImageView.h"
 
 using namespace genericinterface;
+using namespace imagein;
 
-StandardImageView::StandardImageView(QWidget* parent, Image* image): QGraphicsPixmapItem(), _parent(parent), _image(image)
+StandardImageView::StandardImageView(QWidget* parent, const Image* image): QGraphicsPixmapItem(), _parent(parent), _image(image)
 {
     _selection = new Rectangle(0, 0, _image->getWidth(), _image->getHeight());
     _visibleArea = new Rectangle(0, 0, _image->getWidth(), _image->getHeight());
@@ -208,7 +209,7 @@ void StandardImageView::ctrlPressed()
 	_ctrlPressed = !_ctrlPressed;
 }
 
-void StandardImageView::showHighlightRect(imagein::Rectangle* rect)
+void StandardImageView::showHighlightRect(const imagein::Rectangle* rect)
 {
 	_highlight->setRect(((int)rect->x), ((int)rect->y), ((int)rect->w), ((int)rect->h));
 }

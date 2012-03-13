@@ -3,10 +3,10 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, ImageWindow* source, bool vertical): ImageWindow(source, rect)
+RowWindow::RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(source, rect)
 {
-  _path = path;
-  _gi = gi;
+	_path = path;
+	_gi = gi;
 
 	_view = new RowView(image, rect);
 	if(vertical)
@@ -91,7 +91,7 @@ void RowWindow::initStatusBar()
     _statusBar->addWidget(widget);
 }
 
-void RowWindow::showHoveredValue(int value)
+void RowWindow::showHoveredValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;
@@ -99,7 +99,7 @@ void RowWindow::showHoveredValue(int value)
 	_lHoveredValue->setText(QString::fromStdString("Hovered: " + xs + "\t") + valueFromHistogram(value));
 }
 
-void RowWindow::showLeftClickedValue(int value)
+void RowWindow::showLeftClickedValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;
@@ -107,7 +107,7 @@ void RowWindow::showLeftClickedValue(int value)
 	_lHoveredValue->setText(QString::fromStdString("Value1: " + xs + "\t") + valueFromHistogram(value));
 }
 
-void RowWindow::showRightClickedValue(int value)
+void RowWindow::showRightClickedValue(int value) const
 {
 	std::ostringstream oss;
     oss << value;

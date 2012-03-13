@@ -2,6 +2,4 @@
 
 using namespace genericinterface;
 
-AlternativeImageView::AlternativeImageView(){}
-
-AlternativeImageView::AlternativeImageView(Image* image): _image(image){}
+AlternativeImageView::AlternativeImageView(const Image* image): QWidget(), _image(image) {}

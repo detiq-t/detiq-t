@@ -17,6 +17,11 @@
 
 namespace genericinterface
 {
+	/*!
+     * \brief Contains the RowView
+     *
+     * Creates and display the RowView, and update the status bar.
+     */
     class RowWindow : public ImageWindow
     {
 		Q_OBJECT
@@ -33,12 +38,24 @@ namespace genericinterface
         QString valueFromHistogram(int value) const;
         
     public slots:
-        void showHoveredValue(int value);
-        void showLeftClickedValue(int value);
-        void showRightClickedValue(int value);
+        void showHoveredValue(int value) const;
+        void showLeftClickedValue(int value) const;
+        void showRightClickedValue(int value) const;
         
     public:
-        RowWindow(imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, ImageWindow* source, bool vertical=false);
+		/*!
+		 * \brief Default constructor
+		 * 
+		 * Initializes and display the RowView from the parameters. 
+		 * 
+		 * \param image The image concerned by the histogram
+		 * \param rect The part of the image where the histogram is applied
+		 * \param path The path of the image
+		 * \param gi The interface associated to him
+		 * \param source The ImageWindow source (window which contains the image)
+		 * \param vertical False : row profile ; True : column profile
+		 */
+        RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical=false);
     };
 }
 
