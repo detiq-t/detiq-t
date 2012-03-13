@@ -28,9 +28,9 @@ namespace genericinterface
 		Q_OBJECT
     private:
         QWidget* _parent;
-		QGraphicsScene* _scene;
-		QGraphicsView* _view;
-		QGraphicsRectItem* _highlight;
+        QGraphicsScene* _scene;
+        QGraphicsView* _view;
+        QGraphicsRectItem* _highlight;
         QPixmap* _pixmap_img;
         
         const imagein::Image* _image;

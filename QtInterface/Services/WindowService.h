@@ -56,7 +56,7 @@ namespace genericinterface
 
   private:
     QString _path;
-	 QMdiSubWindow* _sw;
+    QMdiSubWindow* _sw;
 	 bool _isRootImage;
   };
 }

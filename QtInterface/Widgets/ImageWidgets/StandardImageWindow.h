@@ -19,7 +19,6 @@
 #include "ImageWindow.h"
 #include "HistogramWindow.h"
 #include "StandardImageView.h"
-#include "GridWindow.h"
 #include "RowWindow.h"
 
 #include "../../GenericInterface.h"

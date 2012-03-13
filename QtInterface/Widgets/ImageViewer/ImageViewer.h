@@ -1,24 +1,48 @@
 #ifndef WIDGET_IMAGEVIEWER_H
 #define WIDGET_IMAGEVIEWER_H
 
-#include <QGraphicsView>
+#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
-#include <QGraphicsRectItem>
-#include <QMouseEvent>
+#include <QString>
 
-#include <iostream>
-#include <cmath>
+class QMouseEvent;
+class QGraphicsRectItem;
+class QGraphicsSceneMouseEvent;
 
 namespace genericinterface
 {
-  class ImageViewer : public QGraphicsView
+  class ImageItem : public QObject, public QGraphicsPixmapItem
   {
+  Q_OBJECT
+  public:
+    ImageItem(QPixmap& pix) : QGraphicsPixmapItem(pix) { }
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+  
+  signals:
+    void clickListenned(int x, int y);
+  };
+
+  class ImageViewer : public QGraphicsScene
+  {
+
+  Q_OBJECT
   public:
     ImageViewer (const QString & path, int x, int y);
 
+    static const int RECT_W = 30;
+    static const int RECT_H = 21;
+
+    inline int dx() { return _dx; };
+    inline int dy() { return _dy; };
+
+  public slots:
+    void slotPositionReception(int x, int y);
+
+  signals:
+    void positionUpdated(int x, int y);
+
   private:
     void init (const QString & path, int x, int y);
-    void mousePressEvent(QMouseEvent * event);
 
     void updatePos (int x, int y);
 
@@ -26,8 +50,6 @@ namespace genericinterface
     QGraphicsRectItem* _rect;
 
     static const int WIDGET_S = 200;
-    static const int RECT_W = 40;
-    static const int RECT_H = 40;
 
     double _scale;
     int _supx;

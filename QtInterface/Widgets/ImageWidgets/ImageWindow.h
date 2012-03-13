@@ -34,10 +34,10 @@ namespace genericinterface
 		* \param source The source window
 		* \param rect The application area (Rectangle used for Histogram, Algorithm...)
 		*/
-        ImageWindow(const ImageWindow* source = NULL, const imagein::Rectangle* rect = NULL);
+        ImageWindow(const ImageWindow* source = 0, const imagein::Rectangle* rect = 0);
         
     public slots:
-		void activated();
+        void activated();
 	
 	signals:
 		/*!

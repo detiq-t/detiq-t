@@ -1,3 +1,5 @@
+#include "../ImageViewer/GridWindow.h"
+
 #include "StandardImageWindow.h"
 
 using namespace genericinterface;
@@ -59,9 +61,10 @@ list<HistogramWindow*> StandardImageWindow::getHistogram()
 
 void StandardImageWindow::showPixelsGrid()
 {
-	/*GridWindow* grid = new GridWindow(_imageView->getImage(), this);
-	_area->addSubWindow(grid);
-	grid->show();*/
+  GridWindow* grid = new GridWindow(_path, this);
+  grid->show();
+  
+	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, grid);
 }
 
 void StandardImageWindow::showLineProfile()

@@ -1,16 +1,25 @@
+#include <QMouseEvent>
+#include <QGraphicsRectItem>
+#include <cmath>
+#include <iostream>
+#include <QGraphicsSceneMouseEvent>
+
 #include "ImageViewer.h"
 
 using namespace genericinterface;
 using namespace std;
 
-ImageViewer::ImageViewer (const QString & path, int x, int y) : QGraphicsView ()
+void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-  setFixedWidth(WIDGET_S + 10);
-  setFixedHeight(WIDGET_S + 10);
+  int x = event->pos().x();
+  int y = event->pos().y();
 
+  emit clickListenned(x, y);
+}
+
+ImageViewer::ImageViewer (const QString & path, int x, int y) : QGraphicsScene (0, 0, WIDGET_S, WIDGET_S)
+{
   init(path, x, y);
-
-  setScene (_scene);
 }
 
 void ImageViewer::init(const QString & path, int x, int y)
@@ -31,54 +40,51 @@ void ImageViewer::init(const QString & path, int x, int y)
   _supx = width * _scale;
   _supy = height * _scale;
 
-  cout << _supx << ":" << _supy << endl;
-
-
 
   /* Creats the scene */
-  _scene = new QGraphicsScene (0, 0, 200, 200);
 
   QPixmap i(path);
   i = i.scaled(width * _scale, height * _scale);
 
-  QGraphicsPixmapItem* im = new QGraphicsPixmapItem(i);
+  //QGraphicsPixmapItem* im = new QGraphicsPixmapItem(i);
+  ImageItem* im = new ImageItem(i);
   im->setOffset(_dx, _dy);
 
-  _scene->addItem(im);
-  _rect = new QGraphicsRectItem(0, 0, _scale * 40, _scale * 30);
+  QObject::connect(im, SIGNAL(clickListenned(int, int)), this, SLOT(slotPositionReception(int, int)));
+
+  addItem(im);
+  _rect = new QGraphicsRectItem(0, 0, _scale * RECT_W, _scale * RECT_H);
 
   QPen b;
   b.setColor(Qt::red);
 
   _rect->setPen(b);
 
-  _scene->addItem(_rect);
+  addItem(_rect);
+  _rect->setX(_dx);
+  _rect->setY(_dy);
 
   updatePos(x * _scale, y * _scale);
 }
 
 void ImageViewer::updatePos (int x, int y)
 {
-  _ox = x - RECT_W * _scale / 2;
-  _ox = min(_ox, _supx - RECT_W / 2);
+  _ox = x - RECT_W * _scale / 2 - _dx;
+  _ox = min(_ox, 0 + _supx - static_cast<int>(RECT_W * _scale));
   _ox = max(_ox, 0);
 
-  _oy = y - RECT_H * _scale / 2;
-  _oy = min(_oy, _supy - RECT_H / 2);
+  _oy = y - RECT_H * _scale / 2 - _dy;
+  _oy = min(_oy, _supy - static_cast<int>(RECT_H * _scale));
   _oy = max(_oy, 0);
-
-  cout << "\t" << _ox << ";" << _oy << endl;
 
   _rect->setX(_dx + _ox);
   _rect->setY(_dy + _oy);
 }
 
-void ImageViewer::mousePressEvent(QMouseEvent * event)
+void ImageViewer::slotPositionReception(int x, int y)
 {
-  int x = event->x() - _dx;
-  int y = event->y() - _dy;
-
-
   updatePos(x, y);
+
+  emit positionUpdated (_ox / _scale, _oy / _scale);
 }
 
