@@ -11,15 +11,17 @@
 #include <QFont>
 #include <QKeyEvent>
 #include <QPoint>
+#include <QInputDialog>
 
 #include <sstream>
 #include <iostream>
 #include <list>
 
 #include "ImageWindow.h"
-#include "HistogramWindow.h"
-#include "StandardImageView.h"
 #include "RowWindow.h"
+#include "HistogramWindow.h"
+#include "ProjectionHistogramWindow.h"
+#include "StandardImageView.h"
 
 #include "../../GenericInterface.h"
 
@@ -42,7 +44,8 @@ namespace genericinterface
     private:
         GenericInterface* _gi;
 
-        QMdiArea* _area;
+        //QMdiArea* _area;
+		imagein::Image* _image;
         StandardImageView* _imageView;
         QLabel* _lImageSize;
         QLabel* _lImageName;
@@ -67,10 +70,12 @@ namespace genericinterface
 
     public slots:
         void showHistogram();
-
+        void showHProjectionHistogram();
+        void showVProjectionHistogram();
         void showPixelsGrid();
         void showLineProfile();
         void showColumnProfile();
+        
         void showHoveredPixelInformations(int x, int y) const;
         void showSelectedPixelInformations(int x, int y) const;
         void updateZoom(double z) const;
@@ -98,6 +103,13 @@ namespace genericinterface
 		 * \param gi The interface associated with this
 		 */
         StandardImageWindow(const QString & path, GenericInterface* gi);
+        
+		/*!
+		 * \brief StandardImageWindow destructor.
+		 *
+		 * The StandardImageView is deleted too.
+		 */
+		virtual ~StandardImageWindow();
         
         //! Set the view as root
 		inline void setAsRoot() { _isRootImage = true; }

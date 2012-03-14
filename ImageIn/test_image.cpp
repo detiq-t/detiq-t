@@ -286,13 +286,13 @@ int main(int argc, char* argv[])
 		Image refProj(width, height, nbChannels, dataProj);
 		// testing horizontal histogram
 		bool verifH = true;
-		ProjectionHistogram<uint8_t> ph(refProj,0,true);
+		ProjectionHistogram_t<uint8_t> ph(refProj,0,true);
 		for(int i = 0; i < ph.getWidth() ; ++i) {
 			if(ph[i]!=i) verifH = false;
 		}
 		// testing vertical histogram
 		bool verifV = true;
-		ProjectionHistogram<uint8_t> pv(refProj,0,false);
+		ProjectionHistogram_t<uint8_t> pv(refProj,0,false);
 		for(int i = 0; i < pv.getWidth() ; ++i) {
 			if(pv[i]!=max((height-1)-i,0)) verifV = false;
 		}

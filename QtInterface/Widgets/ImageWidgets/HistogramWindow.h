@@ -7,6 +7,7 @@
 #include <QScrollArea>
 #include <QFont>
 #include <sstream>
+
 #include "ImageWindow.h"
 #include "HistogramView.h"
 
@@ -51,6 +52,13 @@ namespace genericinterface
 		 * \param source The ImageWindow source (window which contains the image)
 		 */
         HistogramWindow(const imagein::Image* image, const imagein::Rectangle* rect, const ImageWindow* source);
+        
+		/*!
+		 * \brief HistogramWindow destructor.
+		 *
+		 * The HistogramView is deleted too
+		 */
+		virtual ~HistogramWindow();
     };
 }
 

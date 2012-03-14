@@ -1,4 +1,4 @@
-#include "../ImageViewer/GridWindow.h"
+#include "GridWindow.h"
 
 #include "StandardImageWindow.h"
 
@@ -9,14 +9,20 @@ using namespace std;
 StandardImageWindow::StandardImageWindow(const QString & path, GenericInterface* gi): ImageWindow(), _gi(gi)
 {
 	_path = path;
-	Image* im = new Image(path.toStdString());
+	_image = new Image(path.toStdString());
 	this->setWindowTitle("Image - " + path);
-	_imageView = new StandardImageView(this, im);
+	_imageView = new StandardImageView(this, _image);
 	_isRootImage = false;
 
 	init();
 }
 
+StandardImageWindow::~StandardImageWindow()
+{
+	delete _imageView;
+	delete _selectedPixel;
+	delete _image;
+}
 
 void StandardImageWindow::init()
 {
@@ -57,6 +63,36 @@ list<HistogramWindow*> StandardImageWindow::getHistogram()
 	histos.push_back(histo);
 
 	return histos;
+}
+
+void StandardImageWindow::showHProjectionHistogram()
+{
+	const Image* im = _imageView->getImage();
+	
+	bool ok;
+	int value = QInputDialog::getInt(this, "Select value", "What Value (0..255)?", 0, 0, 255, 1, &ok);
+	
+	if(ok)
+	{
+		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value);
+
+		dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+	} 
+}
+
+void StandardImageWindow::showVProjectionHistogram()
+{
+	const Image* im = _imageView->getImage();
+	
+	bool ok;
+	int value = QInputDialog::getInt(this, "Select value", "What Value (0..255)?", 0, 0, 255, 1, &ok);
+	
+	if(ok)
+	{
+		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value, false);
+
+		dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+	} 
 }
 
 void StandardImageWindow::showPixelsGrid()

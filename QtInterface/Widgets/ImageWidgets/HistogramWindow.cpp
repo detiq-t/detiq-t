@@ -11,6 +11,11 @@ HistogramWindow::HistogramWindow(const Image* image, const imagein::Rectangle* r
 	init();
 }
 
+HistogramWindow::~HistogramWindow()
+{
+	delete _view;
+}
+
 void HistogramWindow::init()
 {
 	QScrollArea* scrollArea = new QScrollArea();

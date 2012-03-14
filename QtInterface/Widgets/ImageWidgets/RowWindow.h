@@ -56,6 +56,14 @@ namespace genericinterface
 		 * \param vertical False : row profile ; True : column profile
 		 */
         RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical=false);
+    
+		
+		/*!
+		 * \brief RowWindow destructor.
+		 *
+		 * The RowView is deleted too
+		 */
+		virtual ~RowWindow();
     };
 }
 

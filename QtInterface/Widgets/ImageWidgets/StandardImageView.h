@@ -62,6 +62,11 @@ namespace genericinterface
 		 */
         StandardImageView(QWidget* parent, const imagein::Image* image);
         
+		/*!
+		 * \brief StandardImageView destructor.
+		 */
+		virtual ~StandardImageView();
+        
 		//! Returns the image
         inline const imagein::Image* getImage() const { return _image; }
         

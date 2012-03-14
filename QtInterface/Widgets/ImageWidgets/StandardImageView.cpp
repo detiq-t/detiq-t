@@ -23,12 +23,23 @@ StandardImageView::StandardImageView(QWidget* parent, const Image* image): QGrap
     showImage();
 }
 
+StandardImageView::~StandardImageView()
+{
+	delete _selection;
+	delete _visibleArea;
+	delete _pixelClicked;
+	delete _menu;
+	delete _pixmap_img;
+}
+
 void StandardImageView::initMenu()
 {
 	_menu = new ImageContextMenu(_view);
 	_view->setContextMenuPolicy(Qt::CustomContextMenu);
 	
 	_menu->addAction("Histogram", _parent, SLOT(showHistogram()));
+	_menu->addAction("Horizontal Projection Histogram", _parent, SLOT(showHProjectionHistogram()));
+	_menu->addAction("Vertical Projection Histogram", _parent, SLOT(showVProjectionHistogram()));
 	_menu->addAction("Pixels Grid", _parent, SLOT(showPixelsGrid()));
 	_menu->addAction("Column Profile", _parent, SLOT(showColumnProfile()));
 	_menu->addAction("Line Profile", _parent, SLOT(showLineProfile()));

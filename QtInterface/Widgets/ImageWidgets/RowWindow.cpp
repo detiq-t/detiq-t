@@ -15,8 +15,11 @@ RowWindow::RowWindow(const imagein::Image* image, const imagein::Rectangle* rect
 		this->setWindowTitle("Line Profile - imageTitle");
 	
 	init();
-	
-	this->show();
+}
+
+RowWindow::~RowWindow()
+{
+	delete _view;
 }
 
 void RowWindow::init()
@@ -36,6 +39,8 @@ void RowWindow::init()
     connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
     connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
     connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));	
+	
+	this->show();
 }
 
 void RowWindow::initStatusBar()
