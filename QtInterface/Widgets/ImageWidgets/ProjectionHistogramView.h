@@ -68,10 +68,13 @@ namespace genericinterface
 		virtual ~ProjectionHistogramView();
 		
 		//! Returns the image's histogram on the param channel
-        inline const imagein::Histogram* getHistogram(int channel) const { return new imagein::Histogram(*_image, channel, *_rectangle); }
+        inline const imagein::ProjectionHistogram* getHistogram(int channel) const { return new imagein::ProjectionHistogram(*_image, _value, _horizontal, *_rectangle, channel); }
         
 		//! Returns the graphical histogram
         inline QwtPlot* getGraphicalHistogram() const { return _qwtPlot; }
+        
+        //! Returns true if it's horizontal, else false
+        inline bool isHorizontal() const { return _horizontal; }
 		
 	signals:
 		/*!

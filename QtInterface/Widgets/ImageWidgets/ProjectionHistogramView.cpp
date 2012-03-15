@@ -38,7 +38,10 @@ void ProjectionHistogramView::init()
     
     _qwtPlot->canvas()->setMouseTracking(true);
     
-    _principalPicker = new HistogramPicker(QwtPlotPicker::VLineRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    if(_horizontal)
+		_principalPicker = new HistogramPicker(QwtPlotPicker::HLineRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
+    else
+		_principalPicker = new HistogramPicker(QwtPlotPicker::VLineRubberBand, QwtPicker::AlwaysOn, _qwtPlot->canvas());
     _principalPicker->setStateMachine(new QwtPickerDragPointMachine());
     _principalPicker->setTrackerPen(QColor(Qt::white));
     _principalPicker->setRubberBandPen(QColor(Qt::yellow));
@@ -82,8 +85,8 @@ void ProjectionHistogramView::init()
 void ProjectionHistogramView::populate()
 {
     QwtPlotGrid* grid = new QwtPlotGrid();
-    grid->enableX(false);
-    grid->enableY(true);
+    grid->enableX(true);
+    grid->enableY(false);
     grid->enableXMin(false);
     grid->enableYMin(false);
     grid->setMajPen(QPen(Qt::black, 0, Qt::DotLine));
@@ -116,6 +119,8 @@ void ProjectionHistogramView::populate()
 				graphicalHisto = new GraphicalHistogram("Default", Qt::black);
 		}
 		graphicalHisto->setValues(sizeof(values) / sizeof(int), values);
+		if(_horizontal)
+			graphicalHisto->setOrientation(Qt::Horizontal);
 		graphicalHisto->attach(_qwtPlot);
 	}
 }
@@ -127,16 +132,25 @@ void ProjectionHistogramView::showItem(QwtPlotItem *item, bool on) const
 
 void ProjectionHistogramView::leftClick(const QPointF& pos) const
 {
-    emit(leftClickedValue((int)pos.x()));
+	if(_horizontal)
+		emit(leftClickedValue((int)pos.y()));
+	else
+		emit(leftClickedValue((int)pos.x()));
 }
 
 void ProjectionHistogramView::rightClick(const QPointF& pos) const
 {
-    emit(rightClickedValue((int)pos.x()));
+    if(_horizontal)
+		emit(rightClickedValue((int)pos.y()));
+	else
+		emit(rightClickedValue((int)pos.x()));
 }
 
 void ProjectionHistogramView::move(const QPointF& pos) const
 {
-	emit(hoveredValue((int)pos.x()));
+	if(_horizontal)
+		emit(hoveredValue((int)pos.y()));
+	else
+		emit(hoveredValue((int)pos.x()));
 }
 
