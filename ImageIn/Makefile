@@ -40,8 +40,8 @@ DEBUG ?= 1
 ### Variables: ###
 
 CPPDEPS = -MT$@ -MF`echo $@ | sed -e 's,\.o$$,.d,'` -MD -MP
-IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
-	$(CXXFLAGS)
+IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(____DEBUG_6_7) \
+	$(CPPFLAGS) $(CXXFLAGS)
 IMAGEIN_OBJECTS =  \
 	ImageIn_BinaryImage.o \
 	ImageIn_BmpImage.o \
@@ -50,17 +50,23 @@ IMAGEIN_OBJECTS =  \
 	ImageIn_JpgImage.o \
 	ImageIn_PngImage.o \
 	ImageIn_EasyBMP.o
-IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
+IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_MAIN_OBJECTS =  \
 	ImageIn_main_main.o
-IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_5) $(CPPFLAGS) \
+IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_TEST_OBJECTS =  \
 	ImageIn_test_test_image.o
 
 ### Conditionally set variables: ###
 
+ifeq ($(DEBUG),0)
+____DEBUG_6_7 = 
+endif
+ifeq ($(DEBUG),1)
+____DEBUG_6_7 = -W -Wall
+endif
 ifeq ($(DEBUG),0)
 ____DEBUG = -DNDEBUG
 endif
@@ -74,10 +80,10 @@ ifeq ($(DEBUG),1)
 ____DEBUG_2 = -O0
 endif
 ifeq ($(DEBUG),0)
-____DEBUG_5 = 
+____DEBUG_1 = 
 endif
 ifeq ($(DEBUG),1)
-____DEBUG_5 = -g
+____DEBUG_1 = -g
 endif
 
 
@@ -102,10 +108,10 @@ libimagein.a: $(IMAGEIN_OBJECTS)
 	$(RANLIB) $@
 
 ImageIn_main: $(IMAGEIN_MAIN_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_5)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_1)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
 
 ImageIn_test: $(IMAGEIN_TEST_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_5)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_1)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
 
 ImageIn_BinaryImage.o: ./BinaryImage.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<

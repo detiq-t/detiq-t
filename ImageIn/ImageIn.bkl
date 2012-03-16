@@ -20,6 +20,9 @@
     <debug-info>
         $(substituteFromDict(DEBUG,{'1':'on','0':'off'}))
     </debug-info>
+    <warnings>
+        $(substituteFromDict(DEBUG,{'1':'max','0':'default'}))
+    </warnings>
 
 	<libname>imagein</libname>	
 
