@@ -6,6 +6,7 @@
 
 namespace imagein
 {
+	//! ImageFile subclass for JPEG files. See ImageFile for details.
     class JpgImage : public ImageFile
     {
         public:

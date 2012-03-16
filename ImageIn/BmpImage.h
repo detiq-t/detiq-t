@@ -8,6 +8,7 @@
 
 namespace imagein
 {
+	//! ImageFile subclass for BMP files. See ImageFile for details.
     class BmpImage : public ImageFile
     {
         public:

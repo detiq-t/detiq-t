@@ -45,7 +45,8 @@ namespace imagein
              * \param data The actual data matrix containing the pixels of the image.  No verification of the size of the array is performed.
              */
             Image_t(unsigned int width, unsigned int height, unsigned int nChannels, D* data);
-            /*!
+            
+			/*!
              * \brief Constructs an image from the given file.
              *
              * The file format currently supported are jpg, png, bmp. Other formats will raise an exception.

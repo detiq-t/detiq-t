@@ -10,6 +10,7 @@
 
 namespace imagein
 {
+	//! ImageFile subclass for PNG files. See ImageFile for details.
     class PngImage : public ImageFile
     {
         public:
