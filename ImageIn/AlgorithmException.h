@@ -7,7 +7,7 @@
 
 namespace imagein
 {
-    //! This is the exception thrown by ImageFile and its subclasses when there is an error during the application or construction of an algorithm.
+    //! This is the exception thrown by ImageFile and its subclasses when there is an error reading from or writing in a file.
     class AlgorithmException : public std::exception
     {
     public:
@@ -32,14 +32,24 @@ namespace imagein
     private:
         std::string _msg;
     };
-	
-	class NotEnoughImageException : public AlgorithmException {
+
+	class NotEnoughImageException : AlgorithmException {
+    public:
+        NotEnoughImageException() : AlgorithmException(__LINE__, __FILE__) {}
 	};
 
-	class ImageTypeException : public AlgorithmException {
+	class ImageTypeException : AlgorithmException {
+    public:
+        ImageTypeException(int line, std::string file) : AlgorithmException(line, file) {}
 	};
 
-	class EmptyAlgorithmCollectionException : public AlgorithmException {
+	class ImageSizeException : AlgorithmException {
+    public:
+        ImageSizeException(int line, std::string file) : AlgorithmException(line, file) {}
+	};
+	class EmptyAlgorithmCollectionException : AlgorithmException {
+    public:
+        EmptyAlgorithmCollectionException(int line, std::string file) : AlgorithmException(line, file) {}
 	};
 }
 
