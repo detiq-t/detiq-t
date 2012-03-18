@@ -7,6 +7,11 @@
 namespace imagein {
 	namespace algorithm {
 	
+    /*!
+     * \brief BitPlane is a PixelAlgorithm which perform a bitwise and (~) with each pixel of an image and a given mask
+     * \tparam D A typename corresponding to the Depth template parameter of the classe Image_t.
+     * \tparam I A templated class representing an Image type such as RgbImage_t. This classe will take the first template parameter D as its template parameter.
+     */
 		template <typename D, template <typename D> class I>
 		class BitPlane : public PixelAlgorithm_t<D, I > {
 			public:
