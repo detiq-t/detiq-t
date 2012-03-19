@@ -83,13 +83,13 @@ namespace imagein
     class Algorithm_8 : public Algorithm_t<uint8_t, I, A> {};
 
     /*!
-     * \brief Algorithm_8<I,A> is nothing else than an Algorithm_<uint16_t, I A>
+     * \brief Algorithm_16<I,A> is nothing else than an Algorithm_<uint16_t, I A>
      */
     template <template <typename D> class I, unsigned int A=1 >
     class Algorithm_16 : public Algorithm_t<uint16_t, I, A> {};
 
     /*!
-     * \brief Algorithm_8<I,A> is nothing else than an Algorithm_<uint32_t, I A>
+     * \brief Algorithm_32<I,A> is nothing else than an Algorithm_<uint32_t, I A>
      */
     template <template <typename D> class I, unsigned int A=1 >
     class Algorithm_32 : public Algorithm_t<uint32_t, I, A> {};
