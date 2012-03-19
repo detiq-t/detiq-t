@@ -638,7 +638,13 @@ INPUT                  = Algorithm.h \
                          PixelAlgorithm.h \
                          PngImage.h \
                          Rectangle.h \
-                         RgbImage.h
+                         RgbImage.h \
+                         Algorithm/Average.h \
+                         Algorithm/BitPlane.h \
+                         Algorithm/Identity.h \
+                         Algorithm/Inversion.h \
+                         Algorithm.h \
+                         SpecificAlgorithm.h
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 

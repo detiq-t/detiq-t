@@ -53,8 +53,8 @@ namespace imagein
            * \throw ImageTypeException if implemented in one of the algorithms of the collection
            * \throw ImageSizeException if implemented in one of the algorithms of the collection
            */
-            Image_t<D>* operator()(const std::vector<Image_t<D>*>& images) {
-                Image_t<D>* lastImage = _topAlgorithm(images);
+            Image_t<D>* operator()(const std::vector<Image_t<D>*>& imgs) {
+                Image_t<D>* lastImage = _topAlgorithm(imgs);
                 for(typename std::vector<GenericAlgorithm_t<D> >::iterator it = _nestedAlgorithms.begin()+1; it < _nestedAlgorithms.end(); ++it) {
                     lastImage = (*it)(lastImage);
                 }

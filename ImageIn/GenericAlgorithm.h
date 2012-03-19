@@ -42,7 +42,7 @@ namespace imagein
              * \throw ImageTypeException if implemented
              * \throw ImageSizeException if implemented
              */
-            virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>&) const = 0;
+            virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) const = 0;
     };
 }
 
