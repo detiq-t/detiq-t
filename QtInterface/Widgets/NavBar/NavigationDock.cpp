@@ -72,9 +72,13 @@ void NavigationDock::emitAction(const QModelIndex& index)
 
 void NavigationDock::closeSelection()
 {
-  QStringList selection = this->getSelection();
-  for (int i=0; i<selection.size(); i++)
+  int answer = QMessageBox::question(this, "Attention", "You're going to close all the relative windows, are you sure you want to continue?", QMessageBox::Yes | QMessageBox::No);
+  if (answer == QMessageBox::Yes)
   {
-    emit removeRootImage(selection[i]);
+	 QStringList selection = this->getSelection();
+    for (int i=0; i<selection.size(); i++)
+    {
+      emit removeRootImage(selection[i]); 
+    }
   }
 }

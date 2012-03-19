@@ -7,6 +7,7 @@ GenericInterface::GenericInterface()
 {
   addService(0, new WindowService);
   addService(1, new FileService);
+  addService(2, new IdentityAlgorithmService);
 }
 
 void GenericInterface::addService(int id, Service* s) throw (BadIdException)
@@ -43,6 +44,7 @@ void GenericInterface::run(bool shw)
 {
   bool fail(false);
 
+  // Call the method display() of all the services
   for (map<int, Service*>::iterator it = _services.begin() ; it != _services.end() ; ++it)
   {
     try
@@ -55,6 +57,7 @@ void GenericInterface::run(bool shw)
       fail = true;
     }
   }
+  // Call the method connect() of all the services
   for (map<int, Service*>::iterator it = _services.begin() ; it != _services.end() ; ++it)
   {
     try
@@ -76,7 +79,7 @@ void GenericInterface::run(bool shw)
                                                             "attendues");
   }
 
-  // Now that everything is added and connected, we had the last elements
+  // Now that everything is added and connected, we add the last elements
   this->finalizeInterface();
 
   if (shw) this->show();

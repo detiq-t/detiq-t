@@ -1,12 +1,18 @@
 #ifndef SERVICE_H_02022012
 #define SERVICE_H_02022012
 
+//namespace genericinterface
+//{
+//  class Service;
+//}
 namespace genericinterface
 {
-  class Service;
+  class GenericInterface;
 }
 
-#include "GenericInterface.h"
+
+
+//#include "GenericInterface.h"
 #include "ServiceExceptions.h"
 
 namespace genericinterface

@@ -35,6 +35,8 @@ namespace genericinterface
 		* \param rect The application area (Rectangle used for Histogram, Algorithm...)
 		*/
         ImageWindow(const ImageWindow* source = 0, const imagein::Rectangle* rect = 0);
+
+		QString& getPath();
         
     public slots:
         void activated();

@@ -1,8 +1,8 @@
 #ifndef QTINTERFACE_WINDOWSERVICE_H
 #define QTINTERFACE_WINDOWSERVICE_H
 
-#include <QMessageBox>
 #include <QDockWidget>
+#include <QMdiSubWindow>
 
 #include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/ImageWidgets/ImageWindow.h"
@@ -18,9 +18,9 @@ namespace genericinterface
   {
   Q_OBJECT
   public:
-    void connect(GenericInterface* gi);
     void display(GenericInterface* gi);
-    void addWidget(const QString & path, ImageWindow* widget);
+    void connect(GenericInterface* gi);
+	 ImageWindow* getCurrentImageWindow(); 
 
   private slots:
     void addFile(const QString& path);
@@ -28,6 +28,7 @@ namespace genericinterface
     void removePath(const QString& path);
 
   public slots:
+    void addWidget(const QString& path, ImageWindow* widget);
     void updateDisplay();
 	 void removeRootImage(const QString& path);
 

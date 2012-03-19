@@ -16,3 +16,8 @@ void ImageWindow::activated()
 {
 	emit(highlightRectChange(_applicationArea));
 }
+
+QString& ImageWindow::getPath()
+{
+  return _path;
+}

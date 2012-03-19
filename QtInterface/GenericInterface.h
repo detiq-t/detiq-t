@@ -22,6 +22,8 @@ namespace genericinterface
 #include "Service.h"
 #include "Services/WindowService.h"
 #include "Services/FileService.h"
+#include "Services/AlgorithmService.h"
+#include "Services/IdentityAlgorithmService.h"
 
 /**
 * @brief The Generic Interface provides to the ImageIn developper a way to built easily

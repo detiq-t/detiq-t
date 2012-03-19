@@ -1,13 +1,7 @@
 #include "WindowService.h"
-#include <iostream>
-using namespace std;
+
 using namespace genericinterface;
 using namespace imagein;
-
-void WindowService::connect(GenericInterface* gi)
-{
-  _gi = gi;
-}
 
 void WindowService::display(GenericInterface* gi)
 {
@@ -21,13 +15,26 @@ void WindowService::display(GenericInterface* gi)
   QObject::connect(_nav, SIGNAL(removeRootImage(const QString&)), this, SLOT(removeRootImage(const QString&)));
 }
 
+void WindowService::connect(GenericInterface* gi)
+{
+  _gi = gi;
+}
+
+ImageWindow* WindowService::getCurrentImageWindow()
+{
+  ImageWindow* iw = dynamic_cast<ImageWindow*>(_mdi->activeSubWindow()->widget());
+  if (iw != NULL)
+    return iw;
+  else
+    throw "The current active sub-window doesn't contain an ImageWindow";
+}
+
 void WindowService::addFile(const QString& path)
 {
   if(_windows.find(path) == _windows.end())
   {
     StandardImageWindow* w = new StandardImageWindow(path, _gi);
 	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
-    w->setAsRoot();
     _windows[path] << sw;
 	 SubWindowController* swc = new SubWindowController(path, sw, true);
 	 QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
@@ -82,7 +89,8 @@ void WindowService::removePath(const QString& path)
 {
   for(int i=1; i<_windows[path].size(); i++)
   {
-    _windows[path][i]->close();
+    //_windows[path][i]->close();
+	 delete _windows[path][i];
   }
   _windows[path].removeAt(0); // The first element of the list is necessary the root image
   _windows.erase(path);

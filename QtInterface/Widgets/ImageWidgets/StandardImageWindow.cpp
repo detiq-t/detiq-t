@@ -1,18 +1,25 @@
-#include "GridWindow.h"
-
 #include "StandardImageWindow.h"
 
 using namespace genericinterface;
 using namespace imagein;
 using namespace std;
 
-StandardImageWindow::StandardImageWindow(const QString & path, GenericInterface* gi): ImageWindow(), _gi(gi)
+StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi): ImageWindow(), _gi(gi)
 {
 	_path = path;
 	_image = new Image(path.toStdString());
 	this->setWindowTitle("Image - " + path);
 	_imageView = new StandardImageView(this, _image);
-	_isRootImage = false;
+
+	init();
+}
+
+StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi, Image* image): ImageWindow(), _gi(gi)
+{
+	_path = path;
+	_image = image;
+	this->setWindowTitle("Image - " + path);
+	_imageView = new StandardImageView(this, _image);
 
 	init();
 }
@@ -100,7 +107,7 @@ void StandardImageWindow::showPixelsGrid()
   GridWindow* grid = new GridWindow(_path, this);
   grid->show();
   
-	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, grid);
+  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, grid);
 }
 
 void StandardImageWindow::showLineProfile()
@@ -286,18 +293,7 @@ void StandardImageWindow::showHighlightRect(const Rectangle* rect)
 	emit(highlightRectChange(rect));
 }
 
-void StandardImageWindow::closeEvent(QCloseEvent* event)
+const imagein::Image* StandardImageWindow::getImage()
 {
-  if (_isRootImage)
-  {
-    int answer = QMessageBox::question(this, "Attention", "You're going to close all the relative windows, are you sure you want to continue?", QMessageBox::Yes | QMessageBox::No);
-	 if (answer == QMessageBox::Yes)
-	 {
-	   event->accept();
-    }
-	 else
-	   event->ignore();
-  }
-  else
-    event->accept();  // if the image isn't a root image we can close it without quastion
+  return _imageView->getImage();
 }

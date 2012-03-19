@@ -5,8 +5,6 @@
 #include <QString>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QMdiArea>
-#include <QMdiSubWindow>
 #include <QScrollArea>
 #include <QFont>
 #include <QKeyEvent>
@@ -22,6 +20,7 @@
 #include "HistogramWindow.h"
 #include "ProjectionHistogramWindow.h"
 #include "StandardImageView.h"
+#include "GridWindow.h"
 
 #include "../../GenericInterface.h"
 
@@ -29,7 +28,6 @@
 #include <Rectangle.h>
 #include <Histogram.h>
 
-#include <QString>
 
 namespace genericinterface
 {
@@ -43,9 +41,9 @@ namespace genericinterface
 		Q_OBJECT
     private:
         GenericInterface* _gi;
-
-        //QMdiArea* _area;
-		imagein::Image* _image;
+       
+		  //QMdiArea* _area;
+        imagein::Image* _image;
         StandardImageView* _imageView;
         QLabel* _lImageSize;
         QLabel* _lImageName;
@@ -57,7 +55,6 @@ namespace genericinterface
         QLabel* _lSelectedPixelColor;
         QLabel* _lZoom;
         QPoint* _selectedPixel;
-        bool _isRootImage;
 
         void init();
         void initStatusBar();
@@ -65,9 +62,6 @@ namespace genericinterface
         void keyPressEvent(QKeyEvent* event);
         void keyReleaseEvent(QKeyEvent* event);
    
-    protected:
-	     void closeEvent(QCloseEvent* event);
-
     public slots:
         void showHistogram();
         void showHProjectionHistogram();
@@ -103,16 +97,33 @@ namespace genericinterface
 		 * \param gi The interface associated with this
 		 */
         StandardImageWindow(const QString & path, GenericInterface* gi);
+      
+		/*!
+		 * \brief Constructor based on an Image already openned
+		 * 
+		 * Display StandardImageWindow with StandardImageView from image path.
+		 * 
+		 * \param path The image path (to attach to the right set)
+		 * \param gi The interface associated with this
+		 * \param image The image which is used
+		 */
+        StandardImageWindow(const QString & path, GenericInterface* gi, Image* image);
         
+  
 		/*!
 		 * \brief StandardImageWindow destructor.
 		 *
 		 * The StandardImageView is deleted too.
 		 */
 		virtual ~StandardImageWindow();
-        
-        //! Set the view as root
-		inline void setAsRoot() { _isRootImage = true; }
+		
+		/*!
+		 * \brief Returns the Image contained in the window.
+		 *
+		 */
+		const imagein::Image* getImage();
+
+      
     };
 }
 

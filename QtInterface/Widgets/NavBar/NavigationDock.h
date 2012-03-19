@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include <QHBoxLayout>
-
+#include <QMessageBox>
 #include <QStringListModel>
 #include <QMenu>
 #include <QModelIndex>
