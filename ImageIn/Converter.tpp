@@ -54,7 +54,7 @@ RgbImage_t<D>* Converter<RgbImage_t<D> >::convert(const Image_t<D>& from)
 template <typename D>
 GrayscaleImage_t<D>* Converter<GrayscaleImage_t<D> >::convert(const GrayscaleImage_t<D>& from)
 {
-    return new GrayscaleImage_t<D>(from.getWidth(), from.getHeight(), 1, from.begin());
+    return new GrayscaleImage_t<D>(from.getWidth(), from.getHeight(), from.begin());
 }
 
 template <typename D>
@@ -100,6 +100,8 @@ GrayscaleImage_t<D>* Converter<GrayscaleImage_t<D> >::convert(const Image_t<D>& 
             }
         }
     }
+
+    return new GrayscaleImage(from.getWidth(), from.getHeight(), data);
 }
 
 template <typename D>

@@ -71,9 +71,10 @@ namespace imagein
             virtual ~GrayscaleImage_t() {};
     };
 
-    typedef GrayscaleImage_t<uint8_t> GrayscaleImage_8; //!< 8 bits depth grayscale image
-    typedef GrayscaleImage_t<uint16_t> GrayscaleImage_16; //!< 16 bits depth grayscale image
-    typedef GrayscaleImage_8 GrayscaleImage; //!< Standard Image is 8 bits depth
+    typedef GrayscaleImage_t<depth8_t> GrayscaleImage_8; //!< 8 bits depth grayscale image
+    typedef GrayscaleImage_t<depth16_t> GrayscaleImage_16; //!< 16 bits depth grayscale image
+    typedef GrayscaleImage_t<depth32_t> GrayscaleImage_32; //!< 32 bits depth grayscale image
+    typedef GrayscaleImage_t<depth_default_t> GrayscaleImage; //!< Standard Image is 8 bits depth
 }
 
 #include "GrayscaleImage.tpp"

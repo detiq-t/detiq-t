@@ -16,8 +16,8 @@ imagein::Histogram::Histogram(const imagein::Image_t<D>& img, unsigned int chann
     for(unsigned int j=rect.y; j<maxh; j++) {
         for(unsigned int i=rect.x; i<maxw; i++) {
             D pixel = img.getPixel(i, j, channel);
-            int value = pixel > 0 ? pixel : this->_width + pixel;
-            this->_array[value]++;
+            //unsigned int value = pixel >= 0 ? pixel : this->_width + pixel;
+            this->_array[static_cast<unsigned int>(pixel)]++;
         }
     }
 }

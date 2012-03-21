@@ -78,8 +78,10 @@ namespace imagein
             virtual ~RgbImage_t() {};
     };
 
-    typedef RgbImage_t<uint8_t> RgbImage_8; //!< 8 bits depth RGB Image.
-    typedef RgbImage_8 RgbImage; //!< Standard Image is 8 bits depth
+    typedef RgbImage_t<depth8_t> RgbImage_8; //!< 8 bits depth RGB Image.
+    typedef RgbImage_t<depth16_t> RgbImage_16; //!< 16 bits depth RGB Image.
+    typedef RgbImage_t<depth32_t> RgbImage_32; //!< 32 bits depth RGB Image.
+    typedef RgbImage_t<depth_default_t> RgbImage; //!< Standard Image is 8 bits depth
 }
 
 #include "RgbImage.tpp"

@@ -15,7 +15,7 @@ imagein::GrayscaleImage_t<D>* imagein::GrayscaleImage_t<D>::crop(const imagein::
 {
     imagein::GrayscaleImage_t<D>* ret = new imagein::GrayscaleImage_t<D>(rect.w, rect.h);
 
-    crop(rect, ret->_mat);
+    Image_t<D>::crop(rect, ret->_mat);
 
     return ret;
 }

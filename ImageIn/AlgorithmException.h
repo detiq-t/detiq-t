@@ -42,7 +42,7 @@ namespace imagein
    */
 	class NotEnoughImageException : AlgorithmException {
     public:
-        NotEnoughImageException() : AlgorithmException(__LINE__, __FILE__) {}
+        NotEnoughImageException(int line = __LINE__, std::string file = __FILE__) : AlgorithmException(line, file) {}
 	};
 
   /*!
