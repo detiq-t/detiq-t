@@ -8,26 +8,27 @@ namespace imagein
      *
      * This class represents a fixed-size array of integers. It can be seen as lightweight vector with fixed size, but is easier to use than C arrays, and provides stl-like iterators.
      */
+    template <typename T>
     class Array
     {
         public:
-            typedef unsigned int* iterator; //!< Random access iterator
-            typedef const unsigned int* const_iterator; //!< Random access const iterator
+            typedef T* iterator; //!< Random access iterator
+            typedef const T* const_iterator; //!< Random access const iterator
 
             /*!
              * \brief Creates an array of the given size.
              *
              * Values are not initialized.
              */
-            inline Array(int width = 0) : _width(width) { _array = new unsigned int[width]; };
+            inline Array(int width = 0) : _width(width) { _array = new T[width]; };
             inline virtual ~Array() { delete[] _array; };
 
             //! Returns the size of the array.
             inline unsigned int getWidth() const { return _width; };
             //! Access to the element at the given index.
-            inline unsigned int operator[](unsigned int index) const { return _array[index]; };
+            inline T operator[](unsigned int index) const { return _array[index]; };
             //! Constant access to the element at the given index.
-            inline unsigned int& operator[](unsigned int index) { return _array[index]; };
+            inline T& operator[](unsigned int index) { return _array[index]; };
 
             //! Returns an iterator to the first element of the array
             inline iterator begin() { return _array; };
@@ -39,7 +40,7 @@ namespace imagein
             inline const_iterator end() const { return _array+_width; };
 
         protected:
-            unsigned int* _array;
+            T* _array;
             unsigned int _width;
     };
 }
