@@ -15,11 +15,11 @@ namespace imagein
      * between Foreground and Background. The threshold inducing the greatest variance is used to 
      * binarize the image.
      *
-     * Arity : 1
-     * Input type : GrayscaleImage_t<D>
-     * Output type : GraysaleImage_t<D>
-     *
      * Explanation of the algorithm : http://www.labbookpages.co.uk/software/imgProc/otsuThreshold.html
+     *
+     * Arity : 1 \n
+     * Input type : GrayscaleImage_t<D> \n
+     * Output type : GraysaleImage_t<D> \n
      * Complexity : O(n*m) with n and m being the width and height of the image.
      *
      * \tparam D the depth of the input and output image
