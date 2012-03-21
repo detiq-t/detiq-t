@@ -32,6 +32,8 @@ void IdentityAlgorithmService::apply()
 	 QString& path = siw->getPath();
     algorithm::Identity<Image> algo; // = new algorithm::Identity<uint8_t, Image_t>();
     Image* im_res = algo(im);
+    std::cout << "Channels " << im_res->getNbChannels() << std::endl;
+    im_res->save("res.jpg");
 	 StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
 	 emit newImageWindowCreated(path, siw_res); 
   }

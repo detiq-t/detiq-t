@@ -31,7 +31,7 @@ namespace imagein
              * \param data The actual data matrix containing the pixels of the image.  No verification of the size of the array is performed.
 			 *
              */
-            GrayscaleImage_t(unsigned int width=0, unsigned int height=0, D* data=NULL) : Image_t<D>(width, height, 1, data) {};
+            GrayscaleImage_t(unsigned int width=0, unsigned int height=0, const D* data=NULL) : Image_t<D>(width, height, 1, data) {};
 		
 			/*!
              * \brief Constructs an image from the given file.

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Algorithm.h"
+#include "Converter.h"
 
 namespace imagein
 {
@@ -23,77 +24,80 @@ namespace imagein
     class PixelAlgorithm_t : public Algorithm_t<I, A> {
 
         protected:
-
+            typedef typename I::depth_t D;
             /*!
              * \brief The operation to apply to the input images' pixels in order to obtain the output image's pixel
              * \param pixels The pixels of the input images.
              * \return The pixel of the output image.
              */
-            virtual typename I::depth_t pixelOp(typename I::depth_t pixels[A]) const = 0; 
+            virtual D pixelOp(D pixels[A]) const = 0; 
 
             /*!
              * \brief The algorithm method here is implemented, you're not supposed to overload it.
              *
              * \throw ImageSizeException if the input images are not all the same size.
              */
-            I* algorithm(const std::vector<const Image_t<typename I::depth_t>*>& imgs) const {
+            I* algorithm(const std::vector<const Image_t<D>*>& imgs) const {
 
-                for(typename std::vector<const Image_t<typename I::depth_t>*>::const_iterator it = imgs.begin(); it < imgs.end(); ++it) {
+                for(typename std::vector<const Image_t<D>*>::const_iterator it = imgs.begin(); it < imgs.end(); ++it) {
                     if((*it)->end()-(*it)->begin()!=imgs[0]->end()-imgs[0]->begin()) {
                         throw ImageSizeException(__LINE__, __FILE__);
                     }
                 }
 
-                I* result = new I(imgs[0]->getWidth(), imgs[0]->getHeight());
-                typename Image_t<typename I::depth_t>::const_iterator iIt[A];
-                for(int i=0; i<A; ++i) iIt[i] = imgs[i]->begin();
+                Image_t<D>* result = new Image_t<D>(imgs[0]->getWidth(), imgs[0]->getHeight(), imgs[0]->getNbChannels());
+                typename Image_t<D>::const_iterator iIt[A];
+                for(unsigned int i=0; i<A; ++i) iIt[i] = imgs[i]->begin();
                 typename I::iterator oIt = result->begin();
-                typename I::depth_t pixels[A];
+                D pixels[A];
 
                 while(oIt < result->end()) {
-                    for(int i=0; i<A; ++i) pixels[i] = *iIt[i];
+                    for(unsigned int i=0; i<A; ++i) pixels[i] = *iIt[i];
                     *oIt = pixelOp(pixels);
                     ++oIt;
-                    for(int i=0; i<A; ++i) ++iIt[i];
+                    for(unsigned int i=0; i<A; ++i) ++iIt[i];
                 }
+                result->save("tmp.png");
 
-                return result;
+                I* finalResult = Converter<I>::convert(*result);
+
+                return finalResult;
             }
     };
 
-    //template <typename typename I::depth_t, template <typename typename I::depth_t> class I, unsigned int A>
-    //class PixelAlgorithm_t : public _PixelAlgorithm_t<typename I::depth_t, I, A> {
+    //template <typename D, template <typename D> class I, unsigned int A>
+    //class PixelAlgorithm_t : public _PixelAlgorithm_t<D, I, A> {
     //};
     
-    //template <typename typename I::depth_t, template <typename typename I::depth_t> class I>
-    //class PixelAlgorithm_t<typename I::depth_t, I, 1> : public _PixelAlgorithm_t<typename I::depth_t, I, 1> {
+    //template <typename D, template <typename D> class I>
+    //class PixelAlgorithm_t<D, I, 1> : public _PixelAlgorithm_t<D, I, 1> {
 
-            //virtual typename I::depth_t pixelOp(typename I::depth_t pixel[1]) const {
+            //virtual D pixelOp(D pixel[1]) const {
                 //return pixelOp(pixel[0]);
             //}
 
-            //virtual typename I::depth_t pixelOp(typename I::depth_t p1) const = 0;
+            //virtual D pixelOp(D p1) const = 0;
 
     //};
 
-    //template <typename typename I::depth_t, template <typename typename I::depth_t> class I>
-    //class PixelAlgorithm_t<typename I::depth_t, I, 2> : public _PixelAlgorithm_t<typename I::depth_t, I, 2> {
+    //template <typename D, template <typename D> class I>
+    //class PixelAlgorithm_t<D, I, 2> : public _PixelAlgorithm_t<D, I, 2> {
 
-            //virtual typename I::depth_t pixelOp(typename I::depth_t pixel[2]) const {
+            //virtual D pixelOp(D pixel[2]) const {
                 //return pixelOp(pixel[0], pixel[1]);
             //}
 
-            //virtual typename I::depth_t pixelOp(typename I::depth_t p1, typename I::depth_t p2) const = 0;
+            //virtual D pixelOp(D p1, D p2) const = 0;
     //};
 
-    //template <typename typename I::depth_t, template <typename typename I::depth_t> class I>
-    //class PixelAlgorithm_t<typename I::depth_t, I, 3> : public _PixelAlgorithm_t<typename I::depth_t, I, 3> {
+    //template <typename D, template <typename D> class I>
+    //class PixelAlgorithm_t<D, I, 3> : public _PixelAlgorithm_t<D, I, 3> {
 
-            //virtual typename I::depth_t pixelOp(typename I::depth_t pixel[3]) const {
+            //virtual D pixelOp(D pixel[3]) const {
                 //return pixelOp(pixel[0], pixel[1], pixel[2]);
             //}
             
-            //virtual typename I::depth_t pixelOp(typename I::depth_t p1, typename I::depth_t p2, typename I::depth_t p3) const = 0;
+            //virtual D pixelOp(D p1, D p2, D p3) const = 0;
     //};
 }
 

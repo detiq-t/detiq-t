@@ -50,7 +50,7 @@ namespace imagein
              * \param nChannels The number of channels of the image.
              * \param data The actual data matrix containing the pixels of the image.  No verification of the size of the array is performed.
              */
-            Image_t(unsigned int width, unsigned int height, unsigned int nChannels, D* data);
+            Image_t(unsigned int width, unsigned int height, unsigned int nChannels, const D* data);
             
 			/*!
              * \brief Constructs an image from the given file.

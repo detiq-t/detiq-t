@@ -6,7 +6,7 @@
 #include <stdexcept>
 
 template <typename D>
-imagein::Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned int nChannels=0, D* data=NULL)
+imagein::Image_t<D>::Image_t(unsigned int width = 0, unsigned int height = 0, unsigned int nChannels=0, const D* data=NULL)
  : _width(width), _height(height), _nChannels(nChannels)
 {
     _mat = new D[width * height * nChannels];
