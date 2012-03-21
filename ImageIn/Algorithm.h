@@ -20,16 +20,15 @@ namespace imagein
      * It uses the Arity template parameter to define a suitable overload of the application operator.
      * This specification cannot be done directly in SpecifiAlgorithm_t because of the c++93's limits in partial template specialization
      */
-    template < typename D, template <typename D> class I, unsigned int A = 1 >
-    class Algorithm_t : public SpecificAlgorithm_t<D, I, A> {
-        
+    template <class I, unsigned int A = 1>
+    class Algorithm_t : public SpecificAlgorithm_t<I, A> {
     };
     
     /*!
      * \brief A specialization of Algorithm_t with a more suitable interface
      */
-    template <typename D, template <typename D> class I>
-    class Algorithm_t<D,I,1> : public SpecificAlgorithm_t<D,I,1> {
+    template <class I>
+    class Algorithm_t<I,1> : public SpecificAlgorithm_t<I,1> {
         public:
         /*!
          * \brief A second overload of the function call operator to suit the arity of the algorithm
@@ -39,14 +38,14 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I<D>* operator() (const Image_t<D>* img) const;
+        inline I* operator() (const Image_t<typename I::depth_t>* img) const;
     };
 
     /*!
      * \brief A specialization of Algorithm_t with a more suitable interface
      */
-    template <typename D, template <typename D> class I>
-    class Algorithm_t<D,I,2> : public SpecificAlgorithm_t<D,I,2> {
+    template <class I>
+    class Algorithm_t<I,2> : public SpecificAlgorithm_t<I,2> {
         public:
         /*!
          * \brief A second overload of the function call operator to suit the arity of the algorithm
@@ -56,14 +55,14 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I<D>* operator() (const Image_t<D>* img, const Image_t<D>* img2) const; 
+        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2) const; 
     };
 
     /*!
      * \brief A specialization of Algorithm_t with a more suitable interface
      */
-    template <typename D, template <typename D> class I>
-    class Algorithm_t<D,I,3> : public SpecificAlgorithm_t<D,I,3> {
+    template <class I>
+    class Algorithm_t<I,3> : public SpecificAlgorithm_t<I,3> {
         public:
         /*!
          * \brief A second overload of the function call operator to suit the arity of the algorithm
@@ -73,26 +72,8 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I<D>* operator() (const Image_t<D>* img, const Image_t<D>* img2, const Image_t<D>* img3) const; 
+        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2, const Image_t<typename I::depth_t>* img3) const; 
     };
-
-    /*!
-     * \brief Algorithm_8<I,A> is nothing else than an Algorithm_<uint8_t, I A>
-     */
-    template <template <typename D> class I, unsigned int A=1 >
-    class Algorithm_8 : public Algorithm_t<uint8_t, I, A> {};
-
-    /*!
-     * \brief Algorithm_16<I,A> is nothing else than an Algorithm_<uint16_t, I A>
-     */
-    template <template <typename D> class I, unsigned int A=1 >
-    class Algorithm_16 : public Algorithm_t<uint16_t, I, A> {};
-
-    /*!
-     * \brief Algorithm_32<I,A> is nothing else than an Algorithm_<uint32_t, I A>
-     */
-    template <template <typename D> class I, unsigned int A=1 >
-    class Algorithm_32 : public Algorithm_t<uint32_t, I, A> {};
 
     #include "Algorithm.tpp"
 }

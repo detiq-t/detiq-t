@@ -26,10 +26,16 @@ namespace imagein
      *
      * \tparam D the type of pixel values.
      */
+    typedef uint8_t depth8_t;
+    typedef uint16_t depth16_t;
+    typedef uint32_t depth32_t;
+    typedef depth8_t depth_default_t;
+
     template <typename D>
     class Image_t
     {
         public:
+            typedef D depth_t;
             typedef D* iterator; //!< Random access iterator
             typedef const D* const_iterator; //!< Random access const-iterator
 

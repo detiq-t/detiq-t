@@ -22,6 +22,7 @@ namespace imagein
     template <typename D, unsigned int A = 1>
     class GenericAlgorithm_t {
         public:
+            typedef D depth_t;
             /*!
              * \brief Function call operator used to apply the algorithm to a vector of images.
              * It checks the size of the vector and return the result of the algorithm method.

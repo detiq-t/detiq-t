@@ -21,8 +21,8 @@ namespace imagein
      * As a specification of the GenericAlgorithm_t class, SpecificAlgorithm_t only specify the covariant return type of the algorithm's operations.
      * As a result of which the template parameter I must be an unambiguous and accessible direct or indirect derivation of Image_t.
      */
-    template < typename D, template <typename D> class I, unsigned int A = 1 >
-    class SpecificAlgorithm_t : public GenericAlgorithm_t<D, A> {
+    template <class I, unsigned int A = 1 >
+    class SpecificAlgorithm_t : public GenericAlgorithm_t<typename I::depth_t, A> {
         public:
             
             /*!
@@ -35,7 +35,7 @@ namespace imagein
              * \throw ImageTypeException if implemented in algorithm
              * \throw ImageSizeException if implemented in algorithm
              */
-            inline I<D>* operator() (const std::vector<const Image_t<D>*>& imgs) const; 
+            inline I* operator() (const std::vector<const Image_t<typename I::depth_t>*>& imgs) const; 
         
         protected:
             /*!
@@ -46,7 +46,7 @@ namespace imagein
              * \throw ImageTypeException if implemented
              * \throw ImageSizeException if implemented
              */
-            virtual I<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) const = 0;
+            virtual I* algorithm(const std::vector<const Image_t<typename I::depth_t>*>& imgs) const = 0;
     };
 
     #include "SpecificAlgorithm.tpp"

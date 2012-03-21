@@ -15,9 +15,11 @@ namespace imagein {
      * \tparam I A templated class representing an Image type such as RgbImage_t. This classe will take the first template parameter D as its template parameter.
      * \tparam A An unsigned integer corresponding to the Arity of the algorithm, i.e. the number of images the algorithm takes as parameters
      */
-    template <typename D, template <typename D> class I, unsigned int A>
-    class Average : public PixelAlgorithm_t<D, I, A> {
-
+    template <class I, unsigned int A>
+    class Average : public PixelAlgorithm_t<I, A> {
+        private:
+            typedef typename I::depth_t D;
+        
         protected:
 
             /*!
