@@ -8,7 +8,7 @@
 namespace imagein
 {
     template <typename D>
-    class Image;
+    class Image_t;
 	
     /*!
      * \brief This class is used to represent Image Histograms.
@@ -27,7 +27,7 @@ namespace imagein
          * \param rect A rectangle used to crop the image before computing the Histogram.
          */
           template <typename D>
-          Histogram(const Image<D>& img, unsigned int channel, const Rectangle& rect);
+          Histogram(const Image_t<D>& img, unsigned int channel, const Rectangle& rect);
 		
         /*!
          * \brief Constructs an Histogram from an image.
@@ -36,7 +36,7 @@ namespace imagein
          * \param rect A rectangle used to crop the image before computing the Histogram.
          */
           template <typename D>
-          Histogram(const Image<D>& img, const Rectangle& rect);
+          Histogram(const Image_t<D>& img, const Rectangle& rect);
     };
 }
 
