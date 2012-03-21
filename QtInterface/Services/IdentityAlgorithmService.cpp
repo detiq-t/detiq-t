@@ -30,7 +30,7 @@ void IdentityAlgorithmService::apply()
   {
     const Image* im = siw->getImage();
 	 QString& path = siw->getPath();
-    algorithm::Identity< uint8_t, Image_t> algo; // = new algorithm::Identity<uint8_t, Image_t>();
+    algorithm::Identity<Image> algo; // = new algorithm::Identity<uint8_t, Image_t>();
     Image* im_res = algo(im);
 	 StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
 	 emit newImageWindowCreated(path, siw_res); 
