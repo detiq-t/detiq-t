@@ -14,20 +14,20 @@ namespace imagein
      * This class is inherited from Array, therefore it's a fixed-size array of integers, the element with rank K of the array is the number of pixels of the given value on the Kth row/column of the Image (cropped from the Rectangle).
      */
 	template <typename D>
-    class ProjectionHistogram_t : public Array
+    class ProjectionHistogram : public Array<unsigned int>
     {
         public:
-            ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel = 0);
-            ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, unsigned int channel = 0);
-            inline virtual ~ProjectionHistogram_t() {};
+            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel = 0);
+            ProjectionHistogram(const Image<D>& img, D value, bool horizontal, unsigned int channel = 0);
+            inline virtual ~ProjectionHistogram() {};
         protected:
         private:
     };
 
-    typedef ProjectionHistogram_t<uint8_t> ProjectionHistogram_8; //!< 8 bits depth Projection Histogram. Provided for convenience.
-    typedef ProjectionHistogram_t<uint16_t> ProjectionHistogram_16; //!< 16 bits depth Projection Histogram. Provided for convenience.
-    typedef ProjectionHistogram_t<uint32_t> ProjectionHistogram_32; //!< 32 bits depth Projection Histogram. Provided for convenience.
-    typedef ProjectionHistogram_8 ProjectionHistogram; //!< Standard Projection Histogram is 8 bits depth.
+    typedef ProjectionHistogram<depth8_t> ProjectionHistogram_8; //!< 8 bits depth Projection Histogram. Provided for convenience.
+    typedef ProjectionHistogram<depth16_t> ProjectionHistogram_16; //!< 16 bits depth Projection Histogram. Provided for convenience.
+    typedef ProjectionHistogram<depth32_t> ProjectionHistogram_32; //!< 32 bits depth Projection Histogram. Provided for convenience.
+    typedef ProjectionHistogram<depth_t> ProjectionHistogram; //!< Standard Projection Histogram is depth_t bits depth.
 }
 
 #include "ProjectionHistogram.tpp"

@@ -5,9 +5,8 @@
 #include <cstdlib>
 
 template <typename D>
-imagein::Histogram::Histogram(const imagein::Image_t<D>& img, unsigned int channel, const imagein::Rectangle& rect) : imagein::Array(pow(2, sizeof(D)*8))
+imagein::Histogram::Histogram(const imagein::Image<D>& img, unsigned int channel, const imagein::Rectangle& rect) : imagein::Array<unsigned int>(pow(2, sizeof(D)*8))
 {
-
     for(unsigned int i=0; i<this->_width; i++) {
         this->_array[i] = 0;
     }
@@ -24,7 +23,7 @@ imagein::Histogram::Histogram(const imagein::Image_t<D>& img, unsigned int chann
 }
 
 template <typename D>
-imagein::Histogram::Histogram(const imagein::Image_t<D>& img, const imagein::Rectangle& rect) : imagein::Array(pow(2, sizeof(D)))
+imagein::Histogram::Histogram(const imagein::Image<D>& img, const imagein::Rectangle& rect) : imagein::Array<unsigned int>(pow(2, sizeof(D)))
 {
     imagein::Histogram::Histogram(img, 0, rect);
 }
