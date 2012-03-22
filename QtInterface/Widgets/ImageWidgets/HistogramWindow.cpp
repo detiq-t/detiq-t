@@ -114,38 +114,41 @@ void HistogramWindow::showRightClickedValue(int value) const
 	_lSelectedValue2->setText(QString::fromStdString("Value2: " + xs + "\t") + valueFromHistogram(value));
 }
 
-QString HistogramWindow::valueFromHistogram(int value) const
+QString HistogramWindow::valueFromHistogram(unsigned int value) const
 {
 	std::ostringstream oss;
 	QString s = QString("");
-	for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
+	if(value <= _applicationArea->w)
 	{
-		int n = (*(_view->getHistogram(i)))[value];
-		oss.str("");
-		oss << n;
-		
-		if(_view->getImage()->getNbChannels() == 1)
+		for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
 		{
-			if(i == 0)
-				s += QString::fromStdString(" C: " + oss.str());		
-		}
-		else if(_view->getImage()->getNbChannels() == 2)
-		{
-			if(i == 0)
-				s += QString::fromStdString(" C: " + oss.str());
-			else if(i == 1)
-				s += QString::fromStdString(" A: " + oss.str());			
-		}
-		else if(_view->getImage()->getNbChannels() >= 3)
-		{
-			if(i == 0)
-				s += QString::fromStdString(" R: " + oss.str());
-			else if(i == 1)
-				s += QString::fromStdString(" G: " + oss.str());
-			else if(i == 2)
-				s += QString::fromStdString(" B: " + oss.str());
-			else if(i == 3)
-				s += QString::fromStdString(" A: " + oss.str());
+			int n = (*(_view->getHistogram(i)))[value];
+			oss.str("");
+			oss << n;
+			
+			if(_view->getImage()->getNbChannels() == 1)
+			{
+				if(i == 0)
+					s += QString::fromStdString(" C: " + oss.str());		
+			}
+			else if(_view->getImage()->getNbChannels() == 2)
+			{
+				if(i == 0)
+					s += QString::fromStdString(" C: " + oss.str());
+				else if(i == 1)
+					s += QString::fromStdString(" A: " + oss.str());			
+			}
+			else if(_view->getImage()->getNbChannels() >= 3)
+			{
+				if(i == 0)
+					s += QString::fromStdString(" R: " + oss.str());
+				else if(i == 1)
+					s += QString::fromStdString(" G: " + oss.str());
+				else if(i == 2)
+					s += QString::fromStdString(" B: " + oss.str());
+				else if(i == 3)
+					s += QString::fromStdString(" A: " + oss.str());
+			}
 		}
 	}
 	return s;

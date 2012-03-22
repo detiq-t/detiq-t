@@ -1,7 +1,6 @@
 #ifndef GENERICHISTOGRAMVIEW_H
 #define GENERICHISTOGRAMVIEW_H
 
-#include <QScrollArea>
 #include <QMouseEvent>
 
 #include <qpen.h>
@@ -19,6 +18,7 @@
 #include <Image.h>
 #include <Rectangle.h>
 #include <Histogram.h>
+#include <ProjectionHistogram.h>
 
 #include "HistogramPicker.h"
 #include "GraphicalHistogram.h"
@@ -36,6 +36,7 @@ namespace genericinterface
     {
 		Q_OBJECT
 	private:
+		bool _projection;
 		void init();
 		void populate();
 	
@@ -45,6 +46,8 @@ namespace genericinterface
 		HistogramPicker* _principalPicker;
 		HistogramPicker* _leftPicker;
 		HistogramPicker* _rightPicker;
+		bool _horizontal;
+		int _value;
 	
     public:
 		/*!
@@ -55,7 +58,7 @@ namespace genericinterface
 		 * \param image The image concerned by the histogram
 		 * \param rect The part of the image where the histogram is applied
 		 */
-		GenericHistogramView(const imagein::Image* image, const imagein::Rectangle* rect);
+		GenericHistogramView(const imagein::Image* image, const imagein::Rectangle* rect, bool projection=false, bool horizontal=false, int value=0);
 		
 		/*!
 		 * \brief GenericHistogramView destructor.

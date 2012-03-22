@@ -35,7 +35,7 @@ namespace genericinterface
 		
 		void init();
         void initStatusBar();
-        QString valueFromHistogram(int value) const;
+        QString valueFromHistogram(unsigned int value) const;
         
     public slots:
         void showHoveredValue(int value) const;

@@ -6,6 +6,7 @@
 #include <QStatusBar>
 #include <QString>
 #include <iostream>
+#include <sstream>
 
 #include <Rectangle.h>
 

@@ -77,6 +77,21 @@ void StandardImageView::showImage()
 			//On utilise la fonction qRgba pour en faire un pointeur de qRgb
 			data[i] = qRgb(red, green, blue);		
 		}
+		else if(_image->getNbChannels() == 2)
+		{
+			unsigned char gray = *(it++);
+			unsigned char alpha = *(it++);
+
+			//On utilise la fonction qRgba pour en faire un pointeur de qRgb
+			data[i] = qRgba(gray, gray, gray, alpha);		
+		}
+		else if(_image->getNbChannels() == 1)
+		{
+			unsigned char gray = *(it++);
+
+			//On utilise la fonction qRgba pour en faire un pointeur de qRgb
+			data[i] = qRgb(gray, gray, gray);			
+		}
     }
 
     //Qt ne peut pas afficher les QImage directement, on en fait un QPixmap...
@@ -87,7 +102,7 @@ void StandardImageView::showImage()
 	_scene->addItem(this);
 	
 	_highlight = new QGraphicsRectItem(((int)_selection->x) - 1, ((int)_selection->y) - 1, ((int)_selection->w) + 1, ((int)_selection->h) + 1);
-	_highlight->setPen(QPen(QBrush(QColor(255, 0, 0, 100)), 1.5));
+	_highlight->setPen(QPen(QBrush(QColor(255, 0, 0, 200)), 1));
 	
 	_scene->addItem(_highlight);
 	
