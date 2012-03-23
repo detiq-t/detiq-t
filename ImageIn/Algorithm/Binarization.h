@@ -12,7 +12,7 @@ namespace imagein
         /*!
          * \brief This is a simple binarization algorithm.
          * 
-         * This algorithm will binarize your image using manual thresholds (provided when you create the algorithm.
+         * This algorithm will binarize your image using manual thresholds provided when you create the algorithm.
          * You can either provide one threshold (pixels with value < threshold will be black, other pixels will be white)
          * or you can provide two thresholds.
          *
