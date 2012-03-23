@@ -26,11 +26,6 @@ namespace imagein
      *
      * \tparam D the type of pixel values.
      */
-    typedef uint8_t depth8_t;
-    typedef uint16_t depth16_t;
-    typedef uint32_t depth32_t;
-    typedef depth8_t depth_default_t;
-
     template <typename D>
     class Image_t
     {
@@ -163,11 +158,6 @@ namespace imagein
              */
             virtual Image_t<D>* crop(const Rectangle& rect) const;
 
-
-            // TODO (spercott#1#): Image from stl container iterator
-            //void setPixel(int x, int y, std::iterator begin, std::iterator end);
-
-
         protected:
             void crop(const Rectangle& rect, D* mat) const;
 
@@ -176,6 +166,11 @@ namespace imagein
             unsigned int _nChannels;
             D* _mat;
     };
+    
+    typedef uint8_t depth8_t;
+    typedef uint16_t depth16_t;
+    typedef uint32_t depth32_t;
+    typedef depth8_t depth_default_t;
 
     typedef Image_t<depth8_t> Image_8; //!< 8 bits depth Image. Provided for convenience.
     typedef Image_t<depth16_t> Image_16; //!< 8 bits depth Image. Provided for convenience.
