@@ -2,8 +2,9 @@
 
 #include "GrayscaleImage.h"
 #include "Image.h"
-#include "Otsu.h"
+#include "Algorithm/Otsu.h"
 #include "Converter.h"
+#include "Algorithm/Binarization.h"
 
 using namespace std;
 using namespace imagein;
