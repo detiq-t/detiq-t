@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace imagein;
+using namespace imagein::algorithm;
 
 template <typename D>
 GrayscaleImage_t<D>* Otsu_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs) const
