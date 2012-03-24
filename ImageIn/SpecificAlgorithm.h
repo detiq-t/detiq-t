@@ -35,7 +35,7 @@ namespace imagein
              * \throw ImageTypeException if implemented in algorithm
              * \throw ImageSizeException if implemented in algorithm
              */
-            inline I* operator() (const std::vector<const Image_t<typename I::depth_t>*>& imgs) const; 
+            inline I* operator() (const std::vector<const Image_t<typename I::depth_t>*>& imgs); 
         
         protected:
             /*!
@@ -46,7 +46,7 @@ namespace imagein
              * \throw ImageTypeException if implemented
              * \throw ImageSizeException if implemented
              */
-            virtual I* algorithm(const std::vector<const Image_t<typename I::depth_t>*>& imgs) const = 0;
+            virtual I* algorithm(const std::vector<const Image_t<typename I::depth_t>*>& imgs) = 0;
     };
 
     #include "SpecificAlgorithm.tpp"

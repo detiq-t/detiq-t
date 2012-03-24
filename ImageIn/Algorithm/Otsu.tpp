@@ -9,7 +9,7 @@ using namespace imagein;
 using namespace imagein::algorithm;
 
 template <typename D>
-GrayscaleImage_t<D>* Otsu_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs) const
+GrayscaleImage_t<D>* Otsu_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs)
 {
     const GrayscaleImage_t<D>* img = dynamic_cast<const GrayscaleImage_t<D>*>(imgs.at(0));
 
@@ -17,19 +17,19 @@ GrayscaleImage_t<D>* Otsu_t<D>::algorithm(const std::vector<const Image_t<D>*>& 
         throw ImageTypeException(__LINE__, __FILE__);
     }
 
-    int threshold = computeThreshold(img);
+    _threshold = computeThreshold(img);
 
     D* data = new D[img->getWidth() * img->getHeight()];
     D* out = data;
     for(typename GrayscaleImage_t<D>::const_iterator it = img->begin() ; it != img->end() ; ++it) {
-        *(out++) = (*it < threshold) ? 0 : numeric_limits<D>::max();
+        *(out++) = (*it < _threshold) ? 0 : numeric_limits<D>::max();
     }
 
     return new GrayscaleImage_t<D>(img->getWidth(), img->getHeight(), data);
 }
 
 template<typename D>
-unsigned int Otsu_t<D>::computeThreshold(const GrayscaleImage_t<D>* img)
+D Otsu_t<D>::computeThreshold(const GrayscaleImage_t<D>* img)
 {
     //Compute histogram of the image probability of each value.
     Histogram hist = img->getHistogram();

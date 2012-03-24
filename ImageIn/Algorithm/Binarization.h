@@ -60,7 +60,7 @@ namespace imagein
                  * see the documentation of GenericAlgorithm_t, SpecificAlgorithm_t and Algorithm_t for
                  * informations on the Algorithm interface.
                  */
-                GrayscaleImage_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) const;
+                GrayscaleImage_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
             
             private:
                 D _threshold;

@@ -37,7 +37,7 @@ namespace imagein
              *
              * \throw ImageSizeException if the input images are not all the same size.
              */
-            I* algorithm(const std::vector<const Image_t<D>*>& imgs) const {
+            I* algorithm(const std::vector<const Image_t<D>*>& imgs) {
 
                 for(typename std::vector<const Image_t<D>*>::const_iterator it = imgs.begin(); it < imgs.end(); ++it) {
                     if((*it)->end()-(*it)->begin()!=imgs[0]->end()-imgs[0]->begin()) {

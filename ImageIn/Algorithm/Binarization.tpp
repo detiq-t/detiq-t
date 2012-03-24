@@ -5,7 +5,7 @@ using namespace imagein;
 using namespace imagein::algorithm;
 
 template<typename D>
-GrayscaleImage_t<D>* Binarization_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs) const
+GrayscaleImage_t<D>* Binarization_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs)
 {
     const GrayscaleImage_t<D>* img = dynamic_cast<const GrayscaleImage_t<D>*>(imgs.at(0));
 

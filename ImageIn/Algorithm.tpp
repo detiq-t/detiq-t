@@ -1,14 +1,14 @@
 
     
 template <class I>
-I* Algorithm_t<I,1>::operator() (const imagein::Image_t<typename I::depth_t>* img) const { 
+I* Algorithm_t<I,1>::operator() (const imagein::Image_t<typename I::depth_t>* img) { 
     std::vector<const imagein::Image_t<typename I::depth_t>*> imgs;
     imgs.push_back(img);
     return this->algorithm(imgs);
 }
 
 template <class I>
-I* Algorithm_t<I,2>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2) const { 
+I* Algorithm_t<I,2>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2) { 
     std::vector<const imagein::Image_t<typename I::depth_t>*> imgs;
     imgs.push_back(img);
     imgs.push_back(img2);
@@ -16,7 +16,7 @@ I* Algorithm_t<I,2>::operator() (const imagein::Image_t<typename I::depth_t>* im
 }
 
 template <class I>
-I* Algorithm_t<I,3>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2, const imagein::Image_t<typename I::depth_t>* img3) const { 
+I* Algorithm_t<I,3>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2, const imagein::Image_t<typename I::depth_t>* img3) { 
     std::vector<const imagein::Image_t<typename I::depth_t>*> imgs;
     imgs.push_back(img);
     imgs.push_back(img2);

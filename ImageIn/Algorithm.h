@@ -38,7 +38,7 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I* operator() (const Image_t<typename I::depth_t>* img) const;
+        inline I* operator() (const Image_t<typename I::depth_t>* img);
     };
 
     /*!
@@ -55,7 +55,7 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2) const; 
+        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2); 
     };
 
     /*!
@@ -72,7 +72,7 @@ namespace imagein
          * \throw ImageTypeException if implemented in algorithm
          * \throw ImageSizeException if implemented in algorithm
          */
-        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2, const Image_t<typename I::depth_t>* img3) const; 
+        inline I* operator() (const Image_t<typename I::depth_t>* img, const Image_t<typename I::depth_t>* img2, const Image_t<typename I::depth_t>* img3); 
     };
 
     #include "Algorithm.tpp"

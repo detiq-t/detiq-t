@@ -33,7 +33,7 @@ namespace imagein
              * \throw ImageTypeException if implemented in algorithm
              * \throw ImageSizeException if implemented in algorithm
              */
-            inline Image_t<D>* operator() (const std::vector<const Image_t<D>*>& imgs) const;
+            inline Image_t<D>* operator() (const std::vector<const Image_t<D>*>& imgs);
         protected:
             /*!
              * \brief The concrete implementation of the algorithm
@@ -43,7 +43,7 @@ namespace imagein
              * \throw ImageTypeException if implemented
              * \throw ImageSizeException if implemented
              */
-            virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) const = 0;
+            virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) = 0;
     };
 }
 

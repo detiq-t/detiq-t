@@ -41,7 +41,7 @@ namespace imagein
                  * \param img The image for which to compute the threshold.
                  * \return the threshold calculated.
                  */
-                static unsigned int computeThreshold(const GrayscaleImage_t<D>* img);
+                static D computeThreshold(const GrayscaleImage_t<D>* img);
                 
                 /*!
                  * \brief Returns the threshold used by the last application of the algorithm
@@ -51,7 +51,7 @@ namespace imagein
                  *
                  * \return the last threshold used.
                  */
-                unsigned int getLastApplicationThreshold() { return _threshold; }
+                D getLastApplicationThreshold() { return _threshold; }
 
             protected:
 
@@ -60,10 +60,10 @@ namespace imagein
                  * see the documentation of GenericAlgorithm_t, SpecificAlgorithm_t and Algorithm_t for
                  * informations on the Algorithm interface.
                  */
-                GrayscaleImage_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) const;
+                GrayscaleImage_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
             
             private:
-                unsigned int _threshold;
+                D _threshold;
         };
 
         typedef Otsu_t<depth_default_t> Otsu; //!< Standard Algorithm with default depth. See Image_t::depth_default_t
