@@ -1,6 +1,6 @@
 //#include "Converter.h"
 
-using namespace imagein;
+namespace imagein {
 
 template <typename D>
 RgbImage_t<D>* Converter<RgbImage_t<D> >::convert(const GrayscaleImage_t<D>& from) 
@@ -120,4 +120,6 @@ template <typename D>
 Image_t<D>* Converter<Image_t<D> >::convert(const Image_t<D>& from)
 {
     return new Image_t<D>(from.getWidth(), from.getHeight(), from.getNbChannels(), from.begin());
+}
+
 }

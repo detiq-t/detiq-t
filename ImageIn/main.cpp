@@ -7,9 +7,11 @@
 #include "Converter.h"
 #include "Algorithm/ComponentLabeling.h"
 #include "Algorithm/Otsu.h"
+#include "Algorithm/Binarization.h"
 
 using namespace std;
 using namespace imagein;
+using namespace imagein::algorithm;
 
 void printlist(list<int>& l)
 {
@@ -29,9 +31,13 @@ int main(int argc, char* argv[])
 		// }
 	// }
 	
+	Binarization b(5);
+	
+	b(&img);
+	
     ComponentLabeling cl(ComponentLabeling::CONNECT_4, false, false);
 
-	cl(&img)->save("samples/resultcl.png");
+	cl(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl.png");
 	
 	cout << cl.getNbComponents() << endl;
 	cout << cl.getAverageComponentSize() << endl;
