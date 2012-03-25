@@ -17,6 +17,7 @@ namespace genericinterface
 {
   class GenericInterface; /* Pre-declaration for the Service include */
 }
+
 #include "InterfaceExceptions.h"
 #include "Utilities/Log.h"
 #include "Service.h"

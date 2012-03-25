@@ -57,7 +57,7 @@ void StandardImageWindow::showHistogram()
 
 	for(list<HistogramWindow*>::iterator it = histos.begin(); it != histos.end(); ++it)
 	{
-	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, *it);
+    dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, *it);
 	}
 }
 

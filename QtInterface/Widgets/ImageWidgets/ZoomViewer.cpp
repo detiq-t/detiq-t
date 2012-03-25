@@ -51,9 +51,22 @@ void ZoomViewer::draw(int x, int y)
 
         try
         {
-          int red = _image->getPixel(px, py, 0);
-          int green = _image->getPixel(px, py, 1);
-          int blue = _image->getPixel(px, py, 2);
+          int red;
+          int green;
+          int blue;
+
+          if(_image->getNbChannels() == 3)
+          {
+            red = _image->getPixel(px, py, 0);
+            green = _image->getPixel(px, py, 1);
+            blue = _image->getPixel(px, py, 2);
+          }
+          else
+          {
+            red = _image->getPixel(px, py, 0);
+            green = _image->getPixel(px, py, 0);
+            blue = _image->getPixel(px, py, 0);
+          }
 
           if (red == green && green == blue)
           {

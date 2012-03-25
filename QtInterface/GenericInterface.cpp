@@ -128,3 +128,4 @@ void GenericInterface::finalizeInterface()
   QAction* actionQt = this->menu("?")->addAction("About Qt");
   QObject::connect(actionQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
+
