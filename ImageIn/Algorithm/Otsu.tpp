@@ -22,7 +22,7 @@ GrayscaleImage_t<D>* Otsu_t<D>::algorithm(const std::vector<const Image_t<D>*>& 
     D* data = new D[img->getWidth() * img->getHeight()];
     D* out = data;
     for(typename GrayscaleImage_t<D>::const_iterator it = img->begin() ; it != img->end() ; ++it) {
-        *(out++) = (*it < _threshold) ? 0 : numeric_limits<D>::max();
+        *(out++) = (*it <= _threshold) ? 0 : numeric_limits<D>::max();
     }
 
     return new GrayscaleImage_t<D>(img->getWidth(), img->getHeight(), data);

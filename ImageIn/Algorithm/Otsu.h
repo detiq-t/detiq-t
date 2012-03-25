@@ -51,7 +51,7 @@ namespace imagein
                  *
                  * \return the last threshold used.
                  */
-                D getLastApplicationThreshold() { return _threshold; }
+                D getThreshold() { return _threshold; }
 
             protected:
 
