@@ -17,8 +17,30 @@ namespace imagein
     class ProjectionHistogram_t : public Array<unsigned int>
     {
         public:
+			/*!
+			 * \brief Constructs a ProjectionHistogram from an image.
+			 *
+			 * \param img The image from which to compute the projection histogram.
+			 * \param value The value that will be counted.
+			 * \param horizontal The projection histogram will count the pixels of the selected value for each row if true, for each column if false.
+			 * \param rect A rectangle used to crop the image before computing the Histogram.
+			 * \param channel The channel to consider for the values. Default value is 0 in case of a one channel image.
+			 */
             ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel = 0);
+			
+			/*!
+			 * \brief Constructs a ProjectionHistogram from an image.
+			 *
+			 * \param img The image from which to compute the projection histogram.
+			 * \param value The value that will be counted.
+			 * \param horizontal The projection histogram will count the pixels of the selected value for each row if true, for each column if false.
+			 * \param channel The channel to consider for the values. Default value is 0 in case of a one channel image.
+			 */
             ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, unsigned int channel = 0);
+			
+			/*!
+			 * \brief Classical destructor for ProjectionHistogram.
+			 */
             inline virtual ~ProjectionHistogram_t() {};
         protected:
         private:

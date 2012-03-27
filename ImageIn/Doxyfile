@@ -637,6 +637,7 @@ INPUT                  = Algorithm.h \
                          JpgImage.h \
                          PixelAlgorithm.h \
                          PngImage.h \
+						 ProjectionHistogram.h \
                          Rectangle.h \
                          RgbImage.h \
                          Algorithm/Average.h \
