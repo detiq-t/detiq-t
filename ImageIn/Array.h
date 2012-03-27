@@ -4,7 +4,7 @@
 namespace imagein
 {
     /*!
-     * \brief Fixed-size array with easy to use access method. Used as a base for Histogram and ProjectionHistogram.
+     * \brief Fixed-size array with easy to use access method. Used as a base for Histogram and ProjectionHistogram_t.
      *
      * This class represents a fixed-size array of integers. It can be seen as lightweight vector with fixed size, but is easier to use than C arrays, and provides stl-like iterators.
      */

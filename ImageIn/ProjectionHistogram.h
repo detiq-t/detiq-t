@@ -18,7 +18,7 @@ namespace imagein
     {
         public:
 			/*!
-			 * \brief Constructs a ProjectionHistogram from an image.
+			 * \brief Constructs a ProjectionHistogram_t from an image.
 			 *
 			 * \param img The image from which to compute the projection histogram.
 			 * \param value The value that will be counted.
@@ -29,7 +29,7 @@ namespace imagein
             ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, const Rectangle& rect, unsigned int channel = 0);
 			
 			/*!
-			 * \brief Constructs a ProjectionHistogram from an image.
+			 * \brief Constructs a ProjectionHistogram_t from an image.
 			 *
 			 * \param img The image from which to compute the projection histogram.
 			 * \param value The value that will be counted.
@@ -39,11 +39,9 @@ namespace imagein
             ProjectionHistogram_t(const Image_t<D>& img, D value, bool horizontal, unsigned int channel = 0);
 			
 			/*!
-			 * \brief Classical destructor for ProjectionHistogram.
+			 * \brief Classical destructor for ProjectionHistogram_t.
 			 */
             inline virtual ~ProjectionHistogram_t() {};
-        protected:
-        private:
     };
 
     typedef ProjectionHistogram_t<depth8_t> ProjectionHistogram_8; //!< 8 bits depth Projection Histogram. Provided for convenience.
