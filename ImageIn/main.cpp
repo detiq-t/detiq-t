@@ -21,9 +21,23 @@ void printlist(list<int>& l)
 	cout << endl;
 }
 
+int main(int argc, char** argv)
+{
+	Image img("samples/test.png");
+  
+  ComponentLabeling cl(ComponentLabeling::CONNECT_8, false, false);
+  ComponentLabeling cl2(ComponentLabeling::CONNECT_4, false, false);
+
+  cl2(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl4.png");
+  cl(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl8.png");
+
+  return 0;
+}
+
+#ifdef AUTREMAIN
 int main(int argc, char* argv[])
 {
-	GrayscaleImage img("samples/binaire.png");
+	GrayscaleImage img("samples/test.png");
 	
 	// for(GrayscaleImage::iterator it = img.begin() ; it != img.end() ; ++it) {
 		// if(*it != 0 && *it != 255) {
@@ -31,16 +45,16 @@ int main(int argc, char* argv[])
 		// }
 	// }
 	
-	Binarization b(5);
+	//Binarization b(5);
 	
-	b(&img);
+	//b(&img);
 	
-    ComponentLabeling cl(ComponentLabeling::CONNECT_4, false, false);
+    //ComponentLabeling cl(ComponentLabeling::CONNECT_4, false, false);
 
-	cl(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl.png");
+	//cl(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl.png");
 	
-	cout << cl.getNbComponents() << endl;
-	cout << cl.getAverageComponentSize() << endl;
+	//cout << cl.getNbComponents() << endl;
+	//cout << cl.getAverageComponentSize() << endl;
 	
 	// list<int>* l1 = new list<int>();
 	// list<int>* l2 = new list<int>();
@@ -65,3 +79,4 @@ int main(int argc, char* argv[])
 	
     return 0;
 }
+#endif
