@@ -52,9 +52,10 @@ namespace imagein
 		  Line operator[] (int i);
 
 		private:
-		  int* _mtrx;
 		  int _height;
 		  int _width;
+		  int* _mtrx;
+
 		};
 
 		class invalid_filter : public std::exception

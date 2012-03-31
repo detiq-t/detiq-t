@@ -16,20 +16,21 @@ namespace imagein
 		class Filtration_t : public Algorithm_t<Image_t<D>, 1>
 		{
 		public:
-			Filtration_t(const Filter& filter): _filter(filter) {}
+			Filtration_t(Filter& filter): _filter(filter) {}
 			
-			static Filtration uniformBlur(int coef, int nbPixels);
-			static Filtration prewitt(bool vertical, int nbPixels);
-      static Filtration gaussianBlur(double alpha);
+			static Filtration_t<D> uniformBlur(int coef, int nbPixels);
+			static Filtration_t<D> prewitt(bool vertical, int nbPixels);
+			static Filtration_t<D> gaussianBlur(double alpha);
+			
+			Filter& _filter;
 			
 		protected:
 			Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
 		
 		private:
-			const Filter& _filter;
 		};
 		
-		typedef Filtration_t<depth_default_t> Filtration; //!< Standard Algorithm with default depth. See Image_t::depth_default_t
+		typedef Filtration_t<depth_default_t> Filtration; //!< Standard Algorithm Filtration with default depth.
 	}
 }
 

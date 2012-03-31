@@ -1,12 +1,16 @@
 //#include "Filtration.h"
 
+#include <algorithm>
+
 namespace imagein
 {
 	namespace algorithm
 	{
-		template<typename D>
+		template <typename D>
 		Image_t<D>* Filtration_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs)
 		{
+			std::cout << "this : " << this << " ; height : " << _filter.height() << " ; width : " << _filter.width() << std::endl;
+			
 			const Image_t<D>* img = dynamic_cast<const Image_t<D>*>(imgs.at(0));
 			
 			if(img == NULL) {
@@ -18,8 +22,9 @@ namespace imagein
 			
 			int posFactor = 0; 
 			int negFactor = 0;
-			Filter::iterator iter;
-			for(iter = _filter.begin; iter != _filter.end(); iter++)
+			
+			Filter::iterator iter = _filter.begin();
+			for(iter; iter != _filter.end(); ++iter)
 			{
 				if((*iter) < 0)
 					negFactor += (*iter);
@@ -35,9 +40,9 @@ namespace imagein
 			
 			int width = img->getWidth();
 			int height = img->getHeight();
-			int nChannels = img->getNbChannel();
+			int nChannels = img->getNbChannels();
 			
-			Image_t<D>* result = new Image_t(unsigned int width, unsigned int height, unsigned int nChannels);
+			Image_t<D>* result = new Image_t<D>(width, height, nChannels);
 			
 			for(int x = 0; x < width; x++)
 			{
@@ -54,7 +59,7 @@ namespace imagein
 								{
 									newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
 								}
-								catch(out_of_range){}
+								catch(std::out_of_range){}
 							}
 						}
 						if(factor != 0)
@@ -69,7 +74,8 @@ namespace imagein
 			}
 		}
 		
-		Filtration Filtration::uniformBlur(int coef = 1, int nbPixels = 3)
+		template <typename D>
+		Filtration_t<D> Filtration_t<D>::uniformBlur(int coef = 1, int nbPixels = 3)
 		{
 			Filter filter(nbPixels, nbPixels);
 			for(int i = 0; i < nbPixels; i++)
@@ -79,11 +85,11 @@ namespace imagein
 					filter[i][j] = coef;
 				}
 			}
-			Filtration f(filter);
-			return f;
+			return Filtration_t<D>(filter);
 		}
 		
-		Filtration Filtration::prewitt(bool vertical, int nbPixels)
+		template <typename D>
+		Filtration_t<D> Filtration_t<D>::prewitt(bool vertical, int nbPixels)
 		{
 			int width, height;
 			if(vertical)
@@ -103,23 +109,20 @@ namespace imagein
 				for(int j = 0; j < height; j++)
 				{
 					if(vertical && i == 0 || !vertical && j == 0)
-						filter[i][j] = -coef;
+						filter[i][j] = -1;
 					else if(vertical && i == width - 1 || !vertical && j == height - 1)
-						filter[i][j] = coef;
+						filter[i][j] = 1;
 					else
 						filter[i][j] = 0;
 				}
 			}
 			
-			Filtration f(filter);
-			return f;
+			return Filtration_t<D>(filter);
 		}
 
-    Filtration Filtration::gaussianBlur(unsigned double alpha)
+	template <typename D>
+    Filtration_t<D> Filtration_t<D>::gaussianBlur(double alpha)
     {
-
-      double alpha = atof(argv[1]);
-
       std::vector<double> gaussCoef;
 
       for (int i = 0; ; i++)
@@ -166,6 +169,7 @@ namespace imagein
           } 
         }
       }
+	  return Filtration_t<D>(f);
     }
   }
 }
