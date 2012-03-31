@@ -126,11 +126,13 @@ namespace imagein
     Filtration_t<D> Filtration_t<D>::gaussianBlur(double alpha)
     {
       std::vector<double> gaussCoef;
+      double min(0);
 
       for (int i = 0; ; i++)
       {
         double coef = 10000.0 * std::exp(-(std::pow(i, 2.0)) / (2.0 * std::pow(alpha, 2))) / (2 * M_PI * std::pow(alpha, 2));
-        if (coef < 1)
+        if (i == 0) min = coef / 10 + 1;
+        if (coef < min)
           break;
         else
           gaussCoef.push_back(coef);
