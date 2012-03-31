@@ -92,9 +92,6 @@ namespace imagein
 				};
 				
 				DisjointSet _synonyms;
-				
-				static const int nColours = 7;
-				static D colours[nColours][3];
         };
 
         typedef ComponentLabeling_t<depth_default_t> ComponentLabeling; //!< Standard Algorithm with default depth. See Image_t::depth_default_t

@@ -131,7 +131,6 @@ namespace imagein {
 			//end first pass. Each pixel has a label, synonyms table is full.
 			
 			//second pass
-			D* data = new D[img->getWidth() * img->getHeight() * 3];
 			unsigned int colourNo = 0;
 			for(unsigned int j = 0 ; j < img->getHeight() ; ++j) {
 				for(unsigned int i = 0 ; i < img->getWidth() ; ++i) {
@@ -144,10 +143,39 @@ namespace imagein {
 						}
 						
 						_nameToSize[name]++;
+					}
 						
-						data[3*i + 3*j*img->getWidth()] = colours[(_nameToColour.find(name)->second)%nColours][0];
-						data[3*i + 3*j*img->getWidth() + 1] = colours[(_nameToColour.find(name)->second)%nColours][1];
-						data[3*i + 3*j*img->getWidth() + 2] = colours[(_nameToColour.find(name)->second)%nColours][2];
+				}
+			}
+			
+			D** colours;
+			if(getNbComponents() > 0) {
+				//Color table construction
+				colours = new D*[getNbComponents()];
+				D step = 2 * (std::numeric_limits<D>::max() / (getNbComponents()-1));
+				for(unsigned int i = 0 ; i < getNbComponents() ; ++i) {
+					colours[i] = new D[3];
+					
+					if(i <= getNbComponents() / 2) {
+						colours[i][0] = std::numeric_limits<D>::max() - i*step;
+						colours[i][1] = i * step;
+						colours[i][2] = 0;
+					}
+					else {
+						colours[i][0] = 0;
+						colours[i][1] = std::numeric_limits<D>::max()-(i-getNbComponents()/2)*step;
+						colours[i][2] = (i-getNbComponents()/2)*step;
+					}
+				}
+			}
+			
+			D* data = new D[img->getWidth() * img->getHeight() * 3];
+			for(unsigned int j = 0 ; j < img->getHeight() ; ++j) {
+				for(unsigned int i = 0 ; i < img->getWidth() ; ++i) {
+					if(img->getPixel(i, j) == foreground) {
+						data[3*i + 3*j*img->getWidth()] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][0];
+						data[3*i + 3*j*img->getWidth() + 1] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][1];
+						data[3*i + 3*j*img->getWidth() + 2] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][2];
 					}
 					else {
 						data[3*i + 3*j*img->getWidth()] = img->getPixel(i,j);
@@ -157,14 +185,10 @@ namespace imagein {
 				}
 			}
 			
-			//TEMPORARY : prints the labels.
-			// for(unsigned int j = 0 ; j < img->getHeight() ; ++j) {
-				// for(unsigned int i = 0 ; i < img->getWidth() ; ++i) {
-					// if(labels[i + j * img->getWidth()] == (unsigned)-1) cout << -1 << "\t";
-					// else cout << labels[i + j * img->getWidth()] << "\t";
-				// }
-				// cout << endl;
-			// }
+			for(unsigned int i = 0 ; i < getNbComponents() ; ++i) {
+				delete[] colours[i];
+			}
+			delete[] colours;
 			
 			return new RgbImage_t<D>(img->getWidth(), img->getHeight(), data);
 		}
@@ -178,17 +202,6 @@ namespace imagein {
 			}
 			return average/static_cast<double>(_nameToSize.size());
 		}
-
-		template <typename D>
-		D ComponentLabeling_t<D>::colours[nColours][3] = {  
-			{std::numeric_limits<D>::max(),0,0}, 
-			{0,std::numeric_limits<D>::max(),0}, 
-			{0,0,std::numeric_limits<D>::max()},
-			{std::numeric_limits<D>::max(),std::numeric_limits<D>::max(),0}, 
-			{0,std::numeric_limits<D>::max(),std::numeric_limits<D>::max()}, 
-			{std::numeric_limits<D>::max(),0,std::numeric_limits<D>::max()}, 
-			{std::numeric_limits<D>::max()/2,std::numeric_limits<D>::max()/2,std::numeric_limits<D>::max()/2} 
-		};
 
 		//DisjointSet Implementation
 		//----------------------------
