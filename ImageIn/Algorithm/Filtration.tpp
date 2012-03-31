@@ -11,67 +11,69 @@ namespace imagein
 		{
 			std::cout << "this : " << this << " ; height : " << _filter.height() << " ; width : " << _filter.width() << std::endl;
 			
-			const Image_t<D>* img = dynamic_cast<const Image_t<D>*>(imgs.at(0));
-			
-			if(img == NULL) {
-				throw ImageTypeException(__LINE__, __FILE__);
-			}
+      const Image_t<D>* img = dynamic_cast<const Image_t<D>*>(imgs.at(0));
+      
+      if(img == NULL) {
+        throw ImageTypeException(__LINE__, __FILE__);
+      }
 
-			int halfHeightFilter = _filter.height() / 2;
-			int halfWidthFilter = _filter.width() / 2;
-			
-			int posFactor = 0; 
-			int negFactor = 0;
-			
-			Filter::iterator iter = _filter.begin();
-			for(iter; iter != _filter.end(); ++iter)
-			{
-				if((*iter) < 0)
-					negFactor += (*iter);
-				else
-					posFactor += (*iter);
-			}
-			
-			int factor;
-			if(posFactor >= -negFactor)
-				factor = posFactor;
-			else
-				factor = -negFactor;
-			
-			int width = img->getWidth();
-			int height = img->getHeight();
-			int nChannels = img->getNbChannels();
-			
-			Image_t<D>* result = new Image_t<D>(width, height, nChannels);
-			
-			for(int x = 0; x < width; x++)
-			{
-				for(int y = 0; y < height; y++)
-				{
-					for(int channel = 0; channel < nChannels; channel++)
-					{
-						D newPixel = 0;
-						for(int i = 0; i < _filter.width(); i++)
-						{
-							for(int j = 0; j < _filter.height(); j++)
-							{
-								try
-								{
-									newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
-								}
-								catch(std::out_of_range){}
-							}
-						}
-						if(factor != 0)
-						{
-							newPixel = newPixel / factor;
-							if(newPixel < 0)
-								newPixel = 0;
-						}
-						result->setPixel(x, y, channel, newPixel);
-					}
-				}
-			}
+      int halfHeightFilter = _filter.height() / 2;
+      int halfWidthFilter = _filter.width() / 2;
+      
+      int posFactor = 0;
+      int negFactor = 0;
+      
+      Filter::iterator iter = _filter.begin();
+      for(iter; iter != _filter.end(); ++iter)
+      {
+        if((*iter) < 0)
+          negFactor += (*iter);
+        else
+          posFactor += (*iter);
+      }
+      
+      int factor;
+      if(posFactor >= -negFactor)
+        factor = posFactor;
+      else
+        factor = -negFactor;
+      
+      int width = img->getWidth();
+      int height = img->getHeight();
+      int nChannels = img->getNbChannels();
+      
+      Image_t<D>* result = new Image_t<D>(width, height, nChannels);
+      
+      for(int x = 0; x < width; x++)
+      {
+        for(int y = 0; y < height; y++)
+        {
+          for(int channel = 0; channel < nChannels; channel++)
+          {
+            D newPixel = 0;
+            for(int i = 0; i < _filter.width(); i++)
+            {
+              for(int j = 0; j < _filter.height(); j++)
+              {
+                try
+                {
+                  newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
+                }
+                catch(std::out_of_range){}
+              }
+            }
+            if(factor != 0)
+            {
+              newPixel = newPixel / factor;
+              if(newPixel < 0)
+                newPixel = 0;
+            }
+            result->setPixel(x, y, channel, newPixel);
+          }
+        }
+      }
+      
+      return result;
 		}
 		
 		template <typename D>

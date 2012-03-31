@@ -40,7 +40,7 @@ namespace imagein
 		  };
 
 		  Filter (int w, int h);
-		  Filter (Filter& m);
+		  Filter (const Filter& m);
 		  virtual ~Filter ();
 
 		  iterator begin();

@@ -16,15 +16,16 @@ namespace imagein
 		class Filtration_t : public Algorithm_t<Image_t<D>, 1>
 		{
 		public:
-			Filtration_t(Filter& filter): _filter(filter) {}
+			Filtration_t(Filter& filter) : _filter(filter) {}
+			Filtration_t(const Filtration_t & f) : _filter(f._filter) {}
 			
 			static Filtration_t<D> uniformBlur(int coef, int nbPixels);
 			static Filtration_t<D> prewitt(bool vertical, int nbPixels);
 			static Filtration_t<D> gaussianBlur(double alpha);
 			
-			Filter& _filter;
+			Filter _filter;
 			
-		protected:
+		//protected:
 			Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
 		
 		private:
