@@ -1,17 +1,19 @@
 #include "Filter.h"
 
 using namespace std;
+using namespace imagein;
+using namespace algorithm;
 
 Filter::Filter (int w, int h) : _height (h), _width (w)
 {
-  if(w % 2 != 0 || h % 2 != 0)
+  if(w % 2 != 1 || h % 2 != 1)
 	throw invalid_filter();
   _mtrx = new int[h * w];
 }
 
 Filter::Filter (Filter& m) : _width (m._width), _height (m._height)
 {
-  if(_width % 2 != 0 || _height % 2 != 0)
+  if(_width % 2 != 1 || _height % 2 != 1)
 	throw invalid_filter();
 	
   _mtrx = new int [_width * _height];

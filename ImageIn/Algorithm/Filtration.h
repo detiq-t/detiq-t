@@ -1,9 +1,12 @@
 #ifndef FILTRAGE_H
 #define FILTRAGE_H
 
+#include <cmath>
+#include <vector>
+
 #include "../Image.h"
 #include "../Algorithm.h"
-#include "Matrix.h"
+#include "Filter.h"
 
 namespace imagein
 {
@@ -17,6 +20,7 @@ namespace imagein
 			
 			static Filtration uniformBlur(int coef, int nbPixels);
 			static Filtration prewitt(bool vertical, int nbPixels);
+      static Filtration gaussianBlur(double alpha);
 			
 		protected:
 			Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);

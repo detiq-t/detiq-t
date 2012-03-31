@@ -114,5 +114,58 @@ namespace imagein
 			Filtration f(filter);
 			return f;
 		}
-	}
+
+    Filtration Filtration::gaussianBlur(unsigned double alpha)
+    {
+
+      double alpha = atof(argv[1]);
+
+      std::vector<double> gaussCoef;
+
+      for (int i = 0; ; i++)
+      {
+        double coef = 10000.0 * std::exp(-(std::pow(i, 2.0)) / (2.0 * std::pow(alpha, 2))) / (2 * M_PI * std::pow(alpha, 2));
+        if (coef < 1)
+          break;
+        else
+          gaussCoef.push_back(coef);
+      }
+
+      std::cout << gaussCoef.size() * 2 - 1 << std::endl;
+
+      Filter f(gaussCoef.size() * 2 - 1, gaussCoef.size() * 2 - 1);
+      int center = gaussCoef.size() - 1;
+
+      for(int i = 0; i < gaussCoef.size(); i++)
+      {
+        for(int j = i; j < gaussCoef.size(); j++)
+        {
+          if(i == 0) /* values are already in gaussCoef, so no compute needed */
+          {
+            f[center][center + j] = gaussCoef[j];
+
+            if(j != 0)
+            {
+              f[center][center - j] = gaussCoef[j];
+              f[center - j][center] = gaussCoef[j];
+              f[center + j][center] = gaussCoef[j];
+            }
+          }
+          else
+          {
+            double coef = 10000.0 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2 * std::pow(alpha, 2))) / (2 * M_PI * std::pow(alpha, 2));
+
+            f[center + i][center + j] = coef;
+            f[center + i][center - j] = coef;
+            f[center - i][center + j] = coef;
+            f[center - i][center - j] = coef;
+            f[center + j][center + i] = coef;
+            f[center + j][center - i] = coef;
+            f[center - j][center + i] = coef;
+            f[center - j][center - i] = coef;
+          } 
+        }
+      }
+    }
+  }
 }
