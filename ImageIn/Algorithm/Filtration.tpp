@@ -29,9 +29,9 @@ namespace imagein
 		  
 		  int factor;
 		  if(posFactor >= -negFactor)
-			factor = posFactor;
+        factor = posFactor;
 		  else
-			factor = -negFactor;
+        factor = -negFactor;
 		  
 		  int halfHeightFilter = _filter.height() / 2;
 		  int halfWidthFilter = _filter.width() / 2;
@@ -43,31 +43,34 @@ namespace imagein
 		  
 		  for(int x = 0; x < width; x++)
 		  {
-			for(int y = 0; y < height; y++)
-			{
-			  for(int channel = 0; channel < nChannels; channel++)
-			  {
-				D newPixel = 0;
-				for(int i = 0; i < _filter.width(); i++)
-				{
-				  for(int j = 0; j < _filter.height(); j++)
-				  {
-					try
-					{
-					  newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
-					}
-					catch(std::out_of_range){}
-				  }
-				}
-				if(factor != 0)
-				{
-				  newPixel = newPixel / factor;
-				  if(newPixel < 0)
-					newPixel = 0;
-				}
-				result->setPixel(x, y, channel, newPixel);
-			  }
-			}
+        for(int y = 0; y < height; y++)
+        {
+          for(int channel = 0; channel < nChannels; channel++)
+          {
+            int newPixel = 0;
+
+            for(int i = 0; i < _filter.width(); i++)
+            {
+              for(int j = 0; j < _filter.height(); j++)
+              {
+                try
+                {
+                  newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
+                }
+                catch(std::out_of_range){}
+              }
+            }
+
+            if(factor != 0)
+            {
+              newPixel /= factor;
+
+              if(newPixel < 0)
+                newPixel = 0;
+            }
+            result->setPixel(x, y, channel, newPixel);
+          }
+        }
 		  }
 		  
 		  return result;

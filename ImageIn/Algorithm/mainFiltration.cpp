@@ -11,9 +11,10 @@ using namespace imagein::algorithm;
 
 int main(int argc, char** argv)
 {
-	Image img("../samples/grayscale.jpg");
+	Image img(argv[1]);
 
-	Filtration filtration = Filtration::uniformBlur();
+  Filtration filtration = Filtration::gaussianBlur(30.0);
+  //Filtration filtration = Filtration::uniformBlur();
 	
 	filtration(&img)->save("../samples/resultfiltration.png");
 
