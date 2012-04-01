@@ -3,6 +3,7 @@
 #include "Otsu.h"
 
 #include <algorithm>
+#include <cmath>
 
 namespace imagein {
 	namespace algorithm {
@@ -152,19 +153,45 @@ namespace imagein {
 			if(getNbComponents() > 0) {
 				//Color table construction
 				colours = new D*[getNbComponents()];
-				D step = 2 * (std::numeric_limits<D>::max() / (getNbComponents()-1));
+				double step = 360 / static_cast<double>(getNbComponents());
 				for(unsigned int i = 0 ; i < getNbComponents() ; ++i) {
 					colours[i] = new D[3];
 					
-					if(i <= getNbComponents() / 2) {
-						colours[i][0] = std::numeric_limits<D>::max() - i*step;
-						colours[i][1] = i * step;
+					double hue = static_cast<double>(i) * step / 60.0; //sector for hue
+					
+					double mod;
+					double decimal = std::modf(hue, &mod);
+					unsigned short int x = 255 * (1 - std::abs((static_cast<double>(static_cast<unsigned int>(mod)%2) + decimal) - 1));
+					
+					if(hue < 1) {
+						colours[i][0] = 255;
+						colours[i][1] = x;
 						colours[i][2] = 0;
 					}
-					else {
+					else if(hue < 2) {
+						colours[i][0] = x;
+						colours[i][1] = 255;
+						colours[i][2] = 0;
+					}
+					else if(hue < 3) {
 						colours[i][0] = 0;
-						colours[i][1] = std::numeric_limits<D>::max()-(i-getNbComponents()/2)*step;
-						colours[i][2] = (i-getNbComponents()/2)*step;
+						colours[i][1] = 255;
+						colours[i][2] = x;
+					}
+					else if(hue < 4) {
+						colours[i][0] = 0;
+						colours[i][1] = x;
+						colours[i][2] = 255;
+					}
+					else if(hue < 5) {
+						colours[i][0] = x;
+						colours[i][1] = 0;
+						colours[i][2] = 255;
+					}
+					else {
+						colours[i][0] = 255;
+						colours[i][1] = 0;
+						colours[i][2] = x;
 					}
 				}
 			}
