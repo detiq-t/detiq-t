@@ -9,6 +9,7 @@ $usage = "config.pl [clean]\n\t- delete the files created\n";
 #Preparation
 `rm Makefile 2> /dev/null`;
 `qmake -project`;
+`sed QtInterface.pro -e "s/TEMPLATE = app/TEMPLATE = lib/`;
 `qmake`;
 
 $pathLii = "";
