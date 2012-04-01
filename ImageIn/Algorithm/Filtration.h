@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <vector>
+#include <pthread.h>
 
 #include "../Image.h"
 #include "../Algorithm.h"
@@ -18,10 +19,15 @@ namespace imagein
 		public:
 			Filtration_t(Filter& filter) : _filter(filter) {}
 			Filtration_t(const Filtration_t & f) : _filter(f._filter) {}
+
+      //#ifdef __linux_
+      //static parallelAlgorithm(Filtration* this, Image_t<D*> img, int infx, supx);
+      //#endif
 			
 			static Filtration_t<D> uniformBlur(int coef, int nbPixels);
 			static Filtration_t<D> prewitt(bool vertical, int nbPixels);
 			static Filtration_t<D> gaussianBlur(double alpha);
+
 			
 			Filter _filter;
 			

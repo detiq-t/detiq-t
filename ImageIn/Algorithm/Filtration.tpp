@@ -57,7 +57,7 @@ namespace imagein
                 {
                   newPixel += _filter[i][j] * img->getPixel(x + i - halfWidthFilter, y + j - halfHeightFilter, channel);
                 }
-                catch(std::out_of_range){}
+                catch(std::out_of_range) {}
               }
             }
 
