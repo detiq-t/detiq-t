@@ -25,6 +25,7 @@
     </warnings>
 
 	<libname>imagein</libname>	
+  <pic>on</pic>
 
 	<sources>
 		BinaryImage.cpp
@@ -34,6 +35,7 @@
 		JpgImage.cpp
 		PngImage.cpp
 		EasyBMP.cpp
+    Algorithm/Filter.cpp
 	</sources>	
 </lib>
 

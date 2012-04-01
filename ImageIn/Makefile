@@ -40,8 +40,8 @@ DEBUG ?= 1
 ### Variables: ###
 
 CPPDEPS = -MT$@ -MF`echo $@ | sed -e 's,\.o$$,.d,'` -MD -MP
-IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(____DEBUG_6_7) \
-	$(CPPFLAGS) $(CXXFLAGS)
+IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(____DEBUG_6_7) \
+	-fPIC -DPIC $(CPPFLAGS) $(CXXFLAGS)
 IMAGEIN_OBJECTS =  \
 	ImageIn_BinaryImage.o \
 	ImageIn_BmpImage.o \
@@ -49,12 +49,13 @@ IMAGEIN_OBJECTS =  \
 	ImageIn_ImageFileFactory.o \
 	ImageIn_JpgImage.o \
 	ImageIn_PngImage.o \
-	ImageIn_EasyBMP.o
-IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(CPPFLAGS) \
+	ImageIn_EasyBMP.o \
+	ImageIn_Filter.o
+IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_MAIN_OBJECTS =  \
 	ImageIn_main_main.o
-IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_2) $(____DEBUG_1) $(CPPFLAGS) \
+IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_TEST_OBJECTS =  \
 	ImageIn_test_test_image.o
@@ -74,16 +75,16 @@ ifeq ($(DEBUG),1)
 ____DEBUG = 
 endif
 ifeq ($(DEBUG),0)
-____DEBUG_2 = -O2
+____DEBUG_1 = -O2
 endif
 ifeq ($(DEBUG),1)
-____DEBUG_2 = -O0
+____DEBUG_1 = -O0
 endif
 ifeq ($(DEBUG),0)
-____DEBUG_1 = 
+____DEBUG_4 = 
 endif
 ifeq ($(DEBUG),1)
-____DEBUG_1 = -g
+____DEBUG_4 = -g
 endif
 
 
@@ -108,10 +109,10 @@ libimagein.a: $(IMAGEIN_OBJECTS)
 	$(RANLIB) $@
 
 ImageIn_main: $(IMAGEIN_MAIN_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_1)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
 
 ImageIn_test: $(IMAGEIN_TEST_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_1)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
 
 ImageIn_BinaryImage.o: ./BinaryImage.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
@@ -132,6 +133,9 @@ ImageIn_PngImage.o: ./PngImage.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_EasyBMP.o: ./EasyBMP.cpp
+	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+
+ImageIn_Filter.o: ./Algorithm/Filter.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_main_main.o: ./main.cpp
