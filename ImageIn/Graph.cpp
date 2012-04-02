@@ -60,3 +60,17 @@ int Graph::getCapacity(int i, int j, bool directed) {
 	}
 	return 0;
 }
+
+bool Graph::edgeExists(int i, int j, bool directed) {
+	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
+	Edge* currentEdge;
+	for (currentEdge = _listOfVertices[i]->_edges; currentEdge; currentEdge = currentEdge->_next) {
+		if (currentEdge->_neighbour == j) return true;
+	}
+	if(!directed) {
+		for (currentEdge = _listOfVertices[j]->_edges; currentEdge; currentEdge = currentEdge->_next) {
+			if (currentEdge->_neighbour == i) return true;
+		}
+	}
+	return false;
+}

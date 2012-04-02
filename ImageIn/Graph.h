@@ -117,6 +117,17 @@ namespace imagein
 			 * \return The capacity of the edge, 0 if no edge between the vertices i and j was found
              */
 			int getCapacity(int i, int j, bool directed=false);
+			
+			/*!
+             * \brief Check if an edge exists between the vertices i and j.
+			 *
+             * \param i Head of the edge
+			 * \param j Tail of the edge
+			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed the edge must link the head i to the tail j, if not directed ImageIn also search for an edge linking the head j to the tail i. Default value = false
+             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+			 * \return true if an edge was found, false if no edge was found
+             */
+			bool edgeExists(int i, int j, bool directed=false);
     };
 }
 
