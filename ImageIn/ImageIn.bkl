@@ -35,7 +35,8 @@
 		JpgImage.cpp
 		PngImage.cpp
 		EasyBMP.cpp
-    Algorithm/Filter.cpp
+		Graph.cpp
+		Algorithm/Filter.cpp
 	</sources>	
 </lib>
 

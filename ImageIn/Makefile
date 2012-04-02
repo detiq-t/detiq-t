@@ -10,26 +10,22 @@
 # These are configurable options:
 # -------------------------------------------------------------------------
 
-#  
-AR ?= ar
-
-#  
-RANLIB ?= ranlib
-
 # C++ compiler 
-CXX = g++
+CXX = cl
 
 # Standard flags for C++ 
-CXXFLAGS ?= 
+CXXFLAGS = 
 
 # Standard preprocessor flags (common for CC and CXX) 
-CPPFLAGS ?= 
+CPPFLAGS = 
 
 # Standard linker flags 
-LDFLAGS ?= 
+LDFLAGS = 
 
 # Set to 0 to build release version [0,1]
-DEBUG ?= 1
+#   0 - Release
+#   1 - Debug
+DEBUG = 1
 
 
 
@@ -39,113 +35,156 @@ DEBUG ?= 1
 
 ### Variables: ###
 
-CPPDEPS = -MT$@ -MF`echo $@ | sed -e 's,\.o$$,.d,'` -MD -MP
-IMAGEIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(____DEBUG_6_7) \
-	-fPIC -DPIC $(CPPFLAGS) $(CXXFLAGS)
+IMAGEIN_CXXFLAGS = /MD$(____DEBUG_6) /DWIN32 $(____DEBUG) $(____DEBUG_3) \
+	$(____DEBUG_4) $(______DEBUG) /Fdimagein.pdb $(____DEBUG_12_13) /GR /EHsc \
+	$(CPPFLAGS) $(CXXFLAGS)
 IMAGEIN_OBJECTS =  \
-	ImageIn_BinaryImage.o \
-	ImageIn_BmpImage.o \
-	ImageIn_ImageFileAbsFactory.o \
-	ImageIn_ImageFileFactory.o \
-	ImageIn_JpgImage.o \
-	ImageIn_PngImage.o \
-	ImageIn_EasyBMP.o \
-	ImageIn_Filter.o
-IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(CPPFLAGS) \
-	$(CXXFLAGS)
+	ImageIn_BinaryImage.obj \
+	ImageIn_BmpImage.obj \
+	ImageIn_ImageFileAbsFactory.obj \
+	ImageIn_ImageFileFactory.obj \
+	ImageIn_JpgImage.obj \
+	ImageIn_PngImage.obj \
+	ImageIn_EasyBMP.obj \
+	ImageIn_Graph.obj \
+	ImageIn_Filter.obj
+IMAGEIN_MAIN_CXXFLAGS = /MD$(____DEBUG_6) /DWIN32 $(____DEBUG) $(____DEBUG_3) \
+	$(____DEBUG_4) $(______DEBUG) /FdImageIn_main.pdb /D_CONSOLE /GR /EHsc \
+	$(CPPFLAGS) $(CXXFLAGS)
 IMAGEIN_MAIN_OBJECTS =  \
-	ImageIn_main_main.o
-IMAGEIN_TEST_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(CPPFLAGS) \
-	$(CXXFLAGS)
+	ImageIn_main_main.obj
+IMAGEIN_TEST_CXXFLAGS = /MD$(____DEBUG_6) /DWIN32 $(____DEBUG) $(____DEBUG_3) \
+	$(____DEBUG_4) $(______DEBUG) /FdImageIn_test.pdb /D_CONSOLE /GR /EHsc \
+	$(CPPFLAGS) $(CXXFLAGS)
 IMAGEIN_TEST_OBJECTS =  \
-	ImageIn_test_test_image.o
+	ImageIn_test_test_image.obj
 
 ### Conditionally set variables: ###
 
-ifeq ($(DEBUG),0)
-____DEBUG_6_7 = 
-endif
-ifeq ($(DEBUG),1)
-____DEBUG_6_7 = -W -Wall
-endif
-ifeq ($(DEBUG),0)
-____DEBUG = -DNDEBUG
-endif
-ifeq ($(DEBUG),1)
+!if "$(DEBUG)" == "0"
+____DEBUG_12_13 = 
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_12_13 = /W4
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_20_26 = 
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_20_26 = $(____DEBUG_7)
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_34_40 = 
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_34_40 = $(____DEBUG_7)
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG = /DNDEBUG
+!endif
+!if "$(DEBUG)" == "1"
 ____DEBUG = 
-endif
-ifeq ($(DEBUG),0)
-____DEBUG_1 = -O2
-endif
-ifeq ($(DEBUG),1)
-____DEBUG_1 = -O0
-endif
-ifeq ($(DEBUG),0)
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_3 = /O2
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_3 = /Od
+!endif
+!if "$(DEBUG)" == "0"
 ____DEBUG_4 = 
-endif
-ifeq ($(DEBUG),1)
-____DEBUG_4 = -g
-endif
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_4 = /Zi
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_5 = 
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_5 = /DEBUG
+!endif
+!if "$(DEBUG)" == "0"
+______DEBUG = 
+!endif
+!if "$(DEBUG)" == "1"
+______DEBUG = /D_DEBUG
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_6 = 
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_6 = d
+!endif
+!if "$(DEBUG)" == "0"
+____DEBUG_7 = /opt:ref /opt:icf
+!endif
+!if "$(DEBUG)" == "1"
+____DEBUG_7 = 
+!endif
 
 
 ### Targets: ###
 
-all: libimagein.a ImageIn_main ImageIn_test
-
-install: 
-
-uninstall: 
+all: imagein.lib ImageIn_main.exe ImageIn_test.exe
 
 clean: 
-	rm -f ./*.o
-	rm -f ./*.d
-	rm -f libimagein.a
-	rm -f ImageIn_main
-	rm -f ImageIn_test
+	-if exist .\*.obj del .\*.obj
+	-if exist .\*.res del .\*.res
+	-if exist .\*.pch del .\*.pch
+	-if exist imagein.lib del imagein.lib
+	-if exist ImageIn_main.exe del ImageIn_main.exe
+	-if exist ImageIn_main.ilk del ImageIn_main.ilk
+	-if exist ImageIn_main.pdb del ImageIn_main.pdb
+	-if exist ImageIn_test.exe del ImageIn_test.exe
+	-if exist ImageIn_test.ilk del ImageIn_test.ilk
+	-if exist ImageIn_test.pdb del ImageIn_test.pdb
 
-libimagein.a: $(IMAGEIN_OBJECTS)
-	rm -f $@
-	$(AR) rcu $@ $(IMAGEIN_OBJECTS)
-	$(RANLIB) $@
+imagein.lib: $(IMAGEIN_OBJECTS)
+	if exist $@ del $@
+	link /LIB /NOLOGO /OUT:$@ @<<
+	$(IMAGEIN_OBJECTS)
+<<
 
-ImageIn_main: $(IMAGEIN_MAIN_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+ImageIn_main.exe: $(IMAGEIN_MAIN_OBJECTS) imagein.lib
+	link /NOLOGO /OUT:$@  $(____DEBUG_5) /pdb:"ImageIn_main.pdb" $(____DEBUG_20_26) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
+	$(IMAGEIN_MAIN_OBJECTS)   imagein.lib png.lib jpeg.lib z.lib
+<<
 
-ImageIn_test: $(IMAGEIN_TEST_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+ImageIn_test.exe: $(IMAGEIN_TEST_OBJECTS) imagein.lib
+	link /NOLOGO /OUT:$@  $(____DEBUG_5) /pdb:"ImageIn_test.pdb" $(____DEBUG_34_40) /SUBSYSTEM:CONSOLE $(LDFLAGS) @<<
+	$(IMAGEIN_TEST_OBJECTS)   imagein.lib png.lib jpeg.lib z.lib
+<<
 
-ImageIn_BinaryImage.o: ./BinaryImage.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_BinaryImage.obj: .\BinaryImage.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\BinaryImage.cpp
 
-ImageIn_BmpImage.o: ./BmpImage.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_BmpImage.obj: .\BmpImage.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\BmpImage.cpp
 
-ImageIn_ImageFileAbsFactory.o: ./ImageFileAbsFactory.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_ImageFileAbsFactory.obj: .\ImageFileAbsFactory.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\ImageFileAbsFactory.cpp
 
-ImageIn_ImageFileFactory.o: ./ImageFileFactory.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_ImageFileFactory.obj: .\ImageFileFactory.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\ImageFileFactory.cpp
 
-ImageIn_JpgImage.o: ./JpgImage.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_JpgImage.obj: .\JpgImage.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\JpgImage.cpp
 
-ImageIn_PngImage.o: ./PngImage.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_PngImage.obj: .\PngImage.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\PngImage.cpp
 
-ImageIn_EasyBMP.o: ./EasyBMP.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_EasyBMP.obj: .\EasyBMP.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\EasyBMP.cpp
 
-ImageIn_Filter.o: ./Algorithm/Filter.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_Graph.obj: .\Graph.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\Graph.cpp
 
-ImageIn_main_main.o: ./main.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_MAIN_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_Filter.obj: .\Algorithm\Filter.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_CXXFLAGS) .\Algorithm\Filter.cpp
 
-ImageIn_test_test_image.o: ./test_image.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_TEST_CXXFLAGS) $(CPPDEPS) $<
+ImageIn_main_main.obj: .\main.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_MAIN_CXXFLAGS) .\main.cpp
 
-.PHONY: all install uninstall clean
+ImageIn_test_test_image.obj: .\test_image.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(IMAGEIN_TEST_CXXFLAGS) .\test_image.cpp
 
-
-# Dependencies tracking:
--include ./*.d
