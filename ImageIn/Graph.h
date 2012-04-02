@@ -4,7 +4,7 @@
 namespace imagein
 {
     /*!
-     * \brief Implementation of a graph with using linked lists of the edges between each vertex.
+     * \brief Implementation of a graph using linked lists of the edges between each vertex.
      *
      * An implementation of a graph with an adjacency matrix would have needed a large amount of memory 
 	 * in order to represent a graph applied to an image in which each vertex is a pixel and its edges 
@@ -36,7 +36,7 @@ namespace imagein
 				 * \brief Classical destructor for Edge.
 				 */
 				inline virtual ~Edge() { delete _next; };
-			}
+			};
 			
 			/*!
 			 * \brief Inner class representing a vertex in the graph.
@@ -67,7 +67,7 @@ namespace imagein
 				 * \return true if an edge was found and deleted, false if no edge was found
 				 */
 				bool removeEdge(int neighbour);
-			}
+			};
 			
 			int _nbVertices; //!< Number of vertices in the graph
 			Vertex* _listOfVertices; //!< List of all the vertices of the graph
