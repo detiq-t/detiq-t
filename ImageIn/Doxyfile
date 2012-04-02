@@ -640,6 +640,7 @@ INPUT                  = Algorithm.h \
 						 ProjectionHistogram.h \
                          Rectangle.h \
                          RgbImage.h \
+						 Graph.h \
                          Algorithm/Average.h \
                          Algorithm/BitPlane.h \
                          Algorithm/Identity.h \

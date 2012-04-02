@@ -59,6 +59,14 @@ namespace imagein
 				 * \param capacity Capacity of the edge
 				 */
 				void addEdge(int neighbour, int capacity=0);
+				
+				/*!
+				 * \brief Remove the first edge found between the current vertex and its neighbour if it exists
+				 *
+				 * \param neighbour Vertex in the graph to which the edge is linked
+				 * \return true if an edge was found and deleted, false if no edge was found
+				 */
+				bool removeEdge(int neighbour);
 			}
 			
 			int _nbVertices; //!< Number of vertices in the graph
@@ -84,17 +92,29 @@ namespace imagein
 			 * \param capacity Capacity of the edge
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
              */
-			void addEdge(int i, int j, int capacity=0);
+			bool addEdge(int i, int j, int capacity=0);
+			
+			/*!
+             * \brief Remove the first edge found between the vertices i and j.
+			 *
+             * \param i Head of the edge
+			 * \param j Tail of the edge
+			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed ImageIn tries to remove the first edge found between the head i and the tail j, if not directed if ImageIn hasn't found an edge between i and j it also searches for an edge between j and i to remove it. Default value = false
+             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+			 * \return true if an edge was found and deleted, false if no edge was found
+             */
+			bool removeEdge(int i, int j, bool directed=false);
 			
 			/*!
              * \brief Return the capacity of the edge between the vertices i and j.
 			 *
              * \param i Head of the edge
 			 * \param j Tail of the edge
+			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed the edge must link the head i to the tail j, if not directed ImageIn also search for an edge linking the head j to the tail i. Default value = false
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
 			 * \return The capacity of the edge, 0 if no edge between the vertices i and j was found
              */
-			int getCapacity(int i, int j);
+			int getCapacity(int i, int j, bool directed=false);
     };
 }
 
