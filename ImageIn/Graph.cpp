@@ -1,4 +1,6 @@
 #include "Graph.h"
+#include <cstdlib>
+#include <stdexcept>
 
 using namespace imagein;
 
@@ -9,11 +11,11 @@ void Graph::Vertex::addEdge(int neighbour, int capacity) {
 	_edges = newEdge;
 }
 
-void Graph::Vertex::removeEdge(int neighbour) {
+bool Graph::Vertex::removeEdge(int neighbour) {
 	Edge* currentEdge;
 	Edge* previousEdge;
 	for (currentEdge = _edges; currentEdge; currentEdge = currentEdge->_next) {
-		if (currentEdge->_neighbour == j) {
+		if (currentEdge->_neighbour == neighbour) {
 			if(previousEdge) previousEdge->_next = currentEdge->_next;
 			else _edges = currentEdge->_next;
 			currentEdge->_next = NULL;
@@ -23,6 +25,14 @@ void Graph::Vertex::removeEdge(int neighbour) {
 		previousEdge = currentEdge;
 	}
 	return false;
+}
+
+Graph::Graph(int nbVertices) : _nbVertices(nbVertices) {
+	_listOfVertices = new Vertex*[nbVertices];
+	int i;
+	for(i=0;i<nbVertices;i++) {
+		_listOfVertices[i] = new Vertex();
+	}
 }
 
 void Graph::addEdge(int i, int j, int capacity) {

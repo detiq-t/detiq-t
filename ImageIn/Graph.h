@@ -21,56 +21,58 @@ namespace imagein
 			 * \brief Inner class representing an edge in the graph.
 			 */
 			class Edge {
-				int _neighbour; //!< Vertex in the graph to which the edge is linked
-				int _capacity; //!< Capacity of the edge
-				Edge* _next; //!< Next edge of the vertex in the linked list
-				
-				/*!
-				 * \brief Constructs an Edge.
-				 *
-				 * \param neighbour Vertex in the graph to which the edge is linked
-				 * \param capacity Capacity of the edge
-				 */
-				inline Edge(int neighbour, int capacity=0) : _neighbour(neighbour), _capacity(capacity) {};
-				/*!
-				 * \brief Classical destructor for Edge.
-				 */
-				inline virtual ~Edge() { delete _next; };
+				public:
+					int _neighbour; //!< Vertex in the graph to which the edge is linked
+					int _capacity; //!< Capacity of the edge
+					Edge* _next; //!< Next edge of the vertex in the linked list
+					
+					/*!
+					 * \brief Constructs an Edge.
+					 *
+					 * \param neighbour Vertex in the graph to which the edge is linked
+					 * \param capacity Capacity of the edge
+					 */
+					inline Edge(int neighbour, int capacity=0) : _neighbour(neighbour), _capacity(capacity) {};
+					/*!
+					 * \brief Classical destructor for Edge.
+					 */
+					inline virtual ~Edge() { delete _next; };
 			};
 			
 			/*!
 			 * \brief Inner class representing a vertex in the graph.
 			 */
 			class Vertex {
-				Edge* _edges; //!< Linked list of all the edges of the vertex
-				
-				/*!
-				 * \brief Constructs a Vertex.
-				 */
-				inline Vertex() {};
-				/*!
-				 * \brief Classical destructor for Vertex.
-				 */
-				inline virtual ~Vertex() { delete _edges; };
-				/*!
-				 * \brief Add an edge to the vertex
-				 *
-				 * \param neighbour Vertex in the graph to which the edge is linked
-				 * \param capacity Capacity of the edge
-				 */
-				void addEdge(int neighbour, int capacity=0);
-				
-				/*!
-				 * \brief Remove the first edge found between the current vertex and its neighbour if it exists
-				 *
-				 * \param neighbour Vertex in the graph to which the edge is linked
-				 * \return true if an edge was found and deleted, false if no edge was found
-				 */
-				bool removeEdge(int neighbour);
+				public:
+					Edge* _edges; //!< Linked list of all the edges of the vertex
+					
+					/*!
+					 * \brief Constructs a Vertex.
+					 */
+					inline Vertex() {};
+					/*!
+					 * \brief Classical destructor for Vertex.
+					 */
+					inline virtual ~Vertex() { delete _edges; };
+					/*!
+					 * \brief Add an edge to the vertex
+					 *
+					 * \param neighbour Vertex in the graph to which the edge is linked
+					 * \param capacity Capacity of the edge
+					 */
+					void addEdge(int neighbour, int capacity=0);
+					
+					/*!
+					 * \brief Remove the first edge found between the current vertex and its neighbour if it exists
+					 *
+					 * \param neighbour Vertex in the graph to which the edge is linked
+					 * \return true if an edge was found and deleted, false if no edge was found
+					 */
+					bool removeEdge(int neighbour);
 			};
 			
 			int _nbVertices; //!< Number of vertices in the graph
-			Vertex* _listOfVertices; //!< List of all the vertices of the graph
+			Vertex** _listOfVertices; //!< List of all the vertices of the graph
 			
         public:
 			/*!
@@ -78,7 +80,7 @@ namespace imagein
 			 *
 			 * \param nbVertices Number of vertices in the graph
 			 */
-			inline Graph(int nbVertices) : _nbVertices(nbVertices) { _listOfVertices = new Vertex[nbVertices]; };
+			Graph(int nbVertices);
 			/*!
 			 * \brief Classical destructor for Graph.
 			 */
@@ -92,7 +94,7 @@ namespace imagein
 			 * \param capacity Capacity of the edge
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
              */
-			bool addEdge(int i, int j, int capacity=0);
+			void addEdge(int i, int j, int capacity=0);
 			
 			/*!
              * \brief Remove the first edge found between the vertices i and j.
