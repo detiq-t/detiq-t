@@ -9,7 +9,6 @@ $usage = "config.pl [clean]\n\t- delete the files created\n";
 #Preparation
 `rm Makefile 2> /dev/null`;
 `qmake -project`;
-`sed QtInterface.pro -i -e "s/TEMPLATE = app/TEMPLATE = lib/`;
 `qmake`;
 
 $pathLii = "";
@@ -141,7 +140,7 @@ elsif($#ARGV == -1)
         $inc = 1;
         $inc && $l && last;
       }
-      if($line =~ "(.*/)lib(qwt.*).so" && !$l)
+      if($line =~ "(.*/)libqwt.so" && !$l)
       {
         $pathLqwt = $1;
         $qwtname = $2;
@@ -158,8 +157,8 @@ elsif($#ARGV == -1)
         $qwtname = $2;
 
         print LQWT "$pathLqwt\n$qwtname\n";
-
         print "qwt lib found: $pathLqwt\n";
+
         $l = 1;
         $inc && $l && last;
       }
@@ -209,21 +208,16 @@ elsif($#ARGV == -1)
     {
       if(!($line =~ "^LIBS"))
       {
+        print NMAKEFILE "LIBS          += -L/usr/lib/\n";
+        print "added line: LIBS          += -L/usr/lib/\n";
         print NMAKEFILE "LIBS          += -L$pathLii -limagein\n";
         print "added line: LIBS          += -L$pathLii -limagein\n";
-        print NMAKEFILE "LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
-        print "added line: LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
-      }
-    }
-
-    if($oldline =~ "^INCPATH")
-    {
-      if(!($line =~ "^INCPATH"))
-      {
+        #print NMAKEFILE "LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng -lpthread\n";
+        #print "added line: LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng -lpthread\n";
         print NMAKEFILE "INCPATH       += -I$pathIncii\n";
         print "added line: INCPATH       += -I$pathIncii\n";
-        print NMAKEFILE "INCPATH       += -I$pathqwt\n";
-        print "added line: INCPATH       += -I$pathqwt\n";
+        #print NMAKEFILE "INCPATH       += -I$pathqwt\n";
+        #print "added line: INCPATH       += -I$pathqwt\n";
       }
     }
 
