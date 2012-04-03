@@ -15,7 +15,7 @@ while($ligne = <PRO>)
 
   if($ligne =~ /TEMPLATE/)
   {
-    print NPRO "TEMPLATE = lib\nCONFIG += staticlib\nLIBS += -lqwt -limagein -lpng -ljpeg\n";
+    print NPRO "TEMPLATE = lib\nLIBS += -lqwt -limagein -lpng -ljpeg\n";
     $w = 1;
   }
 }

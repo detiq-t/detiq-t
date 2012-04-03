@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "../QtInterface/GenericInterface.h"
+#include <GenericInterface.h>
 
 using namespace genericinterface;
 
