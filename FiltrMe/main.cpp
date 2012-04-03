@@ -1,8 +1,17 @@
-#include <GenericInterface.h>
+#include <QApplication>
+#include "../QtInterface/GenericInterface.h"
 
-int main(int argc, char** argv)
+using namespace genericinterface;
+
+int main (int argc, char** argv)
 {
-  genericinterface::GenericInterface gi;
+  QApplication app (argc, argv);
 
-  return 0;
+  Log::configure (true, false, 0);
+
+  GenericInterface m;
+
+  m.run ();
+
+  return app.exec ();
 }

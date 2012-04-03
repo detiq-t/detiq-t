@@ -10,13 +10,25 @@
 
 CC            = gcc
 CXX           = g++
+<<<<<<< .mine
+DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED
+CFLAGS        = -m64 -pipe -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2 -Wall -W -D_REENTRANT $(DEFINES)
+CXXFLAGS      = -m64 -pipe -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2 -Wall -W -D_REENTRANT $(DEFINES)
+INCPATH       = -I/usr/share/qt/mkspecs/linux-g++-64 -I. -I/usr/include/QtCore -I/usr/include/QtGui -I/usr/include -I. -IWidgets -I.
+=======
 DEFINES       = -DQT_WEBKIT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED
 CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)
 INCPATH       = -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -IWidgets -I.
+>>>>>>> .r582
 LINK          = g++
+<<<<<<< .mine
+LFLAGS        = -m64 -Wl,-O1,--sort-common,--as-needed,-z,relro,--hash-style=gnu -Wl,-O1
+LIBS          = $(SUBLIBS)  -L/usr/lib -lQtInterface -lqwt -limagein -lpng -ljpeg -lQtGui -lQtCore -lpthread 
+=======
 LFLAGS        = -m64 -Wl,-O1
 LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -lQtGui -lQtCore -lpthread 
+>>>>>>> .r582
 AR            = ar cqs
 RANLIB        = 
 QMAKE         = /usr/bin/qmake
@@ -191,7 +203,32 @@ compiler_clean:
 
 ####### Compile
 
-main.o: main.cpp 
+main.o: main.cpp ../QtInterface/GenericInterface.h \
+		../QtInterface/InterfaceExceptions.h \
+		../QtInterface/Utilities/Log.h \
+		../QtInterface/Service.h \
+		../QtInterface/ServiceExceptions.h \
+		../QtInterface/Services/WindowService.h \
+		../QtInterface/Widgets/ImageWidgets/StandardImageWindow.h \
+		../QtInterface/Widgets/ImageWidgets/ImageWindow.h \
+		../QtInterface/Widgets/ImageWidgets/RowWindow.h \
+		../QtInterface/Widgets/ImageWidgets/RowView.h \
+		../QtInterface/Widgets/ImageWidgets/GenericHistogramView.h \
+		../QtInterface/Widgets/ImageWidgets/HistogramPicker.h \
+		../QtInterface/Widgets/ImageWidgets/GraphicalHistogram.h \
+		../QtInterface/Widgets/ImageWidgets/AlternativeImageView.h \
+		../QtInterface/Widgets/ImageWidgets/HistogramWindow.h \
+		../QtInterface/Widgets/ImageWidgets/HistogramView.h \
+		../QtInterface/Widgets/ImageWidgets/ProjectionHistogramWindow.h \
+		../QtInterface/Widgets/ImageWidgets/ProjectionHistogramView.h \
+		../QtInterface/Widgets/ImageWidgets/StandardImageView.h \
+		../QtInterface/Widgets/ImageWidgets/ImageContextMenu.h \
+		../QtInterface/Widgets/ImageWidgets/GridWindow.h \
+		../QtInterface/Widgets/NavBar/NavigationDock.h \
+		../QtInterface/Widgets/NavBar/NavigationBar.h \
+		../QtInterface/Widgets/NavBar/ImageDelegate.h \
+		../QtInterface/Services/FileService.h \
+		../QtInterface/Services/AlgorithmService.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 FilterEdition.o: Widgets/FilterEdition.cpp Widgets/FilterEdition.h

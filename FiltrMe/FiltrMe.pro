@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += . Widgets
 INCLUDEPATH += . Widgets
+LIBS += -lQtInterface -lqwt -limagein -lpng -ljpeg
 
 # Input
 HEADERS += Widgets/FilterEdition.h

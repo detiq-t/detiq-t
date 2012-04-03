@@ -9,7 +9,6 @@ $usage = "config.pl [clean]\n\t- delete the files created\n";
 #Preparation
 `rm Makefile 2> /dev/null`;
 `qmake -project`;
-`sed QtInterface.pro -e "s/TEMPLATE = app/TEMPLATE = lib/`;
 `qmake`;
 
 $pathLQtI = "";
@@ -133,10 +132,10 @@ elsif($#ARGV == -1)
 
     while($line = <TMP>)
     {
-      if($line =~ "(.*face/)GenericInterface.h")
+      if($line =~ "(.*ce/)GenericInterface.h")
       {
         $pathIQtI = $1;
-        print "Imaginein's header found: $pathIQtI\n";
+        print "genericinterface's header found: $pathIQtI\n";
         print GI $pathIQtI;
         last;
       }
@@ -162,15 +161,15 @@ elsif($#ARGV == -1)
   #INCLUDES
   if(`ls -a .config_Lgi 2> /dev/null` eq "")
   {
-    `find /usr -name "libQtInterface.so" >> .tmp 2> /dev/null`;
-    `find /home -name "libQtInterface.so" >> .tmp 2> /dev/null`;
+    `find /usr -name "libQtInterface.a" >> .tmp 2> /dev/null`;
+    `find /home -name "libQtInterface.a" >> .tmp 2> /dev/null`;
 
     open TMP, ".tmp";
     open GI, ">.config_Lgi";
 
     while($line = <TMP>)
     {
-      if($line =~ "(.*/)libQtInterface.so")
+      if($line =~ "(.*/)libQtInterface.a")
       {
         $pathLQtI = $1;
         print GI "$pathLQtI";
@@ -191,7 +190,7 @@ elsif($#ARGV == -1)
 
     print "get info in .config_Lgi\n";
 
-    $pathLQtI = <II>;
+    $pathLQtI = <GI>;
     chomp($pathLQtI);
 
     close GI;
@@ -296,10 +295,12 @@ elsif($#ARGV == -1)
     {
       if(!($line =~ "^LIBS"))
       {
+        print NMAKEFILE "LIBS          += -L/usr/lib/\n";
+        print "added line: LIBS          += -L/usr/lib/\n";
         print NMAKEFILE "LIBS          += -L$pathLii -limagein\n";
         print "added line: LIBS          += -L$pathLii -limagein\n";
-        print NMAKEFILE "LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
-        print "added line: LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng\n";
+        print NMAKEFILE "LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng -lpthread\n";
+        print "added line: LIBS          += -L$pathLqwt -lqwt -ljpeg -lpng -lpthread\n";
         print NMAKEFILE "LIBS          += -L$pathLQtI -lQtInterface\n";
         print "added line: LIBS          += -L$pathLQtI -lQtInterface\n";
       }
