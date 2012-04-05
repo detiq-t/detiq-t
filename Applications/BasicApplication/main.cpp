@@ -1,19 +1,20 @@
 #include <QApplication>
-#include "GenericInterface_r564/GenericInterface.h"
+
+#include <GenericInterface.h>
 #include "BasicAlgorithmService.h"
 
 using namespace genericinterface;
 
-int main (int argc, char** argv)
+int main(int argc, char** argv)
 {
-  QApplication app (argc, argv);
+  QApplication app(argc, argv);
 
-  Log::configure (true, false, 0);
+  Log::configure(true, false, 0);
 
   GenericInterface m;
   m.addService(2, new BasicAlgorithmService);
 
-  m.run ();
+  m.run();
 
   return app.exec ();
 }

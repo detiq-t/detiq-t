@@ -1,8 +1,7 @@
 #ifndef BASICALGORITHMSERVICE_H
 #define BASICALGORITHMSERVICE_H
 
-#include "GenericInterface_r564/Services/AlgorithmService.h"
-#include "GenericInterface_r564/Widgets/ImageWidgets/StandardImageWindow.h"
+#include <Services/AlgorithmService.h>
 
 namespace genericinterface
 {
@@ -15,21 +14,16 @@ namespace genericinterface
   {
   Q_OBJECT
   public:
-    void connect(GenericInterface* gi);
     void display(GenericInterface* gi);
+    void connect(GenericInterface* gi);
 
   public slots:
     void applyIdentity();
     void applyInversion();
-	 //void applyAverage();
-
-  signals:
-    void newImageWindowCreated(const QString& path, ImageWindow* widget);
 
   private:
     QAction* _identity;
     QAction* _inversion;
-    //QAction* _average;
   };
 }
 
