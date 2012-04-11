@@ -23,6 +23,7 @@ namespace genericinterface
 #include "Service.h"
 #include "Services/WindowService.h"
 #include "Services/FileService.h"
+#include "Services/UtilityService.h"
 #include "Services/AlgorithmService.h"
 
 /**
@@ -49,7 +50,7 @@ namespace genericinterface
     * <ul>
     *   <li> WindowService : 0
     *   <li> FileService : 1
-    *   <li> UtilityService : -1
+    *   <li> UtilityService : 2
     * </ul>
     *
     * <p>

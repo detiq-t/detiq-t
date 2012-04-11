@@ -7,6 +7,7 @@ GenericInterface::GenericInterface()
 {
   addService(0, new WindowService);
   addService(1, new FileService);
+  addService(2, new UtilityService);
 }
 
 void GenericInterface::addService(int id, Service* s) throw (BadIdException)

@@ -11,13 +11,15 @@ void WindowService::display(GenericInterface* gi)
   gi->addDockWidget(Qt::LeftDockWidgetArea, dock);
 
   dock->setWidget(_nav = new NavigationDock);
-  QObject::connect(_nav, SIGNAL(actionDone()), this, SLOT(updateDisplay()));
-  QObject::connect(_nav, SIGNAL(removeRootImage(const QString&)), this, SLOT(removeRootImage(const QString&)));
 }
 
 void WindowService::connect(GenericInterface* gi)
 {
   _gi = gi;
+  QObject::connect(_nav, SIGNAL(actionDone()), this, SLOT(updateDisplay()));
+  QObject::connect(_nav, SIGNAL(removeRootImage(const QString&)), this, SLOT(removeRootImage(const QString&)));
+  
+  QObject::connect(_mdi, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SIGNAL(subWindowActivated(QMdiSubWindow*)));
 }
 
 ImageWindow* WindowService::getCurrentImageWindow()
