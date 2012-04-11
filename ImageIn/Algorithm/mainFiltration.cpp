@@ -3,7 +3,7 @@
 #include <list>
 
 #include "../Image.h"
-#include "Filtration.h"
+#include "Filtering.h"
 
 using namespace std;
 using namespace imagein;
@@ -13,12 +13,13 @@ int main(int argc, char** argv)
 {
 	Image img(argv[1]);
 
-	//Filtration filtration = Filtration::prewitt(false, 5);
-	//Filtration filtration = Filtration::gaussianBlur(2.0);
+	//Filtering filtering = Filtering::prewitt(false, 5);
+	//Filtering filtering = Filtering::gaussianBlur(2.0);
 	
-	Filtration filtration = Filtration::uniformBlur(30, 5);
-	filtration.setPolitic(Filtration::sphericalPolitic);
-	filtration(&img)->save("../samples/resultfiltration.png");
-
+	Filtering filtering = Filtering::sobel();
+	filtering.setNormalization(Filtering::absoluteNormalization);
+	//filtering.setPolitic(Filtering::sphericalPolicy);
+	filtering(&img)->save("../samples/resultFiltering.png");
+	
 	return 0;
 }

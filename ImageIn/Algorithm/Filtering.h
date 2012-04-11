@@ -13,20 +13,25 @@ namespace imagein
 	namespace algorithm
 	{		
 		template <typename D>
-		class Filtration_t : public Algorithm_t<Image_t<D>, 1>
+		class Filtering_t : public Algorithm_t<Image_t<D>, 1>
 		{
-			typedef D (*Politic)(const Image_t<D>*, const int&, const int&, const int&);
+			typedef D (*Policy)(const Image_t<D>*, const int&, const int&, const int&);
+			typedef D (*Normalization)(int);
 		public:
-			Filtration_t(Filter& filter);
-			Filtration_t(const Filtration_t& f) : _filter(f._filter), _politic(f._politic) {}
+			Filtering_t(Filter* filter);
+			Filtering_t(std::vector<Filter*> filters);
+			Filtering_t(const Filtering_t& f) : _filters(f._filters), _policy(f._policy), _normalization(f._normalization) {}
 
-			inline void setPolitic(Politic politic) { _politic = politic; }
+			inline void setPolitic(Policy policy) { _policy = policy; }
+			inline void setNormalization(Normalization normalization) { _normalization = normalization; }
 			
-			static Filtration_t<D> uniformBlur(int coef, int nbPixels);
-			static Filtration_t<D> prewitt(bool vertical, int nbPixels);
-			static Filtration_t<D> gaussianBlur(double alpha);
+			static Filtering_t<D> uniformBlur(int coef, int numPixels);
+			static Filtering_t<D> gaussianBlur(double alpha);
+			static Filtering_t<D> prewitt(int coef, int numPixels);
+			static Filtering_t<D> roberts(int coef);
+			static Filtering_t<D> sobel(int coef);
 
-			static D blackPolitic(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static D blackPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{
 				D newPixel;
 				try
@@ -40,7 +45,7 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D mirrorPolitic(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static D mirrorPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{
 				D newPixel;
 				try
@@ -71,7 +76,7 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D nearestPolitic(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static D nearestPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{
 				D newPixel;
 				try
@@ -102,7 +107,7 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D sphericalPolitic(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static D sphericalPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{
 				D newPixel;
 				try
@@ -133,6 +138,12 @@ namespace imagein
 				return newPixel;
 			}
 			
+			static D zeroNormalization(int){ return 0; }
+			
+			static D absoluteNormalization(int i){ return i < 0 ? -i : i; }
+			
+			static D scaleNormalization(int i){ return 255 / 2 + i / 2; }
+			
 		protected:
 			#ifdef __linux__
 			static void* parallelAlgorithm(void* data);
@@ -141,24 +152,26 @@ namespace imagein
 			Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
 		
 		private:
-			Filter _filter;
-			Politic _politic;
+			std::vector<Filter*> _filters;
+			Policy _policy;
+			Normalization _normalization;
 			
 			struct ParallelArgs
 			{
 				const Image_t<D>* img;
 				Image_t<D>* result;
 				Filter* filter;
-				Politic politic;
+				Policy policy;
+				Normalization normalization;
 				int infx;
 				int supx;
 				int factor;
 			};
 		};
-		typedef Filtration_t<depth_default_t> Filtration; //!< Standard Algorithm Filtration with default depth.
+		typedef Filtering_t<depth_default_t> Filtering; //!< Standard Algorithm Filtering with default depth.
 	}
 }
 
-#include "Filtration.tpp"
+#include "Filtering.tpp"
 
 #endif //FILTRAGE_H
