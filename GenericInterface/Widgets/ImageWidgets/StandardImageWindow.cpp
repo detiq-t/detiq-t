@@ -57,7 +57,7 @@ void StandardImageWindow::showHistogram()
 
 	for(list<HistogramWindow*>::iterator it = histos.begin(); it != histos.end(); ++it)
 	{
-    dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, *it);
+    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, *it);
 	}
 }
 
@@ -83,7 +83,7 @@ void StandardImageWindow::showHProjectionHistogram()
 	{
 		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value);
 
-		dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+		dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 	} 
 }
 
@@ -98,7 +98,7 @@ void StandardImageWindow::showVProjectionHistogram()
 	{
 		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value, false);
 
-		dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+		dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 	} 
 }
 
@@ -107,7 +107,7 @@ void StandardImageWindow::showPixelsGrid()
   GridWindow* grid = new GridWindow(_path, this);
   grid->show();
   
-  dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, grid);
+  dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, grid);
 }
 
 void StandardImageWindow::showLineProfile()
@@ -116,7 +116,7 @@ void StandardImageWindow::showLineProfile()
 	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
 	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this);
 
-	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 }
 
 void StandardImageWindow::showColumnProfile()
@@ -125,7 +125,7 @@ void StandardImageWindow::showColumnProfile()
 	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
 	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this, true);
 
-	dynamic_cast<WindowService*>(_gi->getService(0))->addWidget(_path, histo);
+	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 }
 
 void StandardImageWindow::initStatusBar()

@@ -37,28 +37,32 @@ namespace genericinterface
 {
   class GenericInterface : public QMainWindow
   {
-    public:
+	public:
+	
+	enum StandardServiceId { WINDOW_SERVICE, FILE_SERVICE, UTILITY_SERVICE }; 
+	   
     GenericInterface();
 
     /**
-    * @brief Add a new service to the generic interface
+    * @brief Add a new service to the generic interface and returns its id
     *
     * <p>The integer using for the identification of one service is very important : it's thanks to
     * its you will be able to connect your services with other, including the default ones. The GenericInterface
     * gives a set of minimalist services, identify by an integer :</p>
     *
     * <ul>
-    *   <li> WindowService : 0
-    *   <li> FileService : 1
-    *   <li> UtilityService : 2
+    *   <li> WindowService : 0 (WINDOW_SERVICE)
+    *   <li> FileService : 1 (FILE_SERVICE)
+    *   <li> UtilityService : 2 (UTILITY_SERVICE)
     * </ul>
     *
     * <p>
     *
-    * @param id the identifier of the service
     * @param s the service to add
+	* @return id the identifier of the service
     */
-    void addService(int id, Service* s) throw (BadIdException);
+	int addService(Service* s);
+	
     /**
     * @brief Change the id service to a custom one.
     *
@@ -114,7 +118,29 @@ namespace genericinterface
     */
     std::map<int, Service*> _services;
     std::map<QString, QMenu*> _menus;
-
+	
+	int _nbServices;
+	
+	/**
+    * @brief Add a new service to the generic interface
+    *
+    * <p>The integer using for the identification of one service is very important : it's thanks to
+    * its you will be able to connect your services with other, including the default ones. The GenericInterface
+    * gives a set of minimalist services, identify by an integer :</p>
+    *
+    * <ul>
+    *   <li> WindowService : 0
+    *   <li> FileService : 1
+    *   <li> UtilityService : 2
+    * </ul>
+    *
+    * <p>
+    *
+    * @param id the identifier of the service
+    * @param s the service to add
+    */
+    void addService(int id, Service* s) throw (BadIdException);
+	
   private:
     /**
 	 * @brief Add the last elements of the interface : exit button, about qt, etc.

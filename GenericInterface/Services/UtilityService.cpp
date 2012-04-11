@@ -29,13 +29,13 @@ void UtilityService::connect(GenericInterface* gi)
 	QObject::connect(_showPixelsGrid, SIGNAL(triggered()), this, SLOT(showPixelsGrid()));
 	
 	//connexion des changements d'images
-	WindowService* ws = dynamic_cast<WindowService*>(gi->getService(0));
+	WindowService* ws = dynamic_cast<WindowService*>(gi->getService(GenericInterface::WINDOW_SERVICE));
 	QObject::connect(ws, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(checkActionsValid(QMdiSubWindow*)));
 }
 
 void UtilityService::showHistogram()
 {
-	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(0));
+	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
 	StandardImageWindow* curWindow = NULL;
 	
 	if(ws && (curWindow = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow()))) {
@@ -45,7 +45,7 @@ void UtilityService::showHistogram()
 
 void UtilityService::showHProjectionHistogram()
 {
-	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(0));
+	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
 	StandardImageWindow* curWindow = NULL;
 	
 	if(ws && (curWindow = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow()))) {
@@ -55,7 +55,7 @@ void UtilityService::showHProjectionHistogram()
 
 void UtilityService::showVProjectionHistogram()
 {
-	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(0));
+	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
 	StandardImageWindow* curWindow = NULL;
 	
 	if(ws && (curWindow = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow()))) {
@@ -65,7 +65,7 @@ void UtilityService::showVProjectionHistogram()
 
 void UtilityService::showPixelsGrid()
 {
-	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(0));
+	WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
 	StandardImageWindow* curWindow = NULL;
 	
 	if(ws && (curWindow = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow()))) {

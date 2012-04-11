@@ -6,7 +6,7 @@ void FileService::connect (GenericInterface* gi)
 {
   _gi = gi;
   QObject::connect(_open, SIGNAL(triggered()), this, SLOT(chooseFile()));
-  QObject::connect(this, SIGNAL(fileChosen(const QString&)), dynamic_cast<WindowService*>(gi->getService(0)), SLOT(addFile(const QString&)));
+  QObject::connect(this, SIGNAL(fileChosen(const QString&)), dynamic_cast<WindowService*>(gi->getService(GenericInterface::WINDOW_SERVICE)), SLOT(addFile(const QString&)));
 }
 
 void FileService::display (GenericInterface* gi)

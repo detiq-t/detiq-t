@@ -4,10 +4,18 @@ using namespace std;
 using namespace genericinterface;
 
 GenericInterface::GenericInterface()
+  : _nbServices(3)
 {
-  addService(0, new WindowService);
-  addService(1, new FileService);
-  addService(2, new UtilityService);
+  addService(WINDOW_SERVICE, new WindowService);
+  addService(FILE_SERVICE, new FileService);
+  addService(UTILITY_SERVICE, new UtilityService);
+}
+
+int GenericInterface::addService(Service* s)
+{
+	int id = this->_nbServices++;
+	this->addService(id, s);
+	return id;
 }
 
 void GenericInterface::addService(int id, Service* s) throw (BadIdException)
