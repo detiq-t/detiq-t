@@ -39,7 +39,7 @@ namespace genericinterface
   {
 	public:
 	
-	enum StandardServiceId { WINDOW_SERVICE, FILE_SERVICE, UTILITY_SERVICE }; 
+	enum { WINDOW_SERVICE, FILE_SERVICE, UTILITY_SERVICE }; 
 	   
     GenericInterface();
 
