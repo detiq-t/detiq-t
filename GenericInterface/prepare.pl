@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
 `qmake -project`;
-open PRO, "QtInterface.pro";
-open NPRO, ">NQtInterface.pro";
+open PRO, "GenericInterface.pro";
+open NPRO, ">NGenericInterface.pro";
 
 $wr = 0;
 
@@ -23,4 +23,4 @@ while($ligne = <PRO>)
 close PRO;
 close NPRO;
 
-`mv NQtInterface.pro QtInterface.pro`;
+`mv NGenericInterface.pro GenericInterface.pro`;
