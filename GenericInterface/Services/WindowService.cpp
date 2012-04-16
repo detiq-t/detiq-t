@@ -63,11 +63,11 @@ void WindowService::addWidget(const QString & path, ImageWindow* widget)
     QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
 
     QMdiSubWindow* source = _windows[path][0];
-	 if(source != sw)
-	 {
-		QObject::connect(widget, SIGNAL(highlightRectChange(const imagein::Rectangle*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(const imagein::Rectangle*)));
-		QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
-	 }
+    if(source != sw)
+    {
+      QObject::connect(widget, SIGNAL(highlightRectChange(const imagein::Rectangle*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(const imagein::Rectangle*)));
+      QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
+    }
     widget->show();
   }
 }

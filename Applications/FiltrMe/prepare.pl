@@ -15,7 +15,7 @@ while($ligne = <PRO>)
 
   if($ligne =~ /TEMPLATE/)
   {
-    print NPRO "TEMPLATE = app\nLIBS += -lqwt -limagein -lpng -ljpeg -lQtInterface\n";
+    print NPRO "TEMPLATE = app\nLIBS += -lqwt -limagein -lpng -ljpeg -lGenericInterface\n";
     $w = 1;
   }
 }
@@ -24,3 +24,4 @@ close PRO;
 close NPRO;
 
 `mv NFiltrMe.pro FiltrMe.pro`;
+

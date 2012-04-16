@@ -1,5 +1,9 @@
+#ifndef FILTER_H
+#define FILTER_H
+
 #include <iostream>
 #include <utility>
+#include <vector>
 
 namespace imagein
 {
@@ -50,10 +54,16 @@ namespace imagein
 		  inline int height() { return _height; }
 
 		  Line operator[] (int i);
-
+      
+      static std::vector<Filter*> uniform(int coef, int numPixels);
+			static std::vector<Filter*> gaussian(double alpha);
+			static std::vector<Filter*> prewitt(int coef, int numPixels);
+			static std::vector<Filter*> roberts(int coef);
+			static std::vector<Filter*> sobel(int coef);
+      
 		private:
-		  int _height;
 		  int _width;
+		  int _height;
 		  int* _mtrx;
 
 		};
@@ -67,3 +77,5 @@ namespace imagein
 		};
 	}
 }
+
+#endif //FILTER_H

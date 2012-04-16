@@ -21,8 +21,8 @@ namespace imagein
 			Filtering_t(Filter* filter);
 			Filtering_t(std::vector<Filter*> filters);
 			Filtering_t(const Filtering_t& f) : _filters(f._filters), _policy(f._policy), _normalization(f._normalization) {}
-
-			inline void setPolitic(Policy policy) { _policy = policy; }
+  
+			inline void setPolicy(Policy policy) { _policy = policy; }
 			inline void setNormalization(Normalization normalization) { _normalization = normalization; }
 			
 			static Filtering_t<D> uniformBlur(int coef, int numPixels);
