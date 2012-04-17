@@ -72,6 +72,7 @@ namespace imagein
 			};
 			
 			int _nbVertices; //!< Number of vertices in the graph
+			bool _directed; //!< States if the graph is directed or not
 			Vertex** _listOfVertices; //!< List of all the vertices of the graph
 			
         public:
@@ -79,8 +80,9 @@ namespace imagein
 			 * \brief Constructs an Graph.
 			 *
 			 * \param nbVertices Number of vertices in the graph
+			 * \param directed true if you want to create a directed graph. Default value = false
 			 */
-			Graph(int nbVertices);
+			Graph(int nbVertices, bool directed=false);
 			/*!
 			 * \brief Classical destructor for Graph.
 			 */
@@ -99,35 +101,35 @@ namespace imagein
 			/*!
              * \brief Remove the first edge found between the vertices i and j.
 			 *
+			 * If the graph is directed ImageIn tries to remove the first edge found between the head i and the tail j, if it is not directed if ImageIn hasn't found an edge between i and j it also searches for an edge between j and i to remove it
              * \param i Head of the edge
 			 * \param j Tail of the edge
-			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed ImageIn tries to remove the first edge found between the head i and the tail j, if not directed if ImageIn hasn't found an edge between i and j it also searches for an edge between j and i to remove it. Default value = false
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
 			 * \return true if an edge was found and deleted, false if no edge was found
              */
-			bool removeEdge(int i, int j, bool directed=false);
+			bool removeEdge(int i, int j);
 			
 			/*!
              * \brief Return the capacity of the edge between the vertices i and j.
 			 *
+			 *  If the graph is directed the edge must link the head i to the tail j, if it is not directed ImageIn also search for an edge linking the head j to the tail i
              * \param i Head of the edge
 			 * \param j Tail of the edge
-			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed the edge must link the head i to the tail j, if not directed ImageIn also search for an edge linking the head j to the tail i. Default value = false
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
 			 * \return The capacity of the edge, 0 if no edge between the vertices i and j was found
              */
-			int getCapacity(int i, int j, bool directed=false);
+			int getCapacity(int i, int j);
 			
 			/*!
              * \brief Check if an edge exists between the vertices i and j.
 			 *
+			 * If the graph is directed the edge must link the head i to the tail j, if it is not directed ImageIn also search for an edge linking the head j to the tail i
              * \param i Head of the edge
 			 * \param j Tail of the edge
-			 * \param directed Boolean indicating if the graph is considered as a directed graph (true) or not (false); if directed the edge must link the head i to the tail j, if not directed ImageIn also search for an edge linking the head j to the tail i. Default value = false
              * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
 			 * \return true if an edge was found, false if no edge was found
              */
-			bool edgeExists(int i, int j, bool directed=false);
+			bool edgeExists(int i, int j);
     };
 }
 

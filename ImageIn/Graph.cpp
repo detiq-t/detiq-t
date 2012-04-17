@@ -27,7 +27,7 @@ bool Graph::Vertex::removeEdge(int neighbour) {
 	return false;
 }
 
-Graph::Graph(int nbVertices) : _nbVertices(nbVertices) {
+Graph::Graph(int nbVertices, bool directed) : _nbVertices(nbVertices), _directed(directed) {
 	_listOfVertices = new Vertex*[nbVertices];
 	int i;
 	for(i=0;i<nbVertices;i++) {
@@ -40,20 +40,20 @@ void Graph::addEdge(int i, int j, int capacity) {
 	_listOfVertices[i]->addEdge(j,capacity);
 }
 
-bool Graph::removeEdge(int i, int j, bool directed) {
+bool Graph::removeEdge(int i, int j) {
 	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
 	if(_listOfVertices[i]->removeEdge(j)) return true;
-	else if(!directed) return _listOfVertices[j]->removeEdge(i);
+	else if(!_directed) return _listOfVertices[j]->removeEdge(i);
 	return false;
 }
 
-int Graph::getCapacity(int i, int j, bool directed) {
+int Graph::getCapacity(int i, int j) {
 	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
 	Edge* currentEdge;
 	for (currentEdge = _listOfVertices[i]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 		if (currentEdge->_neighbour == j) return currentEdge->_capacity;
 	}
-	if(!directed) {
+	if(!_directed) {
 		for (currentEdge = _listOfVertices[j]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 			if (currentEdge->_neighbour == i) return currentEdge->_capacity;
 		}
@@ -61,13 +61,13 @@ int Graph::getCapacity(int i, int j, bool directed) {
 	return 0;
 }
 
-bool Graph::edgeExists(int i, int j, bool directed) {
+bool Graph::edgeExists(int i, int j) {
 	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
 	Edge* currentEdge;
 	for (currentEdge = _listOfVertices[i]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 		if (currentEdge->_neighbour == j) return true;
 	}
-	if(!directed) {
+	if(!_directed) {
 		for (currentEdge = _listOfVertices[j]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 			if (currentEdge->_neighbour == i) return true;
 		}
