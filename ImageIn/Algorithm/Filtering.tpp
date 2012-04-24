@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <sys/sysinfo.h>
 #include "Average.h"
+#include "Distance.h"
 
 namespace imagein
 {
@@ -169,7 +170,8 @@ namespace imagein
 		  else
 		  {
 			  unsigned int size = images.size();
-			  Average<Image_t<D>, 2> av;
+        /*Average<Image_t<D>, 2> av;*/
+        EuclideanDistance<Image_t<D>, 2> av;
 			  
 			  for(unsigned int i = 0; i < size; ++i)
 			  {

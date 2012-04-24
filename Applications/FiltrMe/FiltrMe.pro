@@ -38,7 +38,8 @@ HEADERS += FilteringService.h \
            ../../ImageIn/BadImageException.h \
            ../../ImageIn/RgbImage.h \
            ../../ImageIn/RgbImage.tpp \
-           ../../ImageIn/Converter.tpp
+           ../../ImageIn/Converter.tpp \
+           ../../ImageIn/Algorithm/Distance.h
 SOURCES += FilteringService.cpp \
            main.cpp \
            Widgets/FilterChoice.cpp \
