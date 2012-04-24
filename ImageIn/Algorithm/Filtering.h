@@ -35,6 +35,7 @@ namespace imagein
 			static Filtering_t<D> prewitt(int numPixels);
 			static Filtering_t<D> roberts();
 			static Filtering_t<D> sobel();
+			static Filtering_t<D> squareLaplacien();
 
 			static D blackPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{

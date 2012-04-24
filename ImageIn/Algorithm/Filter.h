@@ -60,6 +60,7 @@ namespace imagein
 			static std::vector<Filter*> prewitt(int numPixels);
 			static std::vector<Filter*> roberts();
 			static std::vector<Filter*> sobel();
+			static std::vector<Filter*> squareLaplacien();
       
 		private:
 		  int _width;

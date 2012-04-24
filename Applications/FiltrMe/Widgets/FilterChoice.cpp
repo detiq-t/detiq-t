@@ -35,6 +35,7 @@ FilterChoice::FilterChoice()
   blurs.push_back("Prewitt");
   blurs.push_back("Roberts");
   blurs.push_back("Sobel");
+  blurs.push_back("SquareLaplacien");
   _blurChoices = new QComboBox();
   _blurChoices->addItems(blurs);
   QObject::connect(_blurChoices, SIGNAL(currentIndexChanged(int)), this, SLOT(currentBlurChanged(int)));
@@ -157,6 +158,9 @@ void FilterChoice::validate()
     case 4:
       filtering = new Filtering(Filtering::sobel());
       break;
+    case 5:
+      filtering = new Filtering(Filtering::squareLaplacien());
+      break;
     default:
       filtering = new Filtering(Filtering::uniformBlur(numPixels));
   }
@@ -235,6 +239,13 @@ void FilterChoice::updateDisplay()
       break;
     case 4:
       filters = Filter::sobel();
+      _numPixels->hide();
+      _labelWidth->hide();
+      _coef->hide();
+      _labelCoef->hide();
+      break;
+    case 5:
+      filters = Filter::squareLaplacien();
       _numPixels->hide();
       _labelWidth->hide();
       _coef->hide();

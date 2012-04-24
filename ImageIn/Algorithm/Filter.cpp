@@ -253,3 +253,27 @@ std::vector<Filter*> Filter::sobel()
   }
   return filters;
 }
+
+std::vector<Filter*> Filter::squareLaplacien()
+{
+  std::vector<Filter*> filters;
+  
+  int width = 3, height = 3;
+  
+  Filter* filter = new Filter(width, height);
+  for(int i = 0; i < width; i++)
+  {
+    for(int j = 0; j < height; j++)
+    {
+      if((i == 0 && (j == 0 || j == 2)) || ((i == 2 && (j == 0 || j == 2))))
+        (*filter)[i][j] = 0;
+      else if(i == 1 && j == 1)
+        (*filter)[i][j] = -4;
+      else
+        (*filter)[i][j] = 1; 
+    }
+  }
+  filters.push_back(filter);
+  
+  return filters;
+}

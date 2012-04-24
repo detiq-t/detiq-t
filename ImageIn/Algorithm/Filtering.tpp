@@ -111,11 +111,10 @@ namespace imagein
 				  for(int i = 0; i < numCPU; i++)
 					pthread_join(threads[i], NULL);	  
 				  
-			  #endif
-		      
-			  #ifndef __linux__
-          int halfHeightFilter = filter->height() / 2;
-          int halfWidthFilter = filter->width() / 2;
+			  #else
+        
+          int halfHeightFilter = (*filter)->height() / 2;
+          int halfWidthFilter = (*filter)->width() / 2;
           
 				  for(int x = 0; x < width; x++)
 				  {
@@ -123,7 +122,7 @@ namespace imagein
             {
               for(int channel = 0; channel < nChannels; channel++)
               {
-                int newPixel = 0;
+                double newPixel = 0;
 
                 for(int i = 0; i < (*filter)->width(); i++)
                 {
@@ -139,7 +138,7 @@ namespace imagein
                     }
                   }
                 }
-
+                
                 if(factor != 0)
                 {
                   newPixel /= factor;
@@ -148,7 +147,7 @@ namespace imagein
                   {
                     newPixel += 127;
                     if(newPixel > 255) newPixel = 255;
-                    else if(newPixel > 0) newPixel = 0;
+                    else if(newPixel < 0) newPixel = 0;
                   }
                   
                   /*
@@ -156,7 +155,7 @@ namespace imagein
                    * newPixel = ((*_normalization)(newPixel));
                    */
                 }
-                result->setPixel(x, y, channel, newPixel);
+                result->setPixel(x, y, channel, (int)newPixel);
               }
             }
 				  }
@@ -207,26 +206,28 @@ namespace imagein
 			
 			int halfHeightFilter = filter->height() / 2;
 			int halfWidthFilter = filter->width() / 2;
-			for(unsigned int x = infx; x < supx; x++)
+			for(int x = infx; x < supx; x++)
 			{
-				for(unsigned int y = 0; y < img->getHeight(); y++)
+				for(int y = 0; y < img->getHeight(); y++)
 				{
 				  for(unsigned int channel = 0; channel < img->getNbChannels(); channel++)
 				  {
-            int newPixel = 0;
+            double newPixel = 0;
 
             for(int i = 0; i < filter->width(); i++)
             {
               for(int j = 0; j < filter->height(); j++)
               {
+                 int p;
                  if(odd)
                  {
-                   newPixel += (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
+                   p = (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
                  }
                  else
                  {
-                   newPixel += (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter - 1, y + j - halfHeightFilter - 1, channel));
+                   p = (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter - 1, y + j - halfHeightFilter - 1, channel));
                  }
+                 newPixel += p;
               }
             }
 
@@ -246,7 +247,7 @@ namespace imagein
                * newPixel = ((*normalization)(newPixel));
                */
             }
-            result->setPixel(x, y, channel, newPixel);
+            result->setPixel(x, y, channel, (int)newPixel);
 				  }
 				}
 			}
@@ -283,6 +284,12 @@ namespace imagein
 		Filtering_t<D> Filtering_t<D>::sobel()
 		{
 			return Filtering_t<D>(Filter::sobel());
+    }
+		
+		template <typename D>
+		Filtering_t<D> Filtering_t<D>::squareLaplacien()
+		{
+			return Filtering_t<D>(Filter::squareLaplacien());
     }
 	}
 }
