@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <pthread.h>
+#include <sys/sysinfo.h>
 #include "Average.h"
 
 namespace imagein
@@ -71,7 +72,12 @@ namespace imagein
 			  Image_t<D>* result = new Image_t<D>(width, height, nChannels);
 			  
 			  #ifdef __linux__
-				  int numCPU = sysconf( _SC_NPROCESSORS_ONLN );
+          int numCPU;
+          #ifdef _SC_NPROCESSORS_ONLN
+            numCPU = sysconf( _SC_NPROCESSORS_ONLN );
+          #else
+            numCPU = get_nprocs_conf ();
+          #endif
 			  
 				  pthread_t threads[numCPU];
 				  
