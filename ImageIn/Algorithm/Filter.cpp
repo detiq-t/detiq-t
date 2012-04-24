@@ -7,16 +7,11 @@ using namespace algorithm;
 
 Filter::Filter (int w, int h) : _height (h), _width (w)
 {
-  if(w % 2 != 1 || h % 2 != 1)
-	throw invalid_filter();
   _mtrx = new int[h * w];
 }
 
 Filter::Filter (const Filter& m) : _width (m._width), _height (m._height)
-{
-  if(_width % 2 != 1 || _height % 2 != 1)
-	throw invalid_filter();
-	
+{	
   _mtrx = new int [_width * _height];
 
   for(int i = 0; i < _width * _height; i++)
@@ -97,14 +92,14 @@ std::pair<int, int> Filter::iterator::pos ()
   return make_pair (_i, _j);
 }
 
-std::vector<Filter*> Filter::uniform(int coef = 1, int numPixels = 3)
+std::vector<Filter*> Filter::uniform(int numPixels = 3)
 {
   Filter* filter = new Filter(numPixels, numPixels);
   for(int i = 0; i < numPixels; i++)
   {
     for(int j = 0; j < numPixels; j++)
     {
-      (*filter)[i][j] = coef;
+      (*filter)[i][j] = 1;
     }
   }
   std::vector<Filter*> filters;
@@ -126,8 +121,6 @@ std::vector<Filter*> Filter::gaussian(double alpha)
   else
     gaussCoef.push_back(coef);
   }
-
-  std::cout << gaussCoef.size() * 2 - 1 << std::endl;
 
   Filter* f = new Filter(gaussCoef.size() * 2 - 1, gaussCoef.size() * 2 - 1);
   int center = gaussCoef.size() - 1;
@@ -167,7 +160,7 @@ std::vector<Filter*> Filter::gaussian(double alpha)
   return filters;
 }
 
-std::vector<Filter*> Filter::prewitt(int coef = 1, int numPixels = 3)
+std::vector<Filter*> Filter::prewitt(int numPixels = 3)
 {
   std::vector<Filter*> filters;
   
@@ -184,9 +177,9 @@ std::vector<Filter*> Filter::prewitt(int coef = 1, int numPixels = 3)
       for(int j = 0; j < height; j++)
       {
         if((vertical == 1 && i == 0) || (vertical == 0 && j == 0))
-          (*filter)[i][j] = -coef;
+          (*filter)[i][j] = -1;
         else if((vertical == 1 && i == width - 1) || (vertical == 0 && j == height - 1))
-          (*filter)[i][j] = coef;
+          (*filter)[i][j] = 1;
         else
           (*filter)[i][j] = 0;
       }
@@ -196,21 +189,21 @@ std::vector<Filter*> Filter::prewitt(int coef = 1, int numPixels = 3)
   return filters;
 }
 
-std::vector<Filter*> Filter::roberts(int coef = 1)
+std::vector<Filter*> Filter::roberts()
 {
   std::vector<Filter*> filters;
   
   for(int h = 1 ; h >= 0 ; --h)
   {				
-    Filter* filter = new Filter(3, 3);
-    for(int i = 0; i < 3; ++i)
+    Filter* filter = new Filter(2, 2);
+    for(int i = 0; i < 2; ++i)
     {
-      for(int j = 0; j < 3; ++j)
+      for(int j = 0; j < 2; ++j)
       {
-        if((h == 1 && i == 1 && j == 2) || (h == 0 && i == 1 && j == 1))
-          (*filter)[i][j] = -coef;
-        else if((h == 1 && i == 2 && j == 1) || (h == 0 && i == 2 && j == 2))
-          (*filter)[i][j] = coef;
+        if((h == 1 && i == 0 && j == 1) || (h == 0 && i == 0 && j == 0))
+          (*filter)[i][j] = -1;
+        else if((h == 1 && i == 1 && j == 0) || (h == 0 && i == 1 && j == 1))
+          (*filter)[i][j] = 1;
         else
           (*filter)[i][j] = 0;
       }
@@ -221,7 +214,7 @@ std::vector<Filter*> Filter::roberts(int coef = 1)
   return filters;
 }
 
-std::vector<Filter*> Filter::sobel(int coef = 1)
+std::vector<Filter*> Filter::sobel()
 {
   std::vector<Filter*> filters;
   
@@ -237,21 +230,21 @@ std::vector<Filter*> Filter::sobel(int coef = 1)
         if(vertical == 1)
         {
           if(i == 0)
-            if(j == 1) (*filter)[i][j] = -(2 * coef);
-            else (*filter)[i][j] = -coef;
+            if(j == 1) (*filter)[i][j] = -2;
+            else (*filter)[i][j] = -1;
           else if(i == 2)
-            if(j == 1) (*filter)[i][j] = 2 * coef;
-            else (*filter)[i][j] = coef;
+            if(j == 1) (*filter)[i][j] = 2;
+            else (*filter)[i][j] = 1;
           else (*filter)[i][j] = 0; 
         }
         else
         {
           if(j == 0)
-            if(i == 1) (*filter)[i][j] = -(2 * coef);
-            else (*filter)[i][j] = -coef;
+            if(i == 1) (*filter)[i][j] = -2;
+            else (*filter)[i][j] = -1;
           else if(j == 2)
-            if(i == 1) (*filter)[i][j] = 2 * coef;
-            else (*filter)[i][j] = coef;
+            if(i == 1) (*filter)[i][j] = 2;
+            else (*filter)[i][j] = 1;
           else (*filter)[i][j] = 0;
         }
       }

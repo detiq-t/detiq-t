@@ -51,15 +51,17 @@ FilterChoice::FilterChoice()
   _policyChoices->addItems(policies);
   leftLayout->addWidget(_policyChoices);
   
-  QLabel* labelNormalizationChoice = new QLabel("Normalization:");
-  leftLayout->addWidget(labelNormalizationChoice);
-  QStringList normalizations = QStringList();
-  normalizations.push_back("Zero");
-  normalizations.push_back("Absolute");
-  normalizations.push_back("Scale");
-  _normalizationChoices = new QComboBox();
-  _normalizationChoices->addItems(normalizations);
-  leftLayout->addWidget(_normalizationChoices);
+  /*
+   * QLabel* labelNormalizationChoice = new QLabel("Normalization:");
+   * leftLayout->addWidget(labelNormalizationChoice);
+   * QStringList normalizations = QStringList();
+   * normalizations.push_back("Zero");
+   * normalizations.push_back("Absolute");
+   * normalizations.push_back("Scale");
+   * _normalizationChoices = new QComboBox();
+   * _normalizationChoices->addItems(normalizations);
+   * leftLayout->addWidget(_normalizationChoices);
+   */
   
   princLayout->addWidget(leftPanel);
   
@@ -70,10 +72,12 @@ FilterChoice::FilterChoice()
   _centerLayout = new QVBoxLayout();
   centerPanel->setLayout(_centerLayout);
   
-  QLabel* labelCoef = new QLabel("Coefficient:");
-  _centerLayout->addWidget(labelCoef);
+  _labelCoef = new QLabel("Coefficient:");
+  _centerLayout->addWidget(_labelCoef);
   _coef = new QLineEdit("1");
   _centerLayout->addWidget(_coef);
+  _coef->hide();
+  _labelCoef->hide();
   QObject::connect(_coef, SIGNAL(textChanged(const QString&)), this, SLOT(dataChanged(const QString&)));
   
   _labelWidth = new QLabel("Number of pixels:");
@@ -120,7 +124,7 @@ FilterChoice::FilterChoice()
   
 }
 
-void FilterChoice::currentBlurChanged(int index)
+void FilterChoice::currentBlurChanged(int)
 {
   updateDisplay();
 }
@@ -139,22 +143,22 @@ void FilterChoice::validate()
   switch(_blurChoices->currentIndex())
   {
     case 0:
-      filtering = new Filtering(Filtering::uniformBlur(coef, numPixels));
+      filtering = new Filtering(Filtering::uniformBlur(numPixels));
       break;
     case 1:
       filtering = new Filtering(Filtering::gaussianBlur(coef));
       break;
     case 2:
-      filtering = new Filtering(Filtering::prewitt(coef, numPixels));
+      filtering = new Filtering(Filtering::prewitt(numPixels));
       break;
     case 3:
-      filtering = new Filtering(Filtering::roberts(coef));
+      filtering = new Filtering(Filtering::roberts());
       break;
     case 4:
-      filtering = new Filtering(Filtering::sobel(coef));
+      filtering = new Filtering(Filtering::sobel());
       break;
     default:
-      filtering = new Filtering(Filtering::uniformBlur(coef, numPixels));
+      filtering = new Filtering(Filtering::uniformBlur(numPixels));
   }
   
   switch(_policyChoices->currentIndex())
@@ -174,21 +178,22 @@ void FilterChoice::validate()
     default:
       filtering->setPolicy(Filtering::blackPolicy);
   }
-  
-  switch(_normalizationChoices->currentIndex())
-  {
-    case 0:
-      filtering->setNormalization(Filtering::zeroNormalization);
-      break;
-    case 1:
-      filtering->setNormalization(Filtering::absoluteNormalization);
-      break;
-    case 2:
-      filtering->setNormalization(Filtering::scaleNormalization);
-      break;
-    default:
-      filtering->setNormalization(Filtering::zeroNormalization);
+  /*
+   * switch(_normalizationChoices->currentIndex())
+   * {
+   *   case 0:
+   *     filtering->setNormalization(Filtering::zeroNormalization);
+   *     break;
+   *   case 1:
+   *     filtering->setNormalization(Filtering::absoluteNormalization);
+   *     break;
+   *   case 2:
+   *     filtering->setNormalization(Filtering::scaleNormalization);
+   *     break;
+   *   default:
+   *     filtering->setNormalization(Filtering::zeroNormalization);
   }
+  */
   
   emit choiceValidate(filtering);
 }
@@ -201,34 +206,46 @@ void FilterChoice::updateDisplay()
   switch(_blurChoices->currentIndex())
   {
     case 0:
-      filters = Filter::uniform(coef, numPixels);
+      filters = Filter::uniform(numPixels);
       _numPixels->show();
       _labelWidth->show();
+      _coef->hide();
+      _labelCoef->hide();
       break;
     case 1:
       filters = Filter::gaussian(coef);
       _numPixels->hide();
       _labelWidth->hide();
+      _coef->show();
+      _labelCoef->show();
       break;
     case 2:
-      filters = Filter::prewitt(coef, numPixels);
+      filters = Filter::prewitt(numPixels);
       _numPixels->show();
       _labelWidth->show();
+      _coef->hide();
+      _labelCoef->hide();
       break;
     case 3:
-      filters = Filter::roberts(coef);
+      filters = Filter::roberts();
       _numPixels->hide();
       _labelWidth->hide();
+      _coef->hide();
+      _labelCoef->hide();
       break;
     case 4:
-      filters = Filter::sobel(coef);
+      filters = Filter::sobel();
       _numPixels->hide();
       _labelWidth->hide();
+      _coef->hide();
+      _labelCoef->hide();
       break;
     default:
-      filters = Filter::uniform(coef, numPixels);
+      filters = Filter::uniform(numPixels);
       _numPixels->show();
       _labelWidth->show();
+      _coef->hide();
+      _labelCoef->hide();
   }
   
   int height(0), width(0);

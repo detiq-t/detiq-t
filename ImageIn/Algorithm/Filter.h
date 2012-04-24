@@ -55,11 +55,11 @@ namespace imagein
 
 		  Line operator[] (int i);
       
-      static std::vector<Filter*> uniform(int coef, int numPixels);
+      static std::vector<Filter*> uniform(int numPixels);
 			static std::vector<Filter*> gaussian(double alpha);
-			static std::vector<Filter*> prewitt(int coef, int numPixels);
-			static std::vector<Filter*> roberts(int coef);
-			static std::vector<Filter*> sobel(int coef);
+			static std::vector<Filter*> prewitt(int numPixels);
+			static std::vector<Filter*> roberts();
+			static std::vector<Filter*> sobel();
       
 		private:
 		  int _width;

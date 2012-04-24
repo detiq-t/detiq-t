@@ -13,14 +13,18 @@ namespace imagein
 		{
 			_filters.push_back(filter);
 			_policy = blackPolicy;
-			_normalization = zeroNormalization;
+			/*
+       * _normalization = zeroNormalization;
+       */
 		}
 		
 		template <typename D>
 		Filtering_t<D>::Filtering_t(std::vector<Filter*> filters) : _filters(filters)
 		{
 			_policy = blackPolicy;
-			_normalization = zeroNormalization;
+			/*
+       * _normalization = zeroNormalization;
+       */
 		}
 		
 		template <typename D>
@@ -34,10 +38,12 @@ namespace imagein
 		  
 		  int posFactor = 0;
 		  int negFactor = 0;
+      bool neg = false;
 	  
 		  int width = img->getWidth();
 		  int height = img->getHeight();
 		  int nChannels = img->getNbChannels();
+      bool odd = width % 2 != 1 || height % 2 != 1;
 		  
 		  std::vector<Filter*>::iterator filter;
 		  std::vector<Image_t<D>*> images;
@@ -47,17 +53,20 @@ namespace imagein
 			  Filter::iterator iter = (*filter)->begin();
 			  for(; iter != (*filter)->end(); ++iter)
 			  {
-				if((*iter) < 0)
-				  negFactor += (*iter);
-				else
-				  posFactor += (*iter);
+          if((*iter) < 0)
+          {
+            negFactor += (*iter);
+            neg = true;
+          }
+          else
+            posFactor += (*iter);
 			  }
 			  
 			  int factor;
 			  if(posFactor >= -negFactor)
-				factor = posFactor;
+          factor = posFactor;
 			  else
-				factor = -negFactor;
+          factor = -negFactor;
 			  
 			  Image_t<D>* result = new Image_t<D>(width, height, nChannels);
 			  
@@ -78,10 +87,15 @@ namespace imagein
 					  args->result = result;
 					  args->filter = *filter;
 					  args->policy = _policy;
-					  args->normalization = _normalization;
+					  /*
+             * args->normalization = _normalization;
+             */
 					  args->infx = inf;
 					  args->supx = width / (numCPU - i);
-					  args->factor = factor;			  
+					  args->factor = factor;
+            args->neg = neg;
+            args->odd = odd;
+            
 					  pthread_create(&thread, &attr, parallelAlgorithm, (void*)args);
 					  
 					  inf = inf + (width / numCPU);
@@ -94,32 +108,51 @@ namespace imagein
 			  #endif
 		      
 			  #ifndef __linux__
+          int halfHeightFilter = filter->height() / 2;
+          int halfWidthFilter = filter->width() / 2;
+          
 				  for(int x = 0; x < width; x++)
 				  {
-					for(int y = 0; y < height; y++)
-					{
-					  for(int channel = 0; channel < nChannels; channel++)
-					  {
-						int newPixel = 0;
+            for(int y = 0; y < height; y++)
+            {
+              for(int channel = 0; channel < nChannels; channel++)
+              {
+                int newPixel = 0;
 
-						for(int i = 0; i < (*filter)->width(); i++)
-						{
-						  for(int j = 0; j < (*filter)->height(); j++)
-						  {
-							newPixel += (**filter)[i][j] * ((*_policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
-						  }
-						}
+                for(int i = 0; i < (*filter)->width(); i++)
+                {
+                  for(int j = 0; j < (*filter)->height(); j++)
+                  {
+                    if(odd)
+                    {
+                      newPixel += (**filter)[i][j] * ((*_policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
+                    }
+                    else
+                    {
+                      newPixel += (**filter)[i][j] * ((*_policy)(img, x + i - halfWidthFilter - 1, y + j - halfHeightFilter - 1, channel));
+                    }
+                  }
+                }
 
-						if(factor != 0)
-						{
-						  newPixel /= factor;
-
-						  if(newPixel < 0)
-							newPixel = ((*_normalization)(newPixel));
-						}
-						result->setPixel(x, y, channel, newPixel);
-					  }
-					}
+                if(factor != 0)
+                {
+                  newPixel /= factor;
+                  
+                  if(neg)
+                  {
+                    newPixel += 127;
+                    if(newPixel > 255) newPixel = 255;
+                    else if(newPixel > 0) newPixel = 0;
+                  }
+                  
+                  /*
+                   * if(newPixel < 0)
+                   * newPixel = ((*_normalization)(newPixel));
+                   */
+                }
+                result->setPixel(x, y, channel, newPixel);
+              }
+            }
 				  }
 			  #endif
 			  images.push_back(result);
@@ -157,10 +190,14 @@ namespace imagein
 			Image_t<D>* result = args.result;
 			Filter* filter = args.filter;
 			Policy policy = args.policy;
-			Normalization normalization = args.normalization;
+			/*
+       * Normalization normalization = args.normalization;
+       */
 			unsigned int infx = args.infx;
 			unsigned int supx = args.supx;
 			int factor = args.factor;
+      bool neg = args.neg;
+      bool odd = args.odd;
 			
 			int halfHeightFilter = filter->height() / 2;
 			int halfWidthFilter = filter->width() / 2;
@@ -170,24 +207,40 @@ namespace imagein
 				{
 				  for(unsigned int channel = 0; channel < img->getNbChannels(); channel++)
 				  {
-					int newPixel = 0;
+            int newPixel = 0;
 
-					for(int i = 0; i < filter->width(); i++)
-					{
-					  for(int j = 0; j < filter->height(); j++)
-					  {
-						newPixel += (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
-					  }
-					}
+            for(int i = 0; i < filter->width(); i++)
+            {
+              for(int j = 0; j < filter->height(); j++)
+              {
+                 if(odd)
+                 {
+                   newPixel += (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter, y + j - halfHeightFilter, channel));
+                 }
+                 else
+                 {
+                   newPixel += (*filter)[i][j] * ((*policy)(img, x + i - halfWidthFilter - 1, y + j - halfHeightFilter - 1, channel));
+                 }
+              }
+            }
 
-					if(factor != 0)
-					{
-					  newPixel /= factor;
+            if(factor != 0)
+            {
+              newPixel /= factor;
+              
+              if(neg)
+              {
+                newPixel += 127;
+                if(newPixel > 255) newPixel = 255;
+                else if(newPixel < 0) newPixel = 0;
+              }
 
-					  if(newPixel < 0)
-						newPixel = ((*normalization)(newPixel));
-					}
-					result->setPixel(x, y, channel, newPixel);
+              /*
+               * if(newPixel < 0)
+               * newPixel = ((*normalization)(newPixel));
+               */
+            }
+            result->setPixel(x, y, channel, newPixel);
 				  }
 				}
 			}
@@ -197,9 +250,9 @@ namespace imagein
 		}
 		
 		template <typename D>
-		Filtering_t<D> Filtering_t<D>::uniformBlur(int coef = 1, int numPixels = 3)
+		Filtering_t<D> Filtering_t<D>::uniformBlur(int numPixels = 3)
 		{
-			return Filtering_t<D>(Filter::uniform(coef, numPixels));
+			return Filtering_t<D>(Filter::uniform(numPixels));
 		}
 
 		template <typename D>
@@ -209,21 +262,21 @@ namespace imagein
 		}
 		
 		template <typename D>
-		Filtering_t<D> Filtering_t<D>::prewitt(int coef = 1, int numPixels = 3)
+		Filtering_t<D> Filtering_t<D>::prewitt(int numPixels = 3)
 		{
-			return Filtering_t<D>(Filter::prewitt(coef, numPixels));
+			return Filtering_t<D>(Filter::prewitt(numPixels));
 		}
 		
 		template <typename D>
-		Filtering_t<D> Filtering_t<D>::roberts(int coef = 1)
+		Filtering_t<D> Filtering_t<D>::roberts()
 		{
-			return Filtering_t<D>(Filter::roberts(coef));
+			return Filtering_t<D>(Filter::roberts());
 		}
 		
 		template <typename D>
-		Filtering_t<D> Filtering_t<D>::sobel(int coef = 1)
+		Filtering_t<D> Filtering_t<D>::sobel()
 		{
-			return Filtering_t<D>(Filter::sobel(coef));
+			return Filtering_t<D>(Filter::sobel());
     }
 	}
 }

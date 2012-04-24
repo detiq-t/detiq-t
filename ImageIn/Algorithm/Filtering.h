@@ -16,20 +16,25 @@ namespace imagein
 		class Filtering_t : public Algorithm_t<Image_t<D>, 1>
 		{
 			typedef D (*Policy)(const Image_t<D>*, const int&, const int&, const int&);
-			typedef D (*Normalization)(int);
+			/*
+       * typedef D (*Normalization)(int);
+       */
 		public:
 			Filtering_t(Filter* filter);
 			Filtering_t(std::vector<Filter*> filters);
-			Filtering_t(const Filtering_t& f) : _filters(f._filters), _policy(f._policy), _normalization(f._normalization) {}
+			Filtering_t(const Filtering_t& f) : _filters(f._filters), _policy(f._policy)/*, _normalization(f._normalization)*/ {}
   
 			inline void setPolicy(Policy policy) { _policy = policy; }
-			inline void setNormalization(Normalization normalization) { _normalization = normalization; }
 			
-			static Filtering_t<D> uniformBlur(int coef, int numPixels);
+      /*
+       * inline void setNormalization(Normalization normalization) { _normalization = normalization; }
+       */
+			
+			static Filtering_t<D> uniformBlur(int numPixels);
 			static Filtering_t<D> gaussianBlur(double alpha);
-			static Filtering_t<D> prewitt(int coef, int numPixels);
-			static Filtering_t<D> roberts(int coef);
-			static Filtering_t<D> sobel(int coef);
+			static Filtering_t<D> prewitt(int numPixels);
+			static Filtering_t<D> roberts();
+			static Filtering_t<D> sobel();
 
 			static D blackPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
 			{
@@ -57,11 +62,11 @@ namespace imagein
 					int nx = x, ny = y;
 					if(x < 0)
 						nx = -x;
-					else if(x >= img->getWidth())
+					else if(x >= (int)img->getWidth())
 						nx = img->getWidth() - (x - img->getWidth());
 					if(y < 0)
 						ny = -y;
-					else if(y >= img->getHeight())
+					else if(y >= (int)img->getHeight())
 						ny = img->getHeight() - (y - img->getHeight());
 					
 					try
@@ -88,11 +93,11 @@ namespace imagein
 					int nx = x, ny = y;
 					if(x < 0)
 						nx = 0;
-					else if(x >= img->getWidth())
+					else if(x >= (int)img->getWidth())
 						nx = img->getWidth() - 1;
 					if(y < 0)
 						ny = 0;
-					else if(y >= img->getHeight())
+					else if(y >= (int)img->getHeight())
 						ny = img->getHeight() - 1;
 					
 					try
@@ -119,11 +124,11 @@ namespace imagein
 					int nx = x, ny = y;
 					if(x < 0)
 						nx = img->getWidth() - x;
-					else if(x >= img->getWidth())
+					else if(x >= (int)img->getWidth())
 						nx = x - img->getWidth();
 					if(y < 0)
 						ny = img->getHeight() - y;
-					else if(y >= img->getHeight())
+					else if(y >= (int)img->getHeight())
 						ny = y - img->getHeight();
 					
 					try
@@ -138,11 +143,11 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D zeroNormalization(int){ return 0; }
-			
-			static D absoluteNormalization(int i){ return i < 0 ? -i : i; }
-			
-			static D scaleNormalization(int i){ return 255 / 2 + i / 2; }
+      /*
+       * static D zeroNormalization(int){ return 0; }
+       * static D absoluteNormalization(int i){ return i < 0 ? -i : i; }
+       * static D scaleNormalization(int i){ return 255 / 2 + i / 2; }
+       */
 			
 		protected:
 			#ifdef __linux__
@@ -154,7 +159,9 @@ namespace imagein
 		private:
 			std::vector<Filter*> _filters;
 			Policy _policy;
-			Normalization _normalization;
+			/*
+       * Normalization _normalization;
+       */
 			
 			struct ParallelArgs
 			{
@@ -162,10 +169,14 @@ namespace imagein
 				Image_t<D>* result;
 				Filter* filter;
 				Policy policy;
-				Normalization normalization;
+				/*
+         * Normalization normalization;
+         */
 				int infx;
 				int supx;
 				int factor;
+        bool neg;
+        bool odd;
 			};
 		};
 		typedef Filtering_t<depth_default_t> Filtering; //!< Standard Algorithm Filtering with default depth.

@@ -3,8 +3,10 @@
 
 #include <Services/AlgorithmService.h>
 
-#include "../../ImageIn/Algorithm/Filter.h"
-#include "../../ImageIn/Algorithm/Filtering.h"
+#include <Algorithm/Filter.h>
+#include <Algorithm/Filtering.h>
+//#include "../../ImageIn/Algorithm/Filter.h"
+//#include "../../ImageIn/Algorithm/Filtering.h"
 
 #include <vector>
 #include <QWidget>
@@ -30,7 +32,7 @@ namespace genericinterface
     void choiceValidate(imagein::algorithm::Filtering* filtering);
 
   private slots:
-    void currentBlurChanged(int index);
+    void currentBlurChanged(int);
     void dataChanged(const QString&);
     void validate();
 
@@ -39,8 +41,11 @@ namespace genericinterface
     
     QComboBox* _blurChoices;
     QComboBox* _policyChoices;
-    QComboBox* _normalizationChoices;
+    /*
+     * QComboBox* _normalizationChoices;
+     */
     
+    QLabel* _labelCoef;
     QLineEdit* _coef;
     QLabel* _labelWidth;
     QLineEdit* _numPixels;
