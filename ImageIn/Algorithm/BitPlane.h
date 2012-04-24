@@ -3,6 +3,7 @@
 
 #include "../Algorithm.h"
 #include "../GrayscaleImage.h"
+#include "../PixelAlgorithm.h"
 
 namespace imagein {
 	namespace algorithm {
