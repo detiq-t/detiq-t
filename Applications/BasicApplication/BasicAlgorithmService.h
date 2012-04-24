@@ -3,10 +3,12 @@
 
 #include <Services/AlgorithmService.h>
 
+#include <QToolBar>
+
 namespace genericinterface
 {
   /*!
-   * \brief First implementation of AlgorithlService with basic algorithms
+   * \brief First implementation of AlgorithmService with basic algorithms
 	*
 	* It contains the algorithm Identity and Inversion
 	*/
@@ -22,6 +24,7 @@ namespace genericinterface
     void applyInversion();
 
   private:
+    QToolBar* _toolBar;
     QAction* _identity;
     QAction* _inversion;
   };

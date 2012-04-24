@@ -9,9 +9,11 @@ using namespace imagein::algorithm;
 
 void BasicAlgorithmService::display(GenericInterface* gi)
 {
-  QToolBar* toolBar = gi->addToolBar("Algorithms");
-  _identity = toolBar->addAction("&Identity");
-  _inversion = toolBar->addAction("&Inversion");
+  AlgorithmService::display(gi);
+
+  _toolBar = gi->addToolBar("Basic Algorithms");
+  _identity = _toolBar->addAction("&Identity");
+  _inversion = _toolBar->addAction("&Inversion");
 }
 
 void BasicAlgorithmService::connect(GenericInterface* gi)

@@ -16,5 +16,5 @@ int main(int argc, char** argv)
 
   m.run();
 
-  return app.exec ();
+  return app.exec();
 }
