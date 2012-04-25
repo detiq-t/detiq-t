@@ -24,11 +24,18 @@ void WindowService::connect(GenericInterface* gi)
 
 ImageWindow* WindowService::getCurrentImageWindow()
 {
-  ImageWindow* iw = dynamic_cast<ImageWindow*>(_mdi->activeSubWindow()->widget());
-  if (iw != NULL)
-    return iw;
-  else
-    throw "The current active sub-window doesn't contain an ImageWindow";
+  QMdiSubWindow* sw = _mdi->currentSubWindow();
+  
+  if(sw != NULL) {
+      ImageWindow* imw = dynamic_cast<ImageWindow*>(sw->widget());
+      if (sw != NULL && imw != NULL)
+        return imw;
+      else
+        throw "The current active sub-window doesn't contain an ImageWindow";
+  }
+  else {
+      throw "There is no current subWindow";
+  }
 }
 
 void WindowService::addFile(const QString& path)

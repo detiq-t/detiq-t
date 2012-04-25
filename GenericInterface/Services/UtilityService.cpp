@@ -8,7 +8,7 @@ void UtilityService::display(GenericInterface* gi)
 	_gi = gi;
 
 	//ajout des actions dans le menu show
-	_showMenu = _gi->menuBar()->addMenu("&Show");
+	_showMenu = _gi->menu("&Show");
 	_showHistogram = _showMenu->addAction("Histogram");
 	_showHProjectionHistogram = _showMenu->addAction("Horizontal projection histogram");
 	_showVProjectionHistogram = _showMenu->addAction("Vertical projection histogram");

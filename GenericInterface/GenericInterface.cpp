@@ -42,7 +42,7 @@ void GenericInterface::changeService(int id, Service* s) throw (BadIdException)
 Service* GenericInterface::getService(int id) throw (BadIdException)
 {
   if (_services.find(id) == _services.end())
-    throw new BadIdException(id);
+    throw BadIdException(id);
   else
     return _services[id];
 }

@@ -9,24 +9,31 @@
 
 namespace genericinterface
 {
-  class FileService : public QObject, public Service
-  {
-  Q_OBJECT
-  public:
-    void connect (GenericInterface* gi);
+	class FileService : public QObject, public Service
+	{
+		Q_OBJECT
+		public:
+			void connect (GenericInterface* gi);
+			void display (GenericInterface* gi);
 
-    void display (GenericInterface* gi);
+		public slots:
+			void save(const QString& path = QString());
+			void saveAs();
+	        void checkActionsValid(QMdiSubWindow* activeWindow);
+		
+		private slots:
+			void chooseFile();
 
-  private slots:
-    void chooseFile();
+		signals:
+			void fileChosen(const QString& path);
 
-  signals:
-    void fileChosen(const QString& path);
+		private:
+			QAction* _open;
+			QAction* _save;
+			QAction* _saveAs;
 
-  private:
-    QAction* _open;
-    GenericInterface* _gi;
-  };
+			GenericInterface* _gi;
+	};
 }
 
 #endif
