@@ -14,7 +14,7 @@ ImageWindow::ImageWindow(const ImageWindow* source, const Rectangle* rect): QWid
 
 void ImageWindow::activated()
 {
-	emit(highlightRectChange(_applicationArea));
+	emit(highlightRectChange(_applicationArea, this));
 }
 
 QString& ImageWindow::getPath()

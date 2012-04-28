@@ -10,6 +10,8 @@
 
 #include <Rectangle.h>
 
+#include "AlternativeImageView.h"
+
 namespace genericinterface
 {
 	/*!
@@ -21,26 +23,28 @@ namespace genericinterface
     {
 		Q_OBJECT
     protected:
-        const imagein::Rectangle* _applicationArea;
-        QStatusBar* _statusBar;
-        const ImageWindow* _sourceWindow;
-        QString _path; /*!< The path of the source image */
+      const imagein::Rectangle* _applicationArea;
+      QStatusBar* _statusBar;
+      const ImageWindow* _sourceWindow;
+      QString _path; /*!< The path of the source image */
 
     public:
-		/*!
-		* \brief Default constructor.
-		* 
-		* Constructs an empty QWidget and initialized the source window and the application area from parameters.
-		*
-		* \param source The source window
-		* \param rect The application area (Rectangle used for Histogram, Algorithm...)
-		*/
-        ImageWindow(const ImageWindow* source = 0, const imagein::Rectangle* rect = 0);
+      /*!
+       * \brief Default constructor.
+       * 
+       * Constructs an empty QWidget and initialized the source window and the application area from parameters.
+       *
+       * \param source The source window
+       * \param rect The application area (Rectangle used for Histogram, Algorithm...)
+       */
+      ImageWindow(const ImageWindow* source = 0, const imagein::Rectangle* rect = 0);
 
-		QString& getPath();
+      QString& getPath();
+      
+      virtual AlternativeImageView* getView()=0;
         
     public slots:
-        void activated();
+      void activated();
 	
 	signals:
 		/*!
@@ -48,8 +52,8 @@ namespace genericinterface
 		 * 
 		 * \param rect Rectangle to display on the source window
 		 */
-		void highlightRectChange(const imagein::Rectangle* rect);
-    };
+		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);
+  };
 }
 
 #endif // IMAGEWINDOW_H

@@ -42,23 +42,25 @@ namespace genericinterface
         void showRightClickedValue(int value) const;
         
     public:
-		/*!
-		 * \brief Default constructor
-		 * 
-		 * Initializes and display the HistogramView from the parameters. 
-		 * 
-		 * \param image The image concerned by the histogram
-		 * \param rect The part of the image where the histogram is applied
-		 * \param source The ImageWindow source (window which contains the image)
-		 */
-        HistogramWindow(const imagein::Image* image, const imagein::Rectangle* rect, const ImageWindow* source);
+      /*!
+       * \brief Default constructor
+       * 
+       * Initializes and display the HistogramView from the parameters. 
+       * 
+       * \param image The image concerned by the histogram
+       * \param rect The part of the image where the histogram is applied
+       * \param source The ImageWindow source (window which contains the image)
+       */
+      HistogramWindow(const imagein::Image* image, const imagein::Rectangle* rect, const ImageWindow* source);
         
-		/*!
-		 * \brief HistogramWindow destructor.
-		 *
-		 * The HistogramView is deleted too
-		 */
-		virtual ~HistogramWindow();
+      /*!
+       * \brief HistogramWindow destructor.
+       *
+       * The HistogramView is deleted too
+       */
+      virtual ~HistogramWindow();
+      
+      virtual AlternativeImageView* getView() { return _view; }
     };
 }
 

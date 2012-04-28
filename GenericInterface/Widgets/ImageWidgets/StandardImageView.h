@@ -1,6 +1,7 @@
 #ifndef STANDARDIMAGEVIEW_H
 #define STANDARDIMAGEVIEW_H
 
+#include <QCursor>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
 #include <QString>
@@ -12,6 +13,8 @@
 #include <iostream>
 
 #include "ImageContextMenu.h"
+#include "GenericHistogramView.h"
+#include "ImageWindow.h"
 
 #include <Image.h>
 #include <Rectangle.h>
@@ -32,6 +35,7 @@ namespace genericinterface
         QGraphicsView* _view;
         QGraphicsRectItem* _highlight;
         QPixmap* _pixmap_img;
+        GenericHistogramView* _sourceHighlight;
         
         const imagein::Image* _image;
         imagein::Rectangle* _selection;
@@ -42,9 +46,15 @@ namespace genericinterface
         double _zoomFactor;
         bool _mouseButtonPressed;
         QPoint* _pixelClicked;
+        imagein::Rectangle* _originalHighlight;
+        bool _resize;
+        bool _move;
+        bool _originX;
+        bool _originY;
         
         void initMenu();
         void showImage();
+        Qt::CursorShape mouseOverHighlight(int x, int y);
         void mousePressEvent(QGraphicsSceneMouseEvent * event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
         void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
@@ -81,7 +91,7 @@ namespace genericinterface
 
 	public slots:
         void ctrlPressed();
-        void showHighlightRect(const imagein::Rectangle* rect);
+        void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
 		
 	signals:
 		/*!

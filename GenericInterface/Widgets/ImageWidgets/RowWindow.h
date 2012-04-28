@@ -18,31 +18,31 @@
 namespace genericinterface
 {
 	/*!
-     * \brief Contains the RowView
-     *
-     * Creates and display the RowView, and update the status bar.
-     */
-    class RowWindow : public ImageWindow
-    {
-		Q_OBJECT
-    private:
-        RowView* _view;
-        QLabel* _lImageName;
-        QLabel* _lHoveredValue;
-        QLabel* _lSelectedValue1;
-        QLabel* _lSelectedValue2;
-        GenericInterface* _gi;
+   * \brief Contains the RowView
+   *
+   * Creates and display the RowView, and update the status bar.
+   */
+  class RowWindow : public ImageWindow
+  {
+  Q_OBJECT
+  private:
+    RowView* _view;
+    QLabel* _lImageName;
+    QLabel* _lHoveredValue;
+    QLabel* _lSelectedValue1;
+    QLabel* _lSelectedValue2;
+    GenericInterface* _gi;
 		
-		void init();
-        void initStatusBar();
-        QString valueFromHistogram(unsigned int value) const;
+    void init();
+    void initStatusBar();
+    QString valueFromHistogram(unsigned int value) const;
         
-    public slots:
-        void showHoveredValue(int value) const;
-        void showLeftClickedValue(int value) const;
-        void showRightClickedValue(int value) const;
+  public slots:
+    void showHoveredValue(int value) const;
+    void showLeftClickedValue(int value) const;
+    void showRightClickedValue(int value) const;
         
-    public:
+  public:
 		/*!
 		 * \brief Default constructor
 		 * 
@@ -55,7 +55,7 @@ namespace genericinterface
 		 * \param source The ImageWindow source (window which contains the image)
 		 * \param vertical False : row profile ; True : column profile
 		 */
-        RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical=false);
+    RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical=false);
     
 		
 		/*!
@@ -64,7 +64,9 @@ namespace genericinterface
 		 * The RowView is deleted too
 		 */
 		virtual ~RowWindow();
-    };
+    
+    virtual AlternativeImageView* getView() { return _view; }
+  };
 }
 
 #endif // ROWWINDOW_H

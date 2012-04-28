@@ -30,6 +30,7 @@ namespace genericinterface
     */
     GridWindow(const QString & path, ImageWindow* source = 0, imagein::Rectangle* rect = 0);
 
+    virtual AlternativeImageView* getView() { return NULL; }
   protected:
     GridView* _view; /*!< the widget which deals with the pixels display */
   };

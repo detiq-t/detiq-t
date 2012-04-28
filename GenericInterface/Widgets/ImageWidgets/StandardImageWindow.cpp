@@ -46,7 +46,7 @@ void StandardImageWindow::init()
 	QObject::connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
 	QObject::connect(_imageView, SIGNAL(zoomChanged(double)), this, SLOT(updateZoom(double)));
 	QObject::connect(this, SIGNAL(ctrlPressed()), _imageView, SLOT(ctrlPressed()));
-	QObject::connect(this, SIGNAL(highlightRectChange(const imagein::Rectangle*)), _imageView, SLOT(showHighlightRect(const imagein::Rectangle*)));
+	QObject::connect(this, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), _imageView, SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
 
 	this->show();
 }
@@ -288,9 +288,9 @@ void StandardImageWindow::keyReleaseEvent(QKeyEvent* event)
 		emit ctrlPressed();
 }
 
-void StandardImageWindow::showHighlightRect(const Rectangle* rect)
+void StandardImageWindow::showHighlightRect(const Rectangle* rect, ImageWindow* source)
 {
-	emit(highlightRectChange(rect));
+	emit(highlightRectChange(rect, source));
 }
 
 const imagein::Image* StandardImageWindow::getImage()

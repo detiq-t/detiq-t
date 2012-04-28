@@ -14,6 +14,7 @@
 #include <qwt_column_symbol.h>
 #include <qwt_series_data.h>
 #include <stdlib.h>
+#include <vector>
 
 #include <Image.h>
 #include <Rectangle.h>
@@ -48,8 +49,9 @@ namespace genericinterface
 		HistogramPicker* _rightPicker;
 		bool _horizontal;
 		int _value;
+    std::vector<GraphicalHistogram*> _graphicalHistos;
 	
-    public:
+  public:
 		/*!
 		 * \brief Default constructor
 		 * 
@@ -67,11 +69,13 @@ namespace genericinterface
 		 */
 		virtual ~GenericHistogramView();
 		
+    void update(const imagein::Rectangle* rect);
+    
 		//! Returns the image's histogram on the param channel
-        inline const imagein::Histogram* getHistogram(int channel) const { return new imagein::Histogram(*_image, channel, *_rectangle); }
+    inline const imagein::Histogram* getHistogram(int channel) const { return new imagein::Histogram(*_image, channel, *_rectangle); }
         
 		//! Returns the graphical histogram
-        inline QwtPlot* getGraphicalHistogram() const { return _qwtPlot; }
+    inline QwtPlot* getGraphicalHistogram() const { return _qwtPlot; }
 		
 	signals:
 		/*!

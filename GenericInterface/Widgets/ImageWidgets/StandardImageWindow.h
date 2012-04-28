@@ -20,7 +20,9 @@
 #include "HistogramWindow.h"
 #include "ProjectionHistogramWindow.h"
 #include "StandardImageView.h"
+#include "AlternativeImageView.h"
 #include "GridWindow.h"
+#include "GraphicalHistogram.h"
 
 #include "../../GenericInterface.h"
 
@@ -61,7 +63,7 @@ namespace genericinterface
         std::list<HistogramWindow*> getHistogram();
         void keyPressEvent(QKeyEvent* event);
         void keyReleaseEvent(QKeyEvent* event);
-   
+        
     public slots:
         void showHistogram();
         void showHProjectionHistogram();
@@ -74,7 +76,7 @@ namespace genericinterface
         void showSelectedPixelInformations(int x, int y) const;
         void updateZoom(double z) const;
         
-        void showHighlightRect(const imagein::Rectangle* rect);
+        void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
         
 	signals:
 		//! Signal emits when crtl key is pressed
@@ -85,9 +87,9 @@ namespace genericinterface
 		 * 
 		 * \param rect The rectangle to display
 		 */
-		void highlightRectChange(const imagein::Rectangle* rect);    
+		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);    
 
-    public:
+  public:
 		/*!
 		 * \brief Default constructor
 		 * 
@@ -96,7 +98,7 @@ namespace genericinterface
 		 * \param path The image path
 		 * \param gi The interface associated with this
 		 */
-        StandardImageWindow(const QString & path, GenericInterface* gi);
+    StandardImageWindow(const QString & path, GenericInterface* gi);
       
 		/*!
 		 * \brief Constructor based on an Image already openned
@@ -107,7 +109,7 @@ namespace genericinterface
 		 * \param gi The interface associated with this
 		 * \param image The image which is used
 		 */
-        StandardImageWindow(const QString & path, GenericInterface* gi, Image* image);
+    StandardImageWindow(const QString & path, GenericInterface* gi, Image* image);
         
   
 		/*!
@@ -123,6 +125,7 @@ namespace genericinterface
 		 */
 		const imagein::Image* getImage();
 
+    AlternativeImageView* getView() { return NULL; }
       
     };
 }
