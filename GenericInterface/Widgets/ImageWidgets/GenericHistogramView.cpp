@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-GenericHistogramView::GenericHistogramView(const Image* image, const imagein::Rectangle* rect, bool projection, bool horizontal, int value): AlternativeImageView(image), _rectangle(rect), _projection(projection), _horizontal(horizontal), _value(value)
+GenericHistogramView::GenericHistogramView(const Image* image, imagein::Rectangle* rect, bool projection, bool horizontal, int value): AlternativeImageView(image), _rectangle(rect), _projection(projection), _horizontal(horizontal), _value(value)
 {
 	_qwtPlot = new QwtPlot();
 	init();
@@ -130,6 +130,13 @@ void GenericHistogramView::populate()
 
 void GenericHistogramView::update(const imagein::Rectangle* rect)
 {
+  _rectangle->x = rect->x;
+  _rectangle->y = rect->y;
+  _rectangle->w = rect->w;
+  _rectangle->h = rect->h;
+  
+  emit(updateApplicationArea(rect));
+  
   for(unsigned int i = 0; i < _image->getNbChannels(); ++i)
 	{
 		imagein::Array<unsigned int>* histogram;
@@ -166,4 +173,3 @@ void GenericHistogramView::move(const QPointF& pos) const
 {
 	emit(hoveredValue((int)pos.x()));
 }
-

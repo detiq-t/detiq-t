@@ -42,7 +42,7 @@ namespace genericinterface
 		void populate();
 	
 	protected:
-		const imagein::Rectangle* _rectangle;
+		imagein::Rectangle* _rectangle;
 		QwtPlot* _qwtPlot;
 		HistogramPicker* _principalPicker;
 		HistogramPicker* _leftPicker;
@@ -60,7 +60,7 @@ namespace genericinterface
 		 * \param image The image concerned by the histogram
 		 * \param rect The part of the image where the histogram is applied
 		 */
-		GenericHistogramView(const imagein::Image* image, const imagein::Rectangle* rect, bool projection=false, bool horizontal=false, int value=0);
+		GenericHistogramView(const imagein::Image* image, imagein::Rectangle* rect, bool projection=false, bool horizontal=false, int value=0);
 		
 		/*!
 		 * \brief GenericHistogramView destructor.
@@ -98,6 +98,8 @@ namespace genericinterface
 		 * \param value Value hovered
 		 */
 		void hoveredValue(int value) const;
+    
+    void updateApplicationArea(const imagein::Rectangle* rect) const;
 		
 	private slots:
 		void showItem(QwtPlotItem*, bool on) const;

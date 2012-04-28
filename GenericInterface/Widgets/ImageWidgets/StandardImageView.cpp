@@ -20,6 +20,8 @@ StandardImageView::StandardImageView(QWidget* parent, const Image* image): QGrap
   _resize = false;
   _originX = false;
   _originY = false;
+  _vLine = false;
+  _hLine = false;
   
   _mouseButtonPressed = false;
   _pixelClicked = new QPoint(-1, -1);
@@ -214,8 +216,10 @@ void StandardImageView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		{
       if(_move)
       {
-        _selection->x = _selection->x - (_pixelClicked->x() - x) < 0 ? 0 : _selection->x - (_pixelClicked->x() - x);
-        _selection->y = _selection->y - (_pixelClicked->y() - y) < 0 ? 0 : _selection->y - (_pixelClicked->y() - y);
+        if(!_hLine)
+          _selection->x = _selection->x - (_pixelClicked->x() - x) < 0 ? 0 : _selection->x - (_pixelClicked->x() - x);
+        if(!_vLine)
+          _selection->y = _selection->y - (_pixelClicked->y() - y) < 0 ? 0 : _selection->y - (_pixelClicked->y() - y);
         _pixelClicked->setX(x);
         _pixelClicked->setY(y);
         _sourceHighlight->update(_selection);
@@ -323,6 +327,11 @@ Qt::CursorShape StandardImageView::mouseOverHighlight(int x, int y)
   _originX = false;
   _originY = false;
   
+  if(_vLine && x >= _highlight->rect().x() - 2 && x <= _highlight->rect().x() + 2)
+      res = Qt::SizeAllCursor;
+  else if(_hLine && y >= _highlight->rect().y() - 2 && y <= _highlight->rect().y() + 2)
+      res = Qt::SizeAllCursor;
+  
   if(x >= _highlight->rect().x() - 2 && x <= _highlight->rect().x() + 2)
   {
     if(_ctrlPressed)
@@ -398,6 +407,14 @@ void StandardImageView::showHighlightRect(const imagein::Rectangle* rect, ImageW
   _originalHighlight->y = (int)rect->y;
   _originalHighlight->w = (int)rect->w;
   _originalHighlight->h = (int)rect->h;
+  
+  _selection->x = (int)rect->x;
+  _selection->y = (int)rect->y;
+  _selection->w = (int)rect->w;
+  _selection->h = (int)rect->h;
+  
+  _vLine = (_originalHighlight->w == 0 && _originalHighlight->h == _image->getHeight());
+  _hLine = (_originalHighlight->h == 0 && _originalHighlight->w == _image->getWidth());
   
   AlternativeImageView* view = source->getView();
   if(view != NULL && (_sourceHighlight = dynamic_cast<GenericHistogramView*>(view))) {}

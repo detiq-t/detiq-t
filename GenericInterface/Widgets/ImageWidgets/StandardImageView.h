@@ -51,6 +51,8 @@ namespace genericinterface
         bool _move;
         bool _originX;
         bool _originY;
+        bool _vLine;
+        bool _hLine;
         
         void initMenu();
         void showImage();
@@ -84,7 +86,7 @@ namespace genericinterface
         inline const QPixmap* getPixmap() const { return _pixmap_img; }
         
 		//! Returns the selection rectangle
-        inline const imagein::Rectangle* getRectangle() const { return _selection; }
+        inline imagein::Rectangle* getRectangle() const { return _selection; }
         
 		//! Returns the graphics view
         inline QGraphicsView* getGraphicsView() const { return _view; }

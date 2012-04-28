@@ -51,7 +51,7 @@ namespace genericinterface
        * \param rect The part of the image where the histogram is applied
        * \param source The ImageWindow source (window which contains the image)
        */
-      HistogramWindow(const imagein::Image* image, const imagein::Rectangle* rect, const ImageWindow* source);
+      HistogramWindow(const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source);
         
       /*!
        * \brief HistogramWindow destructor.

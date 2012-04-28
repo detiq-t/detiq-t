@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(const imagein::Image* image, const imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(source, rect)
+RowWindow::RowWindow(const imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(source, rect)
 {
 	_path = path;
 	_gi = gi;

@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(const Image* image, const imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(source, rect)
+HistogramWindow::HistogramWindow(const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(source, rect)
 {
 	_view = new HistogramView(image, rect);
 	this->setWindowTitle("Histogram - imageTitle");

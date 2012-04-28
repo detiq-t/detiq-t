@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-ProjectionHistogramView::ProjectionHistogramView(const Image* image, const Rectangle* rect, int value, bool horizontal): GenericHistogramView(image, rect, true, horizontal, value)
+ProjectionHistogramView::ProjectionHistogramView(const Image* image, Rectangle* rect, int value, bool horizontal): GenericHistogramView(image, rect, true, horizontal, value)
 {
 	_qwtPlot->setTitle("Projection Histogram");
 

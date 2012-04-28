@@ -57,6 +57,11 @@ void StandardImageWindow::showHistogram()
 
 	for(list<HistogramWindow*>::iterator it = histos.begin(); it != histos.end(); ++it)
 	{
+    AlternativeImageView* view = (*it)->getView();
+    GenericHistogramView* source;
+    if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+      QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), *it, SLOT(setApplicationArea(const imagein::Rectangle*)));
+    
     dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, *it);
 	}
 }
@@ -82,6 +87,11 @@ void StandardImageWindow::showHProjectionHistogram()
 	if(ok)
 	{
 		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value);
+    
+    AlternativeImageView* view = histo->getView();
+    GenericHistogramView* source;
+    if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+      QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
 		dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 	} 
@@ -97,6 +107,11 @@ void StandardImageWindow::showVProjectionHistogram()
 	if(ok)
 	{
 		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value, false);
+    
+    AlternativeImageView* view = histo->getView();
+    GenericHistogramView* source;
+    if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+      QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
 		dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 	} 
@@ -113,8 +128,13 @@ void StandardImageWindow::showPixelsGrid()
 void StandardImageWindow::showLineProfile()
 {
 	const Image* im = _imageView->getImage();
-	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 1);
+	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 0);
 	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this);
+    
+  AlternativeImageView* view = histo->getView();
+  GenericHistogramView* source;
+  if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+    QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
 	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 }
@@ -122,8 +142,13 @@ void StandardImageWindow::showLineProfile()
 void StandardImageWindow::showColumnProfile()
 {
 	const Image* im = _imageView->getImage();
-	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 1, im->getHeight());
+	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 0, im->getHeight());
 	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this, true);
+    
+  AlternativeImageView* view = histo->getView();
+  GenericHistogramView* source;
+  if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+    QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
 	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 }

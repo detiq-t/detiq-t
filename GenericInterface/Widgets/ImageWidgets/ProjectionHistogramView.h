@@ -28,7 +28,7 @@ namespace genericinterface
 		 * \param image The image concerned by the histogram
 		 * \param rect The part of the image where the histogram is applied
 		 */
-		ProjectionHistogramView(const imagein::Image* image, const imagein::Rectangle* rect, int value, bool horizontal);
+		ProjectionHistogramView(const imagein::Image* image, imagein::Rectangle* rect, int value, bool horizontal);
         
         //! Returns true if it's horizontal, else false
         inline bool isHorizontal() const { return _horizontal; }
