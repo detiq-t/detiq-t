@@ -39,7 +39,6 @@ StandardImageView::~StandardImageView()
 	delete _menu;
 	delete _pixmap_img;
   delete _originalHighlight;
-  delete _sourceHighlight;
 }
 
 void StandardImageView::initMenu()
@@ -216,13 +215,16 @@ void StandardImageView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		{
       if(_move)
       {
+        int newX = _selection->x - (_pixelClicked->x() - x);
+        int newY = _selection->y - (_pixelClicked->y() - y);
         if(!_hLine)
-          _selection->x = _selection->x - (_pixelClicked->x() - x) < 0 ? 0 : _selection->x - (_pixelClicked->x() - x);
+          _selection->x = newX < 0 ? 0 : newX + _selection->w >= _image->getWidth() ? _image->getWidth() - _selection->w - 1 : newX;
         if(!_vLine)
-          _selection->y = _selection->y - (_pixelClicked->y() - y) < 0 ? 0 : _selection->y - (_pixelClicked->y() - y);
+          _selection->y = newY < 0 ? 0 : newY + _selection->h >= _image->getHeight() ? _image->getHeight() - _selection->h - 1 : newY;
         _pixelClicked->setX(x);
         _pixelClicked->setY(y);
-        _sourceHighlight->update(_selection);
+        if(_sourceHighlight != NULL)
+          _sourceHighlight->update(_selection);
       }
       else if(_resize && this->hasCursor())
       {
@@ -277,7 +279,8 @@ void StandardImageView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             _selection->y = _originalHighlight->y;
           }
         }
-        _sourceHighlight->update(_selection);
+        if(_sourceHighlight != NULL)
+          _sourceHighlight->update(_selection);
       }
       else
       {
