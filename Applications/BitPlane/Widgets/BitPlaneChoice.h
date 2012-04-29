@@ -1,34 +1,39 @@
-#ifndef WIDGET_FILTEREDITION
-#define WIDGET_FILTEREDITION
+#ifndef WIDGET_BITPLANECHOICE
+#define WIDGET_BITPLANECHOICE
 
 #include <QWidget>
-#include <QVBoxLayout>
-#include <QString>
-#include <QList>
+#include <QLabel>
+#include <QCheckBox>
+#include <QPushButton>
+#include <Algorithm/BitPlane.h>
+#include <Image.h>
 
-class QLineEdit;
-
-namespace filtrme
+namespace bitplane
 {
-  class FilterEdition : public QWidget
+  class BitPlaneChoice : public QWidget
   {
+  Q_OBJECT
+
   public:
-    FilterEdition(int width, int height, const QString & name = "", QList<QWidget> args = QList<QWidget>());
+    BitPlaneChoice();
 
-    /**
-    * @brief Get the name of the edited filter
-    *
-    * @return A QString object of the text
-    */
-    QString name() const;
-  protected:
-    QVBoxLayout*  _editionZone; /*!< the layout of this widget */
+  signals:
+    void choiceValidate(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo);
+
+  private slots:
+    void validate();
+  
   private:
-    void displayArguments();
-
-    QLineEdit*    _name;        /*!< the text edit fir the name of the filter */
-    int           _width;
-    int           _height;
+    QLabel* _StrMask;
+    QCheckBox* _CBbit0;
+    QCheckBox* _CBbit1;
+    QCheckBox* _CBbit2;
+    QCheckBox* _CBbit3;
+    QCheckBox* _CBbit4;
+    QCheckBox* _CBbit5;
+    QCheckBox* _CBbit6;
+    QCheckBox* _CBbit7;
+    QPushButton* _PBvalidate;
   };
 }
 

@@ -1,10 +1,9 @@
 #include "BitPlaneService.h"
 #include <GenericInterface.h>
 
-#include <Algorithm/BitPlane.h>
-
 using namespace genericinterface;
-using namespace imagein::algorithm;
+using namespace imagein;
+using namespace algorithm;
 
 void BitPlaneService::display(GenericInterface* gi)
 {
@@ -22,6 +21,13 @@ void BitPlaneService::connect(GenericInterface* gi)
 
 void BitPlaneService::applyBitPlane()
 { 
-  //Identity<Image>* algo = new Identity<Image>;
-  //applyAlgorithm(algo);
+  _bitplanechoice = new BitPlaneChoice();
+  _bitplanechoice->show();
+
+   QObject::connect(_bitplanechoice, SIGNAL(choiceValidate(imagein::algorithm::BitPlane<imagein::Image>*)), this, SLOT(apply(imagein::algorithm::BitPlane<imagein::Image>*))); 
+}
+
+void BitPlaneService::apply(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo)
+{
+  applyAlgorithm(bitplanealgo);
 }
