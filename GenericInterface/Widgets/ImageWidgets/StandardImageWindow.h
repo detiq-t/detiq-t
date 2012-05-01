@@ -40,7 +40,7 @@ namespace genericinterface
      */
     class StandardImageWindow : public ImageWindow
     {
-		Q_OBJECT
+    Q_OBJECT
     private:
         GenericInterface* _gi;
        
@@ -89,7 +89,7 @@ namespace genericinterface
 		 */
 		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);    
 
-  public:
+	public:
 		/*!
 		 * \brief Default constructor
 		 * 
@@ -98,7 +98,7 @@ namespace genericinterface
 		 * \param path The image path
 		 * \param gi The interface associated with this
 		 */
-    StandardImageWindow(const QString & path, GenericInterface* gi);
+		StandardImageWindow(const QString & path, GenericInterface* gi);
       
 		/*!
 		 * \brief Constructor based on an Image already openned
@@ -109,7 +109,7 @@ namespace genericinterface
 		 * \param gi The interface associated with this
 		 * \param image The image which is used
 		 */
-    StandardImageWindow(const QString & path, GenericInterface* gi, Image* image);
+		StandardImageWindow(const QString & path, GenericInterface* gi, Image* image);
         
   
 		/*!
@@ -125,7 +125,14 @@ namespace genericinterface
 		 */
 		const imagein::Image* getImage();
 
-    AlternativeImageView* getView() { return NULL; }
+		/*!
+		 * \brief Returns the Rectangle which is the current image's selection on the window.
+		 *
+		 */
+		const imagein::Rectangle* getSelection();
+
+
+		AlternativeImageView* getView() { return NULL; }
       
     };
 }

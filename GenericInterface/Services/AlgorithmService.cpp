@@ -29,8 +29,9 @@ void AlgorithmService::applyAlgorithm(Algorithm_t<Image>* algo)
   if (siw != NULL)
   {
     const Image* im = siw->getImage();
+	 Image* im_selected = im->crop(*(siw->getSelection()));
 	 QString& path = siw->getPath();
-	 Image* im_res = (*algo)(im);
+	 Image* im_res = (*algo)(im_selected);
 	 StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
 	 emit newImageWindowCreated(path, siw_res); 
   }
