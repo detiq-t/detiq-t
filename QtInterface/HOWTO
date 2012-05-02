@@ -1,0 +1,54 @@
+VF
+
+> **Important :** pour le moment, assurez vous bien que la racine du dossier QtInterface/Widgets ne contiennent que des dossiers. Si ce n'est pas le cas, supprimez les (mais ne committez pas ces suppressions). Si les fichiers ne sont pas supprimés, ils vont être analysés par qmake et cela créera des conflits.
+
+# Compiler l'interface générique avec config.pl
+
+## Pourquoi utiliser config.pl ?
+
+Il n'est pas rare qu'un bibliothèque propose un script préparant le Makefile qui servira à la compilation. C'est justement ce que va faire notre script config.pl. En effet, dans notre cas, un Makefile aura du mal à être vraiment générique, à cause des nombreuses bibliothèque que nous utilisons. Pour information, vous devez avoir d'installer :
++ Qt 4.7 minimum (à cause de bool QPixmap::convertFromImage au moins) ;
++ Qwt 5 ou 6 (pas testé avec version antérieur)
++ ImageIn
+
+Qt 4.7 et Qwt peuvent s'obtenir par le biais de son site officiel ou dans les dépôts de votre distribution. ImageIn est présent sur ce dépôt, mais vous pouvez très bien l'avoir installée quelque part sur votre machine. L'intérêt de config.pl est qu'il va scanner vos dossiers **/usr** et **/home** à la recherche des éléments dont il a besoin.
+
+> Si les dits fichiers ne sont pas dans ces deux dossiers, il va falloir éditer le script pour vos besoin. Regardez du côtés des appels à find, et ajouter l'appel adequat. De base, config.pl ne regardent que ces deux dossiers pour gagner du temps.
+
+## Utiliser config.pl
+
+config.pl génère de bout en bout votre Makefile. Vous *n'*avez *pas* besoin d'utiliser *qmake -project* et *qmake*. Si tout s'est bien passé, le script se termine sans affichage d'un message commençant par « *Error* ». Sinon, assurez-vous bien que toutes les bibliothèques nécessaires sont bien installées et que les fichiers nécessaires (headers et .so/.a) sont bien dans l'arborescences de **/usr** ou **/home**.
+
+## Pour résumer
+
+Actuellement, une première utilisation typique est la suivante (l'effacement des fichiers de Widgets est temporaire) :
+
+> src$ svn update  
+> (...)  
+> src$ cd ImageIn                        (1)  
+> ImageIn$ make  
+> (...)  
+> ImageIn$ cd ../QtInterface/Widgets     (2)  
+> Widgets$ rm -f *.*  
+> Widgets$ cd ..  
+> QtInterface$ ./config.pl  
+> (...)  
+> QtInterface$ make  
+> (...)  
+
+*(1) seulement si ImageIn n'est pas déjà compilée*
+
+*(2) tant que Matthieu n'aura pas commit les corrections*
+
+Ensuite, tout se fera très simplement. En cas d'ajout d'un nouveau fichier, etc, simplement faire :
+
+> QtInterface$ ./config.pl  
+> (...)  
+> QtInterface$ make  
+
+PAQUETS A INSTALLER :
+build-essential
+libjpeg-dev
+libpng-dev
+libqt4-dev
+libqwt-dev

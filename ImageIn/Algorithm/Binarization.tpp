@@ -1,5 +1,7 @@
 //#include "Binarization.h"
 
+#include <limits>
+
 namespace imagein {
 	namespace algorithm {
 		template<typename D>

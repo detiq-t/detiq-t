@@ -1,4 +1,6 @@
 #include "BinarizationService.h"
+#include "../Widgets/ThresholdWindow.h"
+
 #include <GenericInterface.h>
 
 #include <Algorithm/Binarization.h>
@@ -41,6 +43,13 @@ void BinarizationService::applyOtsu()
     Image* im_res = algo(im_tmp);
     StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
     emit newImageWindowCreated(path, siw_res);
+
+
+    int threshold = algo.getThreshold();
+    ThresholdWindow* thresholdWindow = new ThresholdWindow(siw, threshold);
+	 QMdiArea* area = (QMdiArea*)_gi->centralWidget();
+	 area->addSubWindow(thresholdWindow);
+	 thresholdWindow->show();
   } 
 }
 
