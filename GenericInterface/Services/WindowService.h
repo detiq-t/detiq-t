@@ -30,10 +30,10 @@ namespace genericinterface
   public slots:
     void addWidget(const QString& path, ImageWindow* widget);
     void updateDisplay();
-	void removeRootImage(const QString& path);
+    void removeRootImage(const QString& path);
 
   signals:
-	void subWindowActivated(QMdiSubWindow*);
+    void subWindowActivated(QMdiSubWindow*);
 	
   private:
     GenericInterface* _gi;

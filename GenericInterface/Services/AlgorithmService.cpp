@@ -1,6 +1,8 @@
 #include "AlgorithmService.h"
 #include "../GenericInterface.h"
 
+#include <Converter.h>
+
 using namespace genericinterface;
 using namespace imagein;
 
@@ -29,10 +31,11 @@ void AlgorithmService::applyAlgorithm(Algorithm_t<Image>* algo)
   if (siw != NULL)
   {
     const Image* im = siw->getImage();
-	 Image* im_selected = im->crop(*(siw->getSelection()));
-	 QString& path = siw->getPath();
-	 Image* im_res = (*algo)(im_selected);
-	 StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
-	 emit newImageWindowCreated(path, siw_res); 
+    Image* im_selected = im->crop(*(siw->getSelection()));
+    QString& path = siw->getPath();
+    Image* im_res = (*algo)(im_selected);
+    //im_res = Converter<Image>::makeDisplayable(*im_res);
+    StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
+    emit newImageWindowCreated(path, siw_res); 
   }
 }

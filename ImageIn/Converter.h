@@ -5,6 +5,9 @@
 #include "GrayscaleImage.h"
 #include "RgbImage.h"
 
+#include <cmath>
+#include <iostream>
+
 namespace imagein {
 
     /*!
@@ -126,6 +129,28 @@ namespace imagein {
              * \param from The Image to convert.
              */
             static Image_t<D>* convert(const Image_t<D>& from);
+
+            /*!
+             * \brief Converts Image to Image<int>
+             *
+             * As the class Image_t can contain every of its subclasses, no operation is performed on the data.
+             *  
+             * This method is useful for filtering for example.
+             *
+             * \param from The Image to convert.
+             */
+            static Image_t<int>* convertToInt(const Image_t<D>& from);
+            
+            /*!
+             * \brief Converts Image to displayable Image
+             *
+             * Sometime an image can contains non-displayable values. This method make it displayable.
+             *  
+             * This method is useful when you want an Image displayable (after filtering).
+             * 
+             * \param from The Image to convert.
+             */
+            static Image_t<D>* makeDisplayable(const Image_t<int>& from);
     };
 }
 

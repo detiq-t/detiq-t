@@ -5,8 +5,6 @@
 
 #include <Algorithm/Filter.h>
 #include <Algorithm/Filtering.h>
-//#include "../../ImageIn/Algorithm/Filter.h"
-//#include "../../ImageIn/Algorithm/Filtering.h"
 
 #include <vector>
 #include <QWidget>

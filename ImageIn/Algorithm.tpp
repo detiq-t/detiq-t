@@ -8,7 +8,7 @@ I* Algorithm_t<I,1>::operator() (const imagein::Image_t<typename I::depth_t>* im
 }
 
 template <class I>
-I* Algorithm_t<I,2>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2) { 
+I* Algorithm_t<I,2>::operator() (const imagein::Image_t<typename I::depth_t>* img, const imagein::Image_t<typename I::depth_t>* img2) {
     std::vector<const imagein::Image_t<typename I::depth_t>*> imgs;
     imgs.push_back(img);
     imgs.push_back(img2);

@@ -30,6 +30,25 @@ namespace imagein
         return std::sqrt(result);
       }
     };
+
+    template <class I, unsigned int A>
+    class MaxDistance : public PixelAlgorithm_t<I, A>
+    {
+    private:
+      typedef typename I::depth_t D;
+          
+    protected:
+      D pixelOp(D pixel[A]) const
+      {
+        D result = std::abs(pixel[0]);
+        for(unsigned int i=1; i < A; i++)
+        {
+          D temp = std::abs(pixel[i]);
+          result = std::max(temp, result);
+        }
+        return result;
+      }
+    };
   }
 }
 #endif

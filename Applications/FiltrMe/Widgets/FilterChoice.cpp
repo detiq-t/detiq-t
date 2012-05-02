@@ -52,18 +52,6 @@ FilterChoice::FilterChoice()
   _policyChoices->addItems(policies);
   leftLayout->addWidget(_policyChoices);
   
-  /*
-   * QLabel* labelNormalizationChoice = new QLabel("Normalization:");
-   * leftLayout->addWidget(labelNormalizationChoice);
-   * QStringList normalizations = QStringList();
-   * normalizations.push_back("Zero");
-   * normalizations.push_back("Absolute");
-   * normalizations.push_back("Scale");
-   * _normalizationChoices = new QComboBox();
-   * _normalizationChoices->addItems(normalizations);
-   * leftLayout->addWidget(_normalizationChoices);
-   */
-  
   princLayout->addWidget(leftPanel);
   
   /*
@@ -182,22 +170,6 @@ void FilterChoice::validate()
     default:
       filtering->setPolicy(Filtering::blackPolicy);
   }
-  /*
-   * switch(_normalizationChoices->currentIndex())
-   * {
-   *   case 0:
-   *     filtering->setNormalization(Filtering::zeroNormalization);
-   *     break;
-   *   case 1:
-   *     filtering->setNormalization(Filtering::absoluteNormalization);
-   *     break;
-   *   case 2:
-   *     filtering->setNormalization(Filtering::scaleNormalization);
-   *     break;
-   *   default:
-   *     filtering->setNormalization(Filtering::zeroNormalization);
-  }
-  */
   
   emit choiceValidate(filtering);
 }

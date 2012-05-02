@@ -19,7 +19,7 @@ namespace genericinterface
     virtual void display(GenericInterface* gi);
     virtual void connect(GenericInterface* gi);
 
-	 void applyAlgorithm(imagein::Algorithm_t<Image>* algo);
+    virtual void applyAlgorithm(imagein::Algorithm_t<Image>* algo);
 
   public slots:
     //virtual void apply();

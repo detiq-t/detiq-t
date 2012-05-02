@@ -57,7 +57,7 @@ namespace imagein
                     ++oIt;
                     for(unsigned int i=0; i<A; ++i) ++iIt[i];
                 }
-                result->save("tmp.png");
+                //result->save("tmp.png");
 
                 I* finalResult = Converter<I>::convert(*result);
 

@@ -12,34 +12,27 @@ namespace imagein
 {
 	namespace algorithm
 	{		
-		template <typename D>
-		class Filtering_t : public Algorithm_t<Image_t<D>, 1>
+		class Filtering : public Algorithm_t<Image_t<int>, 1>
 		{
-			typedef D (*Policy)(const Image_t<D>*, const int&, const int&, const int&);
-			/*
-       * typedef D (*Normalization)(int);
-       */
+			typedef int (*Policy)(const Image_t<int>*, const int&, const int&, const int&);
+			
 		public:
-			Filtering_t(Filter* filter);
-			Filtering_t(std::vector<Filter*> filters);
-			Filtering_t(const Filtering_t& f) : _filters(f._filters), _policy(f._policy)/*, _normalization(f._normalization)*/ {}
+			Filtering(Filter* filter);
+			Filtering(std::vector<Filter*> filters);
+			Filtering(const Filtering& f) : _filters(f._filters), _policy(f._policy) {}
   
 			inline void setPolicy(Policy policy) { _policy = policy; }
 			
-      /*
-       * inline void setNormalization(Normalization normalization) { _normalization = normalization; }
-       */
-			
-			static Filtering_t<D> uniformBlur(int numPixels);
-			static Filtering_t<D> gaussianBlur(double alpha);
-			static Filtering_t<D> prewitt(int numPixels);
-			static Filtering_t<D> roberts();
-			static Filtering_t<D> sobel();
-			static Filtering_t<D> squareLaplacien();
+			static Filtering uniformBlur(int numPixels);
+			static Filtering gaussianBlur(double alpha);
+			static Filtering prewitt(int numPixels);
+			static Filtering roberts();
+			static Filtering sobel();
+			static Filtering squareLaplacien();
 
-			static D blackPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static int blackPolicy(const Image_t<int>* img, const int& x, const int& y, const int& channel)
 			{
-				D newPixel;
+				int newPixel;
 				try
 				{
 					newPixel = img->getPixel(x, y, channel);
@@ -51,9 +44,9 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D mirrorPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static int mirrorPolicy(const Image_t<int>* img, const int& x, const int& y, const int& channel)
 			{
-				D newPixel;
+				int newPixel;
 				try
 				{
 					newPixel = img->getPixel(x, y, channel);
@@ -82,9 +75,9 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D nearestPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static int nearestPolicy(const Image_t<int>* img, const int& x, const int& y, const int& channel)
 			{
-				D newPixel;
+				int newPixel;
 				try
 				{
 					newPixel = img->getPixel(x, y, channel);
@@ -113,9 +106,9 @@ namespace imagein
 				return newPixel;
 			}
 			
-			static D sphericalPolicy(const Image_t<D>* img, const int& x, const int& y, const int& channel)
+			static int sphericalPolicy(const Image_t<int>* img, const int& x, const int& y, const int& channel)
 			{
-				D newPixel;
+				int newPixel;
 				try
 				{
 					newPixel = img->getPixel(x, y, channel);
@@ -144,46 +137,32 @@ namespace imagein
 				return newPixel;
 			}
 			
-      /*
-       * static D zeroNormalization(int){ return 0; }
-       * static D absoluteNormalization(int i){ return i < 0 ? -i : i; }
-       * static D scaleNormalization(int i){ return 255 / 2 + i / 2; }
-       */
-			
 		protected:
 			#ifdef __linux__
 			static void* parallelAlgorithm(void* data);
 			#endif
 			
-			Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs);
+			Image_t<int>* algorithm(const std::vector<const Image_t<int>*>& imgs);
 		
 		private:
 			std::vector<Filter*> _filters;
 			Policy _policy;
-			/*
-       * Normalization _normalization;
-       */
 			
+			#ifdef __linux__
 			struct ParallelArgs
 			{
-				const Image_t<D>* img;
-				Image_t<D>* result;
+				const Image_t<int>* img;
+				Image_t<int>* result;
 				Filter* filter;
 				Policy policy;
-				/*
-         * Normalization normalization;
-         */
 				int infx;
 				int supx;
 				int factor;
-        bool neg;
         bool odd;
 			};
+			#endif
 		};
-		typedef Filtering_t<depth_default_t> Filtering; //!< Standard Algorithm Filtering with default depth.
 	}
 }
-
-#include "Filtering.tpp"
 
 #endif //FILTRAGE_H
