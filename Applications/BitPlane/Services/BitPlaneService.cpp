@@ -30,4 +30,5 @@ void BitPlaneService::applyBitPlane()
 void BitPlaneService::apply(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo)
 {
   applyAlgorithm(bitplanealgo);
+  _bitplanechoice->close();
 }

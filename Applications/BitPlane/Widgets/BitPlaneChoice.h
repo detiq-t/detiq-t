@@ -22,8 +22,10 @@ namespace bitplane
 
   private slots:
     void validate();
+    void maskChanged();
   
   private:
+    QLabel* _Introduction;
     QLabel* _StrMask;
     QCheckBox* _CBbit0;
     QCheckBox* _CBbit1;
