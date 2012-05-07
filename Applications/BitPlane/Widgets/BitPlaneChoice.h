@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QString>
 #include <QCheckBox>
 #include <QPushButton>
 #include <Algorithm/BitPlane.h>
@@ -15,18 +16,19 @@ namespace bitplane
   Q_OBJECT
 
   public:
-    BitPlaneChoice();
+    BitPlaneChoice(QWidget* parent);
+    uint8_t getMask();
+    QString getStrMask();
 
   signals:
-    void choiceValidate(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo);
+    void newMaskAllocated();
 
   private slots:
-    void validate();
     void maskChanged();
   
   private:
-    QLabel* _Introduction;
-    QLabel* _StrMask;
+    QString* _StrMask;
+    QLabel* _DisplayMask;
     QCheckBox* _CBbit0;
     QCheckBox* _CBbit1;
     QCheckBox* _CBbit2;
@@ -35,7 +37,7 @@ namespace bitplane
     QCheckBox* _CBbit5;
     QCheckBox* _CBbit6;
     QCheckBox* _CBbit7;
-    QPushButton* _PBvalidate;
+    uint8_t _currentMask;
   };
 }
 

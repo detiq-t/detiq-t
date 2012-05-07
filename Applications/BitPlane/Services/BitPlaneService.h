@@ -1,9 +1,9 @@
 #ifndef BITPLANESERVICE_H
 #define BITPLANESERVICE_H
 
+#include <GenericInterface.h>
 #include <Services/AlgorithmService.h>
-#include "../Widgets/BitPlaneChoice.h"
-#include <Image.h>
+#include "../Widgets/BitPlaneWindow.h"
 
 using namespace bitplane;
 
@@ -19,11 +19,10 @@ namespace genericinterface
 
   public slots:
     void applyBitPlane();
-    void apply(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo);
 
   private:
     QAction* _bitplane;
-    BitPlaneChoice* _bitplanechoice;
+    BitPlaneWindow* _bitplanewindow;
   };
 }
 

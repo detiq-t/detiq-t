@@ -113,7 +113,7 @@ namespace genericinterface
 		 */
 		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);
     
-  private:
+  protected:
     GenericInterface* _gi;
     imagein::Image* _image;
     StandardImageView* _imageView;

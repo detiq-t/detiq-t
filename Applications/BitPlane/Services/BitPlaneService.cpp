@@ -1,5 +1,5 @@
 #include "BitPlaneService.h"
-#include <GenericInterface.h>
+#include <exception>
 
 using namespace genericinterface;
 using namespace imagein;
@@ -21,14 +21,14 @@ void BitPlaneService::connect(GenericInterface* gi)
 
 void BitPlaneService::applyBitPlane()
 { 
-  _bitplanechoice = new BitPlaneChoice();
-  _bitplanechoice->show();
-
-   QObject::connect(_bitplanechoice, SIGNAL(choiceValidate(imagein::algorithm::BitPlane<imagein::Image>*)), this, SLOT(apply(imagein::algorithm::BitPlane<imagein::Image>*))); 
-}
-
-void BitPlaneService::apply(imagein::algorithm::BitPlane<imagein::Image>* bitplanealgo)
-{
-  applyAlgorithm(bitplanealgo);
-  _bitplanechoice->close();
+  WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+  StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+  if (siw != NULL)
+  {
+    const Image* im = siw->getImage();
+    Image* im_selected = im->crop(*(siw->getSelection()));
+    QString& path = siw->getPath();
+    bitplanewindow = new BitPlaneWindow(path, _gi, im_selected);
+    emit newImageWindowCreated(path, _bitplanewindow);
+  }
 }
