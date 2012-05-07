@@ -67,7 +67,7 @@ namespace imagein
           #ifdef _SC_NPROCESSORS_ONLN
             numCPU = sysconf( _SC_NPROCESSORS_ONLN );
           #else
-            numCPU = get_nprocs_conf ();
+            numCPU = 1;
           #endif
 			  
 				  pthread_t threads[numCPU];
