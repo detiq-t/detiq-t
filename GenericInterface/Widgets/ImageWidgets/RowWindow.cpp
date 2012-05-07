@@ -3,16 +3,16 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(const imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(source, rect)
+RowWindow::RowWindow(const imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(path, source, rect)
 {
 	_path = path;
 	_gi = gi;
 
 	_view = new RowView(image, rect);
 	if(vertical)
-		this->setWindowTitle("Column Profile - imageTitle");
+		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Column Profile"));
 	else
-		this->setWindowTitle("Line Profile - imageTitle");
+		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Line Profile"));
 	
 	init();
 }
@@ -48,7 +48,7 @@ void RowWindow::initStatusBar()
 	QFont font;
     _statusBar = new QStatusBar();
     
-    _lImageName = new QLabel("Image: Nom_Image");
+    _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
     font = _lImageName->font();
     font.setPointSize(8);
     font.setBold(true);
@@ -124,38 +124,41 @@ QString RowWindow::valueFromHistogram(unsigned int value) const
 {
 	std::ostringstream oss;
 	QString s = QString("");
-	if(value <= _applicationArea->w)
-	{
-		for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
-		{
-			int n = (*(_view->getHistogram(i)))[value];
-			oss.str("");
-			oss << n;
-			
-			if(_view->getImage()->getNbChannels() == 1)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" C: " + oss.str());		
-			}
-			else if(_view->getImage()->getNbChannels() == 2)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" C: " + oss.str());
-				else if(i == 1)
-					s += QString::fromStdString(" A: " + oss.str());			
-			}
-			else if(_view->getImage()->getNbChannels() >= 3)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" R: " + oss.str());
-				else if(i == 1)
-					s += QString::fromStdString(" G: " + oss.str());
-				else if(i == 2)
-					s += QString::fromStdString(" B: " + oss.str());
-				else if(i == 3)
-					s += QString::fromStdString(" A: " + oss.str());
-			}
-		}
-	}
+
+  bool out = false;
+	if(value > 255 || value < 0)
+    out = true;
+  
+  for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
+  {
+    int n = out ? 0 : (*(_view->getHistogram(i)))[value];
+    oss.str("");
+    oss << n;
+    
+    if(_view->getImage()->getNbChannels() == 1)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" C: " + oss.str());		
+    }
+    else if(_view->getImage()->getNbChannels() == 2)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" C: " + oss.str());
+      else if(i == 1)
+        s += QString::fromStdString(" A: " + oss.str());			
+    }
+    else if(_view->getImage()->getNbChannels() >= 3)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" R: " + oss.str());
+      else if(i == 1)
+        s += QString::fromStdString(" G: " + oss.str());
+      else if(i == 2)
+        s += QString::fromStdString(" B: " + oss.str());
+      else if(i == 3)
+        s += QString::fromStdString(" A: " + oss.str());
+    }
+  }
+    
 	return s;
 }

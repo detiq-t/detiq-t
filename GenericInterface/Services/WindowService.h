@@ -6,7 +6,6 @@
 
 #include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/ImageWidgets/ImageWindow.h"
-#include "../Widgets/ImageWidgets/StandardImageWindow.h"
 #include "../Widgets/NavBar/NavigationDock.h"
 #include "../GenericInterface.h"
 
@@ -20,7 +19,7 @@ namespace genericinterface
   public:
     void display(GenericInterface* gi);
     void connect(GenericInterface* gi);
-	 ImageWindow* getCurrentImageWindow(); 
+    ImageWindow* getCurrentImageWindow(); 
 
   private slots:
     void addFile(const QString& path);
@@ -47,19 +46,19 @@ namespace genericinterface
   {
   Q_OBJECT
   public:
-     SubWindowController(const QString& path, QMdiSubWindow* sw, bool isRootImage);
+    SubWindowController(const QString& path, QMdiSubWindow* sw, bool isRootImage);
   
   public slots:
-  	 void closeSubWindow();
+  	void closeSubWindow();
 
   signals:
     void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
-	 void removeFromWindowsMapAllPath(const QString& path);
+    void removeFromWindowsMapAllPath(const QString& path);
 
   private:
     QString _path;
     QMdiSubWindow* _sw;
-	 bool _isRootImage;
+    bool _isRootImage;
   };
 }
 

@@ -423,3 +423,14 @@ void StandardImageView::showHighlightRect(const imagein::Rectangle* rect, ImageW
   if(view != NULL && (_sourceHighlight = dynamic_cast<GenericHistogramView*>(view))) {}
   else _sourceHighlight = NULL;
 }
+
+void StandardImageView::selectAll()
+{
+  _sourceHighlight = NULL;
+  _selection->x = 0;
+  _selection->y = 0;
+  _selection->w = _image->getWidth();
+  _selection->h = _image->getHeight();
+  
+  _highlight->setRect(_selection->x, _selection->y, _selection->w, _selection->h);  
+}

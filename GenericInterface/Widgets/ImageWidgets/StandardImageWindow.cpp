@@ -1,25 +1,29 @@
 #include "StandardImageWindow.h"
 
+#include <QPushButton>
+
 using namespace genericinterface;
 using namespace imagein;
 using namespace std;
 
-StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi): ImageWindow(), _gi(gi)
+StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi): ImageWindow(path), _gi(gi)
 {
-	_path = path;
-	_image = new Image(path.toStdString());
-	this->setWindowTitle("Image - " + path);
-	_imageView = new StandardImageView(this, _image);
+	_image = new Image(_path.toStdString());
+
+	this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path)));
+	
+  _imageView = new StandardImageView(this, _image);
 
 	init();
 }
 
-StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi, Image* image): ImageWindow(), _gi(gi)
+StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi, Image* image): ImageWindow(path), _gi(gi)
 {
-	_path = path;
 	_image = image;
-	this->setWindowTitle("Image - " + path);
-	_imageView = new StandardImageView(this, _image);
+  
+	this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path)));
+	
+  _imageView = new StandardImageView(this, _image);
 
 	init();
 }
@@ -53,28 +57,15 @@ void StandardImageWindow::init()
 
 void StandardImageWindow::showHistogram()
 {
-	list<HistogramWindow*> histos = getHistogram();
-
-	for(list<HistogramWindow*>::iterator it = histos.begin(); it != histos.end(); ++it)
-	{
-    AlternativeImageView* view = (*it)->getView();
-    GenericHistogramView* source;
-    if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
-      QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), *it, SLOT(setApplicationArea(const imagein::Rectangle*)));
-    
-    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, *it);
-	}
-}
-
-list<HistogramWindow*> StandardImageWindow::getHistogram()
-{
 	const Image* im = _imageView->getImage();
-	list<HistogramWindow*> histos;
-
-	HistogramWindow* histo = new HistogramWindow(im, _imageView->getRectangle(), this);
-	histos.push_back(histo);
-
-	return histos;
+	HistogramWindow* histo = new HistogramWindow(_path, im, _imageView->getRectangle(), this);
+  
+	AlternativeImageView* view = histo->getView();
+  GenericHistogramView* source;
+  if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
+    QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
+    
+  dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
 }
 
 void StandardImageWindow::showHProjectionHistogram()
@@ -86,7 +77,7 @@ void StandardImageWindow::showHProjectionHistogram()
 	
 	if (ok)
 	{
-		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value);
+		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(_path, im, _imageView->getRectangle(), this, value);
     
 		AlternativeImageView* view = histo->getView();
 		GenericHistogramView* source;
@@ -106,7 +97,7 @@ void StandardImageWindow::showVProjectionHistogram()
 	
 	if(ok)
 	{
-		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(im, _imageView->getRectangle(), this, value, false);
+		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(_path, im, _imageView->getRectangle(), this, value, false);
     
 		AlternativeImageView* view = histo->getView();
 		GenericHistogramView* source;
@@ -155,100 +146,104 @@ void StandardImageWindow::showColumnProfile()
 
 void StandardImageWindow::initStatusBar()
 {	
-    std::ostringstream oss;
-    oss << _imageView->getPixmap()->height();
-    std::string height = oss.str();
-    oss.str("");
-    oss << _imageView->getPixmap()->width();
-    std::string width = oss.str();
+  std::ostringstream oss;
+  oss << _imageView->getPixmap()->height();
+  std::string height = oss.str();
+  oss.str("");
+  oss << _imageView->getPixmap()->width();
+  std::string width = oss.str();
 	
-    QFont font;
-    _statusBar = new QStatusBar();
-    
-    _lImageName = new QLabel("Name: Nom_Image");
-    font = _lImageName->font();
-    font.setPointSize(8);
-    font.setBold(true);
-    _lImageName->setFont(font);
-    
-    _lImageSize = new QLabel(QString::fromStdString("(" + width + " * " + height + ")"));
-    font = _lImageSize->font();
-    font.setPointSize(8);
-    _lImageSize->setFont(font);
-    
-    _lSelectedPixelInfo = new QLabel("Selected: ");
-    font = _lSelectedPixelInfo->font();
-    font.setPointSize(8);
-    font.setBold(true);
-    _lSelectedPixelInfo->setFont(font);
-    
-    _lSelectedPixelPosition = new QLabel("");
-    font = _lSelectedPixelPosition->font();
-    font.setPointSize(8);
-    _lSelectedPixelPosition->setFont(font);
-    
-    _lSelectedPixelColor = new QLabel("Color: ");
-    font = _lSelectedPixelColor->font();
-    font.setPointSize(8);
-    _lSelectedPixelColor->setFont(font);
-    
-    _lHoveredPixelInfo = new QLabel("Hovered: ");
-    font = _lHoveredPixelInfo->font();
-    font.setBold(true);
-    font.setPointSize(8);
-    _lHoveredPixelInfo->setFont(font);
-    
-    _lHoveredPixelPosition = new QLabel("");
-    font = _lHoveredPixelPosition->font();
-    font.setPointSize(8);
-    _lHoveredPixelPosition->setFont(font);
-    
-    _lHoveredPixelColor = new QLabel("Color: ");
-    font = _lHoveredPixelColor->font();
-    font.setPointSize(8);
-    _lHoveredPixelColor->setFont(font);
-    
-    _lZoom = new QLabel("Zoom: 100%");
-    font = _lZoom->font();
-    font.setPointSize(8);
-    _lZoom->setFont(font);
+  QFont font;
+  _statusBar = new QStatusBar();
+  
+  _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
+  font = _lImageName->font();
+  font.setPointSize(8);
+  font.setBold(true);
+  _lImageName->setFont(font);
+  
+  _lImageSize = new QLabel(QString::fromStdString("(" + width + " * " + height + ")"));
+  font = _lImageSize->font();
+  font.setPointSize(8);
+  _lImageSize->setFont(font);
+  
+  _lSelectedPixelInfo = new QLabel("Selected: ");
+  font = _lSelectedPixelInfo->font();
+  font.setPointSize(8);
+  font.setBold(true);
+  _lSelectedPixelInfo->setFont(font);
+  
+  _lSelectedPixelPosition = new QLabel("");
+  font = _lSelectedPixelPosition->font();
+  font.setPointSize(8);
+  _lSelectedPixelPosition->setFont(font);
+  
+  _lSelectedPixelColor = new QLabel("Color: ");
+  font = _lSelectedPixelColor->font();
+  font.setPointSize(8);
+  _lSelectedPixelColor->setFont(font);
+  
+  _lHoveredPixelInfo = new QLabel("Hovered: ");
+  font = _lHoveredPixelInfo->font();
+  font.setBold(true);
+  font.setPointSize(8);
+  _lHoveredPixelInfo->setFont(font);
+  
+  _lHoveredPixelPosition = new QLabel("");
+  font = _lHoveredPixelPosition->font();
+  font.setPointSize(8);
+  _lHoveredPixelPosition->setFont(font);
+  
+  _lHoveredPixelColor = new QLabel("Color: ");
+  font = _lHoveredPixelColor->font();
+  font.setPointSize(8);
+  _lHoveredPixelColor->setFont(font);
+  
+  _lZoom = new QLabel("Zoom: 100%");
+  font = _lZoom->font();
+  font.setPointSize(8);
+  _lZoom->setFont(font);
 
+  QPushButton* bSelectAll = new QPushButton("Select All");
+  QObject::connect(bSelectAll, SIGNAL(clicked()), _imageView, SLOT(selectAll()));
 
 	QVBoxLayout* layout = new QVBoxLayout();
 	layout->setContentsMargins(0, 0, 0, 0);
-    QWidget* widget = new QWidget();
+  QWidget* widget = new QWidget();
 	
 	QHBoxLayout* layoutImage = new QHBoxLayout();
 	layoutImage->setContentsMargins(0, 0, 0, 0);
-    QWidget* widgetImage = new QWidget();
+  QWidget* widgetImage = new QWidget();
 	layoutImage->addWidget(_lImageName);
-    layoutImage->addWidget(_lImageSize);
-	layoutImage->addSpacing(15);
+  layoutImage->addWidget(_lImageSize);
+	layoutImage->addSpacing(30);
 	layoutImage->addWidget(_lZoom);
-    widgetImage->setLayout(layoutImage);
-    layout->addWidget(widgetImage);
+	layoutImage->addSpacing(30);
+	layoutImage->addWidget(bSelectAll);
+  widgetImage->setLayout(layoutImage);
+  layout->addWidget(widgetImage);
 	
 	QHBoxLayout* layoutSelectedPixel = new QHBoxLayout();
 	layoutSelectedPixel->setContentsMargins(0, 0, 0, 0);
-    QWidget* widgetSelectedPixel = new QWidget();
+  QWidget* widgetSelectedPixel = new QWidget();
 	layoutSelectedPixel->addWidget(_lSelectedPixelInfo);
-    layoutSelectedPixel->addWidget(_lSelectedPixelPosition);
-    layoutSelectedPixel->addWidget(_lSelectedPixelColor);
-    widgetSelectedPixel->setLayout(layoutSelectedPixel);
-    layout->addWidget(widgetSelectedPixel);
+  layoutSelectedPixel->addWidget(_lSelectedPixelPosition);
+  layoutSelectedPixel->addWidget(_lSelectedPixelColor);
+  widgetSelectedPixel->setLayout(layoutSelectedPixel);
+  layout->addWidget(widgetSelectedPixel);
 	
 	QHBoxLayout* layoutHoveredPixel = new QHBoxLayout();
 	layoutHoveredPixel->setContentsMargins(0, 0, 0, 0);
-    QWidget* widgetHoveredPixel = new QWidget();
+  QWidget* widgetHoveredPixel = new QWidget();
 	layoutHoveredPixel->addWidget(_lHoveredPixelInfo);
-    layoutHoveredPixel->addWidget(_lHoveredPixelPosition);
-    layoutHoveredPixel->addWidget(_lHoveredPixelColor);
-    widgetHoveredPixel->setLayout(layoutHoveredPixel);
-    layout->addWidget(widgetHoveredPixel);    
-    
-    widget->setLayout(layout);
-	
-    _statusBar->addWidget(widget);
+  layoutHoveredPixel->addWidget(_lHoveredPixelPosition);
+  layoutHoveredPixel->addWidget(_lHoveredPixelColor);
+  widgetHoveredPixel->setLayout(layoutHoveredPixel);
+  layout->addWidget(widgetHoveredPixel);    
+  
+  widget->setLayout(layout);
+
+  _statusBar->addWidget(widget);
 }
 
 void StandardImageWindow::showSelectedPixelInformations(int x, int y) const

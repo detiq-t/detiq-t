@@ -51,7 +51,7 @@ namespace genericinterface
 		 * \param rect The part of the image where the histogram is applied
 		 * \param source The ImageWindow source (window which contains the image)
 		 */
-    ProjectionHistogramWindow(const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal=true);
+    ProjectionHistogramWindow(const QString & path, const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal=true);
         
 		/*!
 		 * \brief ProjectionHistogramWindow destructor.

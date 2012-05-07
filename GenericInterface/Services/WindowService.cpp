@@ -43,11 +43,11 @@ void WindowService::addFile(const QString& path)
   if(_windows.find(path) == _windows.end())
   {
     StandardImageWindow* w = new StandardImageWindow(path, _gi);
-	 QMdiSubWindow* sw = _mdi->addSubWindow(w);
+    QMdiSubWindow* sw = _mdi->addSubWindow(w);
     _windows[path] << sw;
-	 SubWindowController* swc = new SubWindowController(path, sw, true);
-	 QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
-	 QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+    SubWindowController* swc = new SubWindowController(path, sw, true);
+    QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
+    QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
     QObject::connect(swc, SIGNAL(removeFromWindowsMapAllPath(const QString&)), this, SLOT(removePath(const QString&)));
 
     w->show();
@@ -135,8 +135,6 @@ void WindowService::removeRootImage(const QString& path)
   if (_windows.find(path) != _windows.end())
     _windows[path][0]->close();
 }
-
-
 
 
 

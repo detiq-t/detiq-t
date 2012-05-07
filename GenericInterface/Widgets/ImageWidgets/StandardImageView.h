@@ -29,39 +29,6 @@ namespace genericinterface
     class StandardImageView : public QObject, public QGraphicsPixmapItem
     {
 		Q_OBJECT
-    private:
-        QWidget* _parent;
-        QGraphicsScene* _scene;
-        QGraphicsView* _view;
-        QGraphicsRectItem* _highlight;
-        QPixmap* _pixmap_img;
-        GenericHistogramView* _sourceHighlight;
-        
-        const imagein::Image* _image;
-        imagein::Rectangle* _selection;
-        imagein::Rectangle* _visibleArea;
-        ImageContextMenu* _menu;
-        
-        bool _ctrlPressed;
-        double _zoomFactor;
-        bool _mouseButtonPressed;
-        QPoint* _pixelClicked;
-        imagein::Rectangle* _originalHighlight;
-        bool _resize;
-        bool _move;
-        bool _originX;
-        bool _originY;
-        bool _vLine;
-        bool _hLine;
-        
-        void initMenu();
-        void showImage();
-        Qt::CursorShape mouseOverHighlight(int x, int y);
-        void mousePressEvent(QGraphicsSceneMouseEvent * event);
-        void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-        void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
-        void wheelEvent(QGraphicsSceneWheelEvent* event);
 
     public:
 		/*!
@@ -118,7 +85,44 @@ namespace genericinterface
 		 * \param z The zoom factor
 		 */
 		void zoomChanged(double z) const;
-    };
+    
+  private slots:
+    void selectAll();
+    
+  private:
+    QWidget* _parent;
+    QGraphicsScene* _scene;
+    QGraphicsView* _view;
+    QGraphicsRectItem* _highlight;
+    QPixmap* _pixmap_img;
+    GenericHistogramView* _sourceHighlight;
+    
+    const imagein::Image* _image;
+    imagein::Rectangle* _selection;
+    imagein::Rectangle* _visibleArea;
+    ImageContextMenu* _menu;
+    
+    bool _ctrlPressed;
+    double _zoomFactor;
+    bool _mouseButtonPressed;
+    QPoint* _pixelClicked;
+    imagein::Rectangle* _originalHighlight;
+    bool _resize;
+    bool _move;
+    bool _originX;
+    bool _originY;
+    bool _vLine;
+    bool _hLine;
+    
+    void initMenu();
+    void showImage();
+    Qt::CursorShape mouseOverHighlight(int x, int y);
+    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+    void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
+    void wheelEvent(QGraphicsSceneWheelEvent* event);
+  };
 }
 
 #endif // STANDARDIMAGEVIEW_H

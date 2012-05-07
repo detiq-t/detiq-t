@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-ImageWindow::ImageWindow(const ImageWindow* source, Rectangle* rect): QWidget(), _sourceWindow(source)
+ImageWindow::ImageWindow(const QString & path, const ImageWindow* source, Rectangle* rect): QWidget(), _path(path), _sourceWindow(source)
 {
 	if(rect)
 		_applicationArea = new Rectangle(*rect);
@@ -29,4 +29,16 @@ void ImageWindow::setApplicationArea(const imagein::Rectangle* rect)
 QString& ImageWindow::getPath()
 {
   return _path;
+}
+
+std::string ImageWindow::getTitleFromPath(const QString & path)
+{
+  std::string p = path.toStdString();
+  size_t pos = p.rfind("\\");
+  if(pos != std::string::npos)
+    p = p.substr(pos + 1);
+  else if((pos = p.rfind("/")) != std::string::npos)
+    p = p.substr(pos + 1);
+    
+  return p;
 }

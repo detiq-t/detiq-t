@@ -3,10 +3,10 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(source, rect)
+HistogramWindow::HistogramWindow(const QString & path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
 {
 	_view = new HistogramView(image, rect);
-	this->setWindowTitle("Histogram - imageTitle");
+	this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Histogram"));
 	
 	init();
 }
@@ -26,13 +26,13 @@ void HistogramWindow::init()
 	initStatusBar();
 	
 	QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(_view->getGraphicalHistogram());
+  layout->addWidget(_view->getGraphicalHistogram());
 	layout->addWidget(_statusBar);
 	this->setLayout(layout);
 	
-    connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
-    connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
-    connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
+  connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
+  connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
+  connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
 	
 	this->show();
 }
@@ -42,7 +42,7 @@ void HistogramWindow::initStatusBar()
 	QFont font;
     _statusBar = new QStatusBar();
     
-    _lImageName = new QLabel("Image: Nom_Image");
+    _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
     font = _lImageName->font();
     font.setPointSize(8);
     font.setBold(true);
@@ -118,38 +118,40 @@ QString HistogramWindow::valueFromHistogram(unsigned int value) const
 {
 	std::ostringstream oss;
 	QString s = QString("");
-	if(value <= _applicationArea->w)
-	{
-		for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
-		{
-			int n = (*(_view->getHistogram(i)))[value];
-			oss.str("");
-			oss << n;
-			
-			if(_view->getImage()->getNbChannels() == 1)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" C: " + oss.str());		
-			}
-			else if(_view->getImage()->getNbChannels() == 2)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" C: " + oss.str());
-				else if(i == 1)
-					s += QString::fromStdString(" A: " + oss.str());			
-			}
-			else if(_view->getImage()->getNbChannels() >= 3)
-			{
-				if(i == 0)
-					s += QString::fromStdString(" R: " + oss.str());
-				else if(i == 1)
-					s += QString::fromStdString(" G: " + oss.str());
-				else if(i == 2)
-					s += QString::fromStdString(" B: " + oss.str());
-				else if(i == 3)
-					s += QString::fromStdString(" A: " + oss.str());
-			}
-		}
-	}
+
+  bool out = false;
+	if(value > 255 || value < 0)
+    out = true;
+  
+  for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
+  {
+    int n = out ? 0 : (*(_view->getHistogram(i)))[value];
+    oss.str("");
+    oss << n;
+    
+    if(_view->getImage()->getNbChannels() == 1)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" C: " + oss.str());		
+    }
+    else if(_view->getImage()->getNbChannels() == 2)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" C: " + oss.str());
+      else if(i == 1)
+        s += QString::fromStdString(" A: " + oss.str());			
+    }
+    else if(_view->getImage()->getNbChannels() >= 3)
+    {
+      if(i == 0)
+        s += QString::fromStdString(" R: " + oss.str());
+      else if(i == 1)
+        s += QString::fromStdString(" G: " + oss.str());
+      else if(i == 2)
+        s += QString::fromStdString(" B: " + oss.str());
+      else if(i == 3)
+        s += QString::fromStdString(" A: " + oss.str());
+    }
+  }
 	return s;
 }

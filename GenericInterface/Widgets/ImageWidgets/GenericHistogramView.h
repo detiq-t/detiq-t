@@ -106,7 +106,7 @@ namespace genericinterface
 		void move(const QPointF&) const;
 		void leftClick(const QPointF&) const;
 		void rightClick(const QPointF&) const;
-    };
+  };
 }
 
 #endif // GENERICHISTOGRAMVIEW_H

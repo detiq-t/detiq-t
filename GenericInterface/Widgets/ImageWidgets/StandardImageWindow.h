@@ -34,60 +34,13 @@
 namespace genericinterface
 {
 	/*!
-     * \brief Contains the StandardImageWindow
-     *
-     * Creates and display the StandardImageWindow, and update the status bar.
-     */
-    class StandardImageWindow : public ImageWindow
-    {
-    Q_OBJECT
-    private:
-        GenericInterface* _gi;
-       
-		  //QMdiArea* _area;
-        imagein::Image* _image;
-        StandardImageView* _imageView;
-        QLabel* _lImageSize;
-        QLabel* _lImageName;
-        QLabel* _lHoveredPixelInfo;
-        QLabel* _lHoveredPixelPosition;
-        QLabel* _lHoveredPixelColor;
-        QLabel* _lSelectedPixelInfo;
-        QLabel* _lSelectedPixelPosition;
-        QLabel* _lSelectedPixelColor;
-        QLabel* _lZoom;
-        QPoint* _selectedPixel;
-
-        void init();
-        void initStatusBar();
-        std::list<HistogramWindow*> getHistogram();
-        void keyPressEvent(QKeyEvent* event);
-        void keyReleaseEvent(QKeyEvent* event);
-        
-    public slots:
-        void showHistogram();
-        void showHProjectionHistogram();
-        void showVProjectionHistogram();
-        void showPixelsGrid();
-        void showLineProfile();
-        void showColumnProfile();
-        
-        void showHoveredPixelInformations(int x, int y) const;
-        void showSelectedPixelInformations(int x, int y) const;
-        void updateZoom(double z) const;
-        
-        void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
-        
-	signals:
-		//! Signal emits when crtl key is pressed
-		void ctrlPressed();
-		
-		/*!
-		 * \brief Signal emits when the highlight rect have to changes
-		 * 
-		 * \param rect The rectangle to display
-		 */
-		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);    
+   * \brief Contains the StandardImageWindow
+   *
+   * Creates and display the StandardImageWindow, and update the status bar.
+   */
+  class StandardImageWindow : public ImageWindow
+  {
+  Q_OBJECT 
 
 	public:
 		/*!
@@ -134,7 +87,52 @@ namespace genericinterface
 
 		AlternativeImageView* getView() { return NULL; }
       
-    };
+
+  public slots:
+    void showHistogram();
+    void showHProjectionHistogram();
+    void showVProjectionHistogram();
+    void showPixelsGrid();
+    void showLineProfile();
+    void showColumnProfile();
+    
+    void showHoveredPixelInformations(int x, int y) const;
+    void showSelectedPixelInformations(int x, int y) const;
+    void updateZoom(double z) const;
+    
+    void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
+  
+	signals:
+		//! Signal emits when crtl key is pressed
+		void ctrlPressed();
+		
+		/*!
+		 * \brief Signal emits when the highlight rect have to changes
+		 * 
+		 * \param rect The rectangle to display
+		 */
+		void highlightRectChange(const imagein::Rectangle* rect, ImageWindow* source);
+    
+  private:
+    GenericInterface* _gi;
+    imagein::Image* _image;
+    StandardImageView* _imageView;
+    QLabel* _lImageSize;
+    QLabel* _lImageName;
+    QLabel* _lHoveredPixelInfo;
+    QLabel* _lHoveredPixelPosition;
+    QLabel* _lHoveredPixelColor;
+    QLabel* _lSelectedPixelInfo;
+    QLabel* _lSelectedPixelPosition;
+    QLabel* _lSelectedPixelColor;
+    QLabel* _lZoom;
+    QPoint* _selectedPixel;
+
+    void init();
+    void initStatusBar();
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+  };
 }
 
 #endif // STANDARDIMAGEWINDOW_H

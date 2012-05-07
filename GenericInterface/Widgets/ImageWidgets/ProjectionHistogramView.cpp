@@ -5,7 +5,7 @@ using namespace imagein;
 
 ProjectionHistogramView::ProjectionHistogramView(const Image* image, Rectangle* rect, int value, bool horizontal): GenericHistogramView(image, rect, true, horizontal, value)
 {
-	_qwtPlot->setTitle("Projection Histogram");
+    _qwtPlot->setTitle("Projection Histogram");
 
     _qwtPlot->setAxisTitle(QwtPlot::yLeft, "");
     _qwtPlot->setAxisTitle(QwtPlot::xBottom, "");

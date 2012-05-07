@@ -37,9 +37,10 @@ namespace genericinterface
      * \param source The source window
      * \param rect The application area (Rectangle used for Histogram, Algorithm...)
      */
-    ImageWindow(const ImageWindow* source = 0, imagein::Rectangle* rect = 0);
+    ImageWindow(const QString & path, const ImageWindow* source = 0, imagein::Rectangle* rect = 0);
 
     QString& getPath();
+    static std::string getTitleFromPath(const QString& path);
     
     virtual AlternativeImageView* getView()=0;
       
