@@ -1,5 +1,4 @@
 #include "BitPlaneService.h"
-#include <exception>
 
 using namespace genericinterface;
 using namespace imagein;
