@@ -115,7 +115,8 @@ void WindowService::updateDisplay()
 
     for(int u = 0; u < list.size(); u++)
     {
-      list[u]->hide();
+      list[u]->showMinimized();
+      //list[u]->hide();
     }
   }
 
@@ -125,7 +126,8 @@ void WindowService::updateDisplay()
   {
     for(int x = 0; x < _windows[sel[u]].size(); x++)
     {
-      _windows[sel[u]][x]->show();
+      //_windows[sel[u]][x]->show();
+      _windows[sel[u]][x]->showNormal();
     }
   }
 }
