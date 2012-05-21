@@ -21,16 +21,16 @@
 
 namespace genericinterface
 {
-	/*!
-     * \brief Display an image from imagein
-     *
-     * Display an image from imagein and manages mouse events
-     */
-    class StandardImageView : public QObject, public QGraphicsPixmapItem
-    {
-		Q_OBJECT
+  /*!
+   * \brief Display an image from imagein
+   *
+   * Display an image from imagein and manages mouse events
+   */
+  class StandardImageView : public QObject, public QGraphicsPixmapItem
+  {
+  Q_OBJECT
 
-    public:
+  public:
 		/*!
 		 * \brief Default constructor
 		 * 
@@ -39,28 +39,30 @@ namespace genericinterface
 		 * \param parent The parent widget
 		 * \param image The image to display
 		 */
-        StandardImageView(QWidget* parent, const imagein::Image* image);
+    StandardImageView(QWidget* parent, imagein::Image* image);
         
 		/*!
 		 * \brief StandardImageView destructor.
 		 */
 		virtual ~StandardImageView();
-        
+    
+    void setImage(imagein::Image* image);
+    
 		//! Returns the image
-        inline const imagein::Image* getImage() const { return _image; }
+    inline const imagein::Image* getImage() const { return _image; }
         
 		//! Returns the pixmap
-        inline const QPixmap* getPixmap() const { return _pixmap_img; }
+    inline const QPixmap* getPixmap() const { return _pixmap_img; }
         
 		//! Returns the selection rectangle
-        inline imagein::Rectangle* getRectangle() const { return _selection; }
+    inline imagein::Rectangle* getRectangle() const { return _selection; }
         
 		//! Returns the graphics view
-        inline QGraphicsView* getGraphicsView() const { return _view; }
+    inline QGraphicsView* getGraphicsView() const { return _view; }
 
 	public slots:
-        void ctrlPressed();
-        void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
+    void ctrlPressed();
+    void showHighlightRect(const imagein::Rectangle* rect, ImageWindow* source);
 		
 	signals:
 		/*!
@@ -97,7 +99,7 @@ namespace genericinterface
     QPixmap* _pixmap_img;
     GenericHistogramView* _sourceHighlight;
     
-    const imagein::Image* _image;
+    imagein::Image* _image;
     imagein::Rectangle* _selection;
     imagein::Rectangle* _visibleArea;
     ImageContextMenu* _menu;

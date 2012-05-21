@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-StandardImageView::StandardImageView(QWidget* parent, const Image* image): QGraphicsPixmapItem(), _parent(parent), _image(image)
+StandardImageView::StandardImageView(QWidget* parent, Image* image): QGraphicsPixmapItem(), _parent(parent), _image(image)
 {
   _selection = new Rectangle(0, 0, _image->getWidth(), _image->getHeight());
   _visibleArea = new Rectangle(0, 0, _image->getWidth(), _image->getHeight());
@@ -433,4 +433,85 @@ void StandardImageView::selectAll()
   _selection->h = _image->getHeight();
   
   _highlight->setRect(_selection->x, _selection->y, _selection->w, _selection->h);  
+}
+
+void StandardImageView::setImage(imagein::Image* image)
+{
+  std::cout << "SetImage start" << std::endl;
+  
+  _selection = new Rectangle(0, 0, image->getWidth(), image->getHeight());
+  _visibleArea = new Rectangle(0, 0, image->getWidth(), image->getHeight());
+    
+	_zoomFactor = 1;
+  
+  _sourceHighlight = NULL;
+  _originalHighlight = new Rectangle(0, 0, _image->getWidth(), _image->getHeight());
+  _resize = false;
+  _originX = false;
+  _originY = false;
+  _vLine = false;
+  _hLine = false;
+  
+  _pixelClicked = new QPoint(-1, -1);
+  
+  QImage im(image->getWidth(), image->getHeight(), QImage::Format_ARGB32);
+
+  //on récupère les bits de l'image qt, qu'on cast en QRgb (qui fait 32 bits -> une image RGBA)
+  QRgb* data = reinterpret_cast<QRgb*>(im.bits());
+  Image::const_iterator it = image->begin();
+  
+  for(unsigned int i = 0 ; i < image->getHeight()*image->getWidth() ; ++i)
+  {
+    //Pour chaque pixel de l'image Qt, on récupère les données correspondantes de l'image ImageIn grace à l'itérateur
+    if(image->getNbChannels() == 4)
+    {
+      unsigned char red = *(it++);
+      unsigned char green = *(it++);
+      unsigned char blue = *(it++);
+      unsigned char alpha = *(it++);
+
+      //On utilise la fonction qRgba pour en faire un pointeur de qRgb
+      data[i] = qRgba(red, green, blue, alpha);
+    }
+    else if(image->getNbChannels() == 3)
+    {
+      unsigned char red = *(it++);
+      unsigned char green = *(it++);
+      unsigned char blue = *(it++);
+
+      //On utilise la fonction qRgba pour en faire un pointeur de qRgb
+      data[i] = qRgb(red, green, blue);		
+    }
+    else if(image->getNbChannels() == 2)
+    {
+      unsigned char gray = *(it++);
+      unsigned char alpha = *(it++);
+
+      //On utilise la fonction qRgba pour en faire un pointeur de qRgb
+      data[i] = qRgba(gray, gray, gray, alpha);		
+    }
+    else if(image->getNbChannels() == 1)
+    {
+      unsigned char gray = *(it++);
+
+      //On utilise la fonction qRgba pour en faire un pointeur de qRgb
+      data[i] = qRgb(gray, gray, gray);			
+    }
+  }
+
+  //Qt ne peut pas afficher les QImage directement, on en fait un QPixmap...
+  _pixmap_img = new QPixmap();
+  _pixmap_img->convertFromImage(im);
+    
+  this->setPixmap(*_pixmap_img);
+	//_scene->addItem(this);
+	
+	_highlight = new QGraphicsRectItem(((int)_selection->x), ((int)_selection->y), ((int)_selection->w), ((int)_selection->h));
+	
+	//_scene->addItem(_highlight);
+	//_view->setScene(_scene);
+  
+  delete _image;
+  _image = image;
+  std::cout << "SetImage end" << std::endl;
 }
