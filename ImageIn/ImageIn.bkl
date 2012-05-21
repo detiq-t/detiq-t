@@ -37,6 +37,7 @@
 		EasyBMP.cpp
 		Graph.cpp
 		Algorithm/Filter.cpp
+    Algorithm/Filtering.cpp
 	</sources>	
 </lib>
 
