@@ -101,7 +101,7 @@ namespace imagein {
           }
       }
 
-      return new GrayscaleImage(from.getWidth(), from.getHeight(), data);
+      return new GrayscaleImage_t<D>(from.getWidth(), from.getHeight(), data);
   }
 
   template <typename D>

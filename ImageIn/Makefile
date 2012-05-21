@@ -51,8 +51,7 @@ IMAGEIN_OBJECTS =  \
 	ImageIn_PngImage.o \
 	ImageIn_EasyBMP.o \
 	ImageIn_Graph.o \
-	ImageIn_Filter.o \
-	ImageIn_Filtering.o
+	ImageIn_Filter.o
 IMAGEIN_MAIN_CXXFLAGS = $(____DEBUG) $(____DEBUG_1) $(____DEBUG_4) $(CPPFLAGS) \
 	$(CXXFLAGS)
 IMAGEIN_MAIN_OBJECTS =  \
@@ -141,9 +140,6 @@ ImageIn_Graph.o: ./Graph.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_Filter.o: ./Algorithm/Filter.cpp
-	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
-
-ImageIn_Filtering.o: ./Algorithm/Filtering.cpp
 	$(CXX) -c -o $@ $(IMAGEIN_CXXFLAGS) $(CPPDEPS) $<
 
 ImageIn_main_main.o: ./main.cpp
