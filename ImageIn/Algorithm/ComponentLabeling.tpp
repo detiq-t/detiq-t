@@ -88,7 +88,7 @@ namespace imagein {
 				}
 				
 				//rest of the line
-				for(int i = 1 ; i < img->getWidth() ; ++i) {
+				for(unsigned int i = 1 ; i < img->getWidth() ; ++i) {
 					if(img->getPixel(i, j) == foreground) {
 						std::vector<unsigned int> neighbours;
 						if(_connect == CONNECT_8) {

@@ -4,6 +4,7 @@
 #include "../Image.h"
 #include "../GrayscaleImage.h"
 #include "../Algorithm.h"
+#include "../RgbImage.h"
 
 #include <vector>
 #include <list>

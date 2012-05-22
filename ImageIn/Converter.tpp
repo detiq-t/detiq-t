@@ -83,15 +83,15 @@ namespace imagein {
       D* ptr = data;
 
       if (from.getNbChannels() < 3) {
-          for(int j = 0 ; j < from.getHeight() ; ++j) {
-              for(int i = 0 ; i < from.getWidth() ; ++i) {
+          for(unsigned int j = 0 ; j < from.getHeight() ; ++j) {
+              for(unsigned int i = 0 ; i < from.getWidth() ; ++i) {
                   *(ptr++) = from.getPixel(i, j, 0);
               }
           }
       }
       else {
-          for(int j = 0 ; j < from.getHeight() ; ++j) {
-              for(int i = 0 ; i < from.getWidth() ; ++i) {
+          for(unsigned int j = 0 ; j < from.getHeight() ; ++j) {
+              for(unsigned int i = 0 ; i < from.getWidth() ; ++i) {
                   *(ptr++) = 
                       ( from.getPixel(i, j, 0) + 
                         from.getPixel(i, j, 1) + 
