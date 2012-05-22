@@ -187,5 +187,24 @@ namespace imagein {
     }
     return image;
   }
+  
+  template <typename D>
+  Image_t<D>* Converter<Image_t<D> >::makeDisplayable(const Image_t<bool>& from)
+  {
+    Image_t<D>* image = new Image_t<D>(from.getWidth(), from.getHeight(), from.getNbChannels());
+    
+    for(unsigned int i = 0; i < from.getWidth(); i++)
+    {
+      for(unsigned int j = 0; j < from.getHeight(); j++)
+      {
+        for(unsigned int k = 0; k < from.getNbChannels(); k++)
+        {
+          D value = from.getPixel(i, j, k) ? std::numeric_limits<D>::max() : std::numeric_limits<D>::min();
+          image->setPixel(i, j, k, value);
+        }
+      }
+    }
+    return image;
+  }
 
 }

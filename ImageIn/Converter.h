@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <limits>
 
 namespace imagein {
 
@@ -151,6 +152,7 @@ namespace imagein {
              * \param from The Image to convert.
              */
             static Image_t<D>* makeDisplayable(const Image_t<int>& from);
+            static Image_t<D>* makeDisplayable(const Image_t<bool>& from);
     };
 }
 

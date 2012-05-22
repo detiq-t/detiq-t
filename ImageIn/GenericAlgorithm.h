@@ -45,6 +45,45 @@ namespace imagein
              */
             virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) = 0;
     };
+    
+    /*!
+     * \brief A specialization of GenericAlgorithm_t with a more suitable interface
+     */
+    template <typename D>
+    class GenericAlgorithm_t<D,1> {
+        public:
+            typedef D depth_t;
+            /*!
+             * \brief Function call operator used to apply the algorithm to a vector of images.
+             * It checks the size of the vector and return the result of the algorithm method.
+             *
+             * \param imgs The vector of images on which the algorithm will be applied. The size of this vector must be equal to A.
+             * \return The image resulting of the application of the algorithm.
+             * \throw NotEnoughImageException if the size of the vector imgs in not equal to the Arity of the algorithm. 
+             * \throw ImageTypeException if implemented in algorithm
+             * \throw ImageSizeException if implemented in algorithm
+             */
+            inline Image_t<D>* operator() (const std::vector<const Image_t<D>*>& imgs);
+            /*!
+             * \brief A second overload of the function call operator to suit the arity of the algorithm
+             * This method build a vector with its parameters and call the algorithm method with it.
+             * \param img The image on which the algorithm will be applied.
+             * \return The image resulting of the application of the algorithm.
+             * \throw ImageTypeException if implemented in algorithm
+             * \throw ImageSizeException if implemented in algorithm
+             */
+            inline Image_t<D>* operator() (const Image_t<D>* img);
+        protected:
+            /*!
+             * \brief The concrete implementation of the algorithm
+             *
+             * \param imgs The vector of images on which the algorithm will be applied. The size of this vector must be equal to A.
+             * \return The image resulting of the application of the algorithm.
+             * \throw ImageTypeException if implemented
+             * \throw ImageSizeException if implemented
+             */
+            virtual Image_t<D>* algorithm(const std::vector<const Image_t<D>*>& imgs) = 0;
+    };
 }
 
 #include "GenericAlgorithm.tpp"

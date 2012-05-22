@@ -8,6 +8,7 @@
 #include "Algorithm/ComponentLabeling.h"
 #include "Algorithm/Otsu.h"
 #include "Algorithm/Binarization.h"
+#include "Algorithm/MorphoMat.h"
 
 using namespace std;
 using namespace imagein;
@@ -23,15 +24,22 @@ void printlist(list<int>& l)
 
 int main(int argc, char** argv)
 {
-	Image img("samples/test.png");
-  
-  ComponentLabeling cl(ComponentLabeling::CONNECT_8, false, false);
-  ComponentLabeling cl2(ComponentLabeling::CONNECT_4, false, false);
 
-  cl2(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl4.png");
-  cl(Converter<GrayscaleImage>::convert(img))->save("samples/resultcl8.png");
 
-  return 0;
+	Image_t<depth8_t> img("samples/lena.jpg");
+    
+    bool elem[] = {
+        false, true, false,
+        true,  true, true,
+        false, true, false
+    };
+
+    MorphoMat::StructElem<depth8_t> structElem(GrayscaleImage_t<bool>(3, 3, elem), 1, 1);
+    MorphoMat::Gradient<depth8_t> grad(structElem);
+    Image *res = grad(&img);
+    res->save("morpho.jpg");
+
+    return 0;
 }
 
 #ifdef AUTREMAIN

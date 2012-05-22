@@ -7,3 +7,10 @@ imagein::Image_t<D>* imagein::GenericAlgorithm_t<D,A>::operator() (const std::ve
     }
     return algo(imgs);
 }
+
+template <typename D>
+imagein::Image_t<D>* imagein::GenericAlgorithm_t<D,1>::operator() (const imagein::Image_t<D>* img) {
+    std::vector<const imagein::Image_t<D>*> imgs;
+    imgs.push_back(img);
+    return this->algorithm(imgs);
+}
