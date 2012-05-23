@@ -27,7 +27,14 @@ namespace genericinterface
     * @param x x-coordinate of the top left
     * @param y y-coordinate of the top left
     */
-    void draw(int x, int y);
+    void draw(int x = -1, int y = -1);
+
+  /**
+   * @brief [slot] The ZoomViewer can show the value of only one channel
+   *
+   * @param c the new channel to show
+   */
+    void channelChosen(int c);
 
   private:
     /**
@@ -58,6 +65,7 @@ namespace genericinterface
     imagein::Image* _image;
     int _row;
     int _col;
+    int _channel;
     QGraphicsRectItem* _rects;
     QGraphicsTextItem* _texts;
   };

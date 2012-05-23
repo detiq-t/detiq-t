@@ -75,6 +75,9 @@ namespace genericinterface
     */
     void changeService(int id, Service* s) throw (BadIdException);
 
+    //template <class Serv>
+    //int getIDService();
+
     /**
     * @brief Provides a direct access to the wanted service, mostly used by the Service::connect(GenericInterface*)
     * function.

@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
 
 	Image_t<depth8_t> img("samples/lena.jpg");
-    
+
     bool elem[] = {
         false, true, false,
         true,  true, true,

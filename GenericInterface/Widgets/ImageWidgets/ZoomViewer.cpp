@@ -10,7 +10,7 @@ using namespace imagein;
 using namespace genericinterface;
 
 ZoomViewer::ZoomViewer(Image* im, int row, int col) : QGraphicsScene(0, 0, row * PIXEL_S, col * PIXEL_S),
-                                          _image(im), _row(row), _col(col)
+                                          _image(im), _row(row), _col(col), _channel(0)
 {
   _rects = new QGraphicsRectItem[row * col];
   _texts = new QGraphicsTextItem[row * col];
@@ -24,16 +24,30 @@ ZoomViewer::ZoomViewer(Image* im, int row, int col) : QGraphicsScene(0, 0, row *
 
       QGraphicsTextItem& t = atText(i, j);
       t.setPlainText("");
+      t.setScale(0.7);
+      //t.setTextWidth(0.5);
       t.setPos(i * PIXEL_S, j * PIXEL_S);
 
       addItem(&r);
       addItem(&t);
     }
   }
+  
+  draw(0, 0);
 }
 
 void ZoomViewer::draw(int x, int y)
 {
+  static int ox(0), oy(0);
+
+  if (x < 0 || y < 0) {
+    x = ox;
+    y = oy;
+  } else {
+    ox = x;
+    oy = y;
+  }
+
   for(int i = 0; i < _row; i++)
   {
     for(int j = 0; j < _col; j++)
@@ -55,6 +69,8 @@ void ZoomViewer::draw(int x, int y)
           int green;
           int blue;
 
+          int v(_image->getPixel(px, py, _channel));
+
           if(_image->getNbChannels() == 3)
           {
             red = _image->getPixel(px, py, 0);
@@ -68,27 +84,14 @@ void ZoomViewer::draw(int x, int y)
             blue = _image->getPixel(px, py, 0);
           }
 
-          if (red == green && green == blue)
-          {
-            ostringstream s;
-            s << red;
-            atText(i, j).setPlainText(QString(s.str().c_str()));
+          ostringstream s;
+          s << v;
+          atText(i, j).setPlainText(QString(s.str().c_str()));
 
-            if (red > 127)
-              atText(i,j).setDefaultTextColor(Qt::black);
-            else
-              atText(i,j).setDefaultTextColor(Qt::white);
-          }
-          else
-          {
-            ostringstream s;
-            s << red << endl << green << endl << blue;
-            atText(i, j).setPlainText(QString(s.str().c_str()));
-
-            if ((red + green + blue) / 3 > 127)
-              atText(i,j).setDefaultTextColor(Qt::black);
-            else
-              atText(i,j).setDefaultTextColor(Qt::white);
+          if (red + blue + green > 127 * 3) {
+            atText(i,j).setDefaultTextColor(Qt::black);
+          } else {
+            atText(i,j).setDefaultTextColor(Qt::white);
           }
           
           QColor color(red, green, blue);
