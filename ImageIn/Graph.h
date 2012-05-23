@@ -94,7 +94,7 @@ namespace imagein
              * \param i Head of the edge
 			 * \param j Tail of the edge
 			 * \param capacity Capacity of the edge
-             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+             * \throw std::invalid_argument if i or j is greater than the number of vertices in the graph or less then 0
              */
 			void addEdge(int i, int j, int capacity=0);
 			
@@ -104,7 +104,7 @@ namespace imagein
 			 * If the graph is directed ImageIn tries to remove the first edge found between the head i and the tail j, if it is not directed if ImageIn hasn't found an edge between i and j it also searches for an edge between j and i to remove it
              * \param i Head of the edge
 			 * \param j Tail of the edge
-             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+             * \throw std::invalid_argument if i or j is greater than the number of vertices in the graph or less then 0
 			 * \return true if an edge was found and deleted, false if no edge was found
              */
 			bool removeEdge(int i, int j);
@@ -115,7 +115,7 @@ namespace imagein
 			 *  If the graph is directed the edge must link the head i to the tail j, if it is not directed ImageIn also search for an edge linking the head j to the tail i
              * \param i Head of the edge
 			 * \param j Tail of the edge
-             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+             * \throw std::invalid_argument if i or j is greater than the number of vertices in the graph or less then 0
 			 * \return The capacity of the edge, 0 if no edge between the vertices i and j was found
              */
 			int getCapacity(int i, int j);
@@ -126,7 +126,7 @@ namespace imagein
 			 * If the graph is directed the edge must link the head i to the tail j, if it is not directed ImageIn also search for an edge linking the head j to the tail i
              * \param i Head of the edge
 			 * \param j Tail of the edge
-             * \throw std::invalid_argument if i or j is higher than the number of vertices in the graph
+             * \throw std::invalid_argument if i or j is greater than the number of vertices in the graph or less then 0
 			 * \return true if an edge was found, false if no edge was found
              */
 			bool edgeExists(int i, int j);

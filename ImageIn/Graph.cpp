@@ -36,19 +36,22 @@ Graph::Graph(int nbVertices, bool directed) : _nbVertices(nbVertices), _directed
 }
 
 void Graph::addEdge(int i, int j, int capacity) {
-	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
+	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be less than the number of vertices : "+_nbVertices);
+	if(i<0 || j<0) throw std::invalid_argument("i and j must be greater than or equal to 0");
 	_listOfVertices[i]->addEdge(j,capacity);
 }
 
 bool Graph::removeEdge(int i, int j) {
-	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
+	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be less than the number of vertices : "+_nbVertices);
+	if(i<0 || j<0) throw std::invalid_argument("i and j must be greater than or equal to 0");
 	if(_listOfVertices[i]->removeEdge(j)) return true;
 	else if(!_directed) return _listOfVertices[j]->removeEdge(i);
 	return false;
 }
 
 int Graph::getCapacity(int i, int j) {
-	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
+	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be less than the number of vertices : "+_nbVertices);
+	if(i<0 || j<0) throw std::invalid_argument("i and j must be greater than or equal to 0");
 	Edge* currentEdge;
 	for (currentEdge = _listOfVertices[i]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 		if (currentEdge->_neighbour == j) return currentEdge->_capacity;
@@ -62,7 +65,8 @@ int Graph::getCapacity(int i, int j) {
 }
 
 bool Graph::edgeExists(int i, int j) {
-	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be smaller than the number of vertices : "+_nbVertices);
+	if(i>=_nbVertices || j>=_nbVertices) throw std::invalid_argument("i and j must be less than the number of vertices : "+_nbVertices);
+	if(i<0 || j<0) throw std::invalid_argument("i and j must be greater than or equal to 0");
 	Edge* currentEdge;
 	for (currentEdge = _listOfVertices[i]->_edges; currentEdge; currentEdge = currentEdge->_next) {
 		if (currentEdge->_neighbour == j) return true;
