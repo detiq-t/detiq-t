@@ -12,7 +12,7 @@ ThresholdWindow::ThresholdWindow(StandardImageWindow* imw, int threshold)
   
   // Top panel
   Rectangle* rect = new Rectangle(*(imw->getSelection()));
-  _histo = new HistogramWindow(imw->getImage(), rect, imw);
+  _histo = new HistogramWindow(imw->getPath(), imw->getImage(), rect, imw);
   layout->addWidget(_histo);
 
   // Bottom panel
@@ -20,4 +20,3 @@ ThresholdWindow::ThresholdWindow(StandardImageWindow* imw, int threshold)
   _labelThreshold = new QLabel(text, this);
   layout->addWidget(_labelThreshold);
 }
-
