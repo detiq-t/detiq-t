@@ -65,7 +65,7 @@ namespace imagein
 
         private:
             std::vector<GenericAlgorithm_t<D, 1> > _nestedAlgorithms;
-            GenericAlgorithm_t<D, 1> _topAlgorithm;
+            GenericAlgorithm_t<D, A> _topAlgorithm;
     };
 }
 
