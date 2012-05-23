@@ -33,7 +33,7 @@ namespace genericinterface
     *
     * @param pix A pixmap creating with the picture
     */
-    ImageItem(QPixmap& pix) : QGraphicsPixmapItem(pix) { }
+    ImageItem(QPixmap& pix);
 
     /**
     * @brief The overloading of mousePressEvent Qt's function, leading the
@@ -42,6 +42,8 @@ namespace genericinterface
     * @param event the event in treatment
     */
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
   
   signals:
     /**
@@ -51,6 +53,9 @@ namespace genericinterface
     * @param y the vertical position of the click
     */
     void clickListenned(int x, int y);
+
+  private:
+    bool _moving;
   };
 
   /**

@@ -25,7 +25,6 @@ ZoomViewer::ZoomViewer(Image* im, int row, int col) : QGraphicsScene(0, 0, row *
       QGraphicsTextItem& t = atText(i, j);
       t.setPlainText("");
       t.setScale(0.7);
-      //t.setTextWidth(0.5);
       t.setPos(i * PIXEL_S, j * PIXEL_S);
 
       addItem(&r);

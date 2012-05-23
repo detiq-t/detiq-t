@@ -9,12 +9,26 @@
 using namespace genericinterface;
 using namespace std;
 
+ImageItem::ImageItem(QPixmap& pix) : QGraphicsPixmapItem(pix), _moving(false) { }
+
 void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-  int x = event->pos().x();
-  int y = event->pos().y();
+  _moving = true;
+}
 
-  emit clickListenned(x, y);
+void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+  _moving = false;
+}
+
+void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+  if(_moving) {
+    int x = event->pos().x();
+    int y = event->pos().y();
+
+    emit clickListenned(x, y);
+  }
 }
 
 ImageViewer::ImageViewer (const QString & path, int x, int y) : QGraphicsScene (0, 0, WIDGET_S, WIDGET_S)
