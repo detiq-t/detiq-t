@@ -20,7 +20,7 @@ namespace imagein
              *
              * Values are not initialized.
              */
-            inline Array(int width) : _width(width) { _array = new T[width]; };
+            inline Array(int width=0) : _width(width) { _array = new T[width]; };
             inline virtual ~Array() { delete[] _array; };
 
             //! Returns the size of the array.
