@@ -107,6 +107,12 @@ void ZoomViewer::draw(int x, int y)
   }
 }
 
+void ZoomViewer::channelChosen(int c)
+{
+  _channel = c;
+  draw();
+}
+
 QGraphicsRectItem& ZoomViewer::at(int i, int j)
 {
   return _rects[j * _row + i];
