@@ -4,14 +4,18 @@
 using namespace imagein;
 using namespace imagein::algorithm;
 
+/*
 int main()
 {
 	for(list<int>::const_iterator it = l.begin() ; it != l.end() ; ++it) {
 		cout << *it << " ";
 	}
 	cout << endl;
-}
+}*/
+int main(int argc, char** argv)
+{}
 
+/*
 int main(int argc, char** argv)
 {
 
@@ -41,3 +45,4 @@ int main(int argc, char* argv[])
 	im_binaire->save("samples/test.jpg");
 	delete im_binaire;
 }
+*/
