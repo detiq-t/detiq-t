@@ -11,6 +11,7 @@ using namespace genericinterface;
 GridView::GridView(Image* im, const QString & path, int dx, int dy) : AlternativeImageView(im)
 {
   _layout = new QHBoxLayout;
+  QVBoxLayout* l = new QVBoxLayout;
   _viewer = new ImageViewer(path, dx, dy);
 
 
