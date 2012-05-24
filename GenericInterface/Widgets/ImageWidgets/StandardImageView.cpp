@@ -437,8 +437,6 @@ void StandardImageView::selectAll()
 
 void StandardImageView::setImage(imagein::Image* image)
 {
-  std::cout << "SetImage start" << std::endl;
-  
   _selection = new Rectangle(0, 0, image->getWidth(), image->getHeight());
   _visibleArea = new Rectangle(0, 0, image->getWidth(), image->getHeight());
     
@@ -513,5 +511,4 @@ void StandardImageView::setImage(imagein::Image* image)
   
   delete _image;
   _image = image;
-  std::cout << "SetImage end" << std::endl;
 }

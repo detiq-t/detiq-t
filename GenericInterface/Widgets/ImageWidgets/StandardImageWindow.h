@@ -78,6 +78,13 @@ namespace genericinterface
 		 */
 		const imagein::Image* getImage();
 
+        /*!
+         * \brief Changes the Image contained in the window.
+         *
+         * \param image The image we want to put in the window.
+         */
+        void setImage(Image* image);
+
 		/*!
 		 * \brief Returns the Rectangle which is the current image's selection on the window.
 		 *

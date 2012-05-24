@@ -318,6 +318,11 @@ const imagein::Image* StandardImageWindow::getImage()
   return _imageView->getImage();
 }
 
+void StandardImageWindow::setImage(Image* image)
+{
+    _imageView->setImage(image);
+}
+
 const imagein::Rectangle* StandardImageWindow::getSelection()
 {
   return _imageView->getRectangle();

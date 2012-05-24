@@ -17,8 +17,8 @@ int main(int argc, char** argv)
 
   GenericInterface m;
 
-  int basicToolsID = m.addService(new BasicTools);
-  int binarizationServiceID = m.addService(new BinarizationService);
+  m.addService(new BasicTools);
+  m.addService(new BinarizationService);
 
   m.run();
 
