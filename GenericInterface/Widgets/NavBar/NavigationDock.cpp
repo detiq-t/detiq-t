@@ -4,81 +4,79 @@ using namespace genericinterface;
 
 NavigationDock::NavigationDock() : QWidget()
 {
-  /* Creation of the attributs */
-  _model = new QStringListModel;
-  _view = new NavigationBar;
+    /* Creation of the attributs */
+    _model = new QStringListModel;
+    _view = new NavigationBar;
 
-  _view->setModel(_model);
-  _view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    _view->setModel(_model);
+    _view->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-  QObject::connect(_view, SIGNAL(clicked(const QModelIndex&)), this, SLOT(emitAction(const QModelIndex&)));
+    QObject::connect(_view, SIGNAL(clicked(const QModelIndex&)), this, SLOT(emitAction(const QModelIndex&)));
 
-  _contextMenu = new QMenu(this);
+    _contextMenu = new QMenu(this);
 
-  /* Context Menu */
-  //QAction* test = _contextMenu->addAction("Close all windows associated to this image");
-  _contextMenu->addAction("Close all image from the selection", this, SLOT(closeSelection()));
-//  QObject::connect(this, SIGNAL(), this, SLOT(closeSelection()));
+    /* Context Menu */
+    _contextMenu->addAction("Close all image from the selection", this, SLOT(closeSelection()));
 
-  setContextMenuPolicy(Qt::CustomContextMenu);
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
-  QObject::connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+    QObject::connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
 
-  /* layout */
-  QHBoxLayout* layout = new QHBoxLayout;
+    /* layout */
+    QHBoxLayout* layout = new QHBoxLayout;
 
-  setLayout(layout);
-  layout->addWidget(_view);
+    setLayout(layout);
+    layout->addWidget(_view);
 
-  setFixedWidth(110);
+    setFixedWidth(110);
 }
 
 QStringList NavigationDock::getSelection()
 {
-  QItemSelectionModel *selection = _view->selectionModel();
-  QModelIndexList listSelect = selection->selectedIndexes();
+    QItemSelectionModel *selection = _view->selectionModel();
+    QModelIndexList listSelect = selection->selectedIndexes();
 
-  QStringList res;
+    QStringList res;
 
-  for(int i = 0; i < listSelect.size(); i++)
-  {
-    res << _model->data(listSelect[i], Qt::DisplayRole).toString();
-  }
+    for(int i = 0; i < listSelect.size(); i++)
+    {
+        res << _model->data(listSelect[i], Qt::DisplayRole).toString();
+    }
 
-  return res;
+    return res;
 }
 
 void NavigationDock::addImage(const QString& path)
 {
-  _data << path;
-  _model->setStringList(_data);
+    _data << path;
+    _model->setStringList(_data);
 }
 
 void NavigationDock::removeImage(const QString& path)
 {
-  _data.removeAll(path);
-  _model->setStringList(_data);
+    _data.removeAll(path);
+    _model->setStringList(_data);
 }
 
 void NavigationDock::showContextMenu(const QPoint& pos)
 {
-  _contextMenu->popup(mapToGlobal(pos));
+    _contextMenu->popup(mapToGlobal(pos));
 }
 
 void NavigationDock::emitAction(const QModelIndex& index)
 {
-  emit actionDone();
+    emit actionDone();
 }
 
 void NavigationDock::closeSelection()
 {
-  int answer = QMessageBox::question(this, "Attention", "You're going to close all the relative windows, are you sure you want to continue?", QMessageBox::Yes | QMessageBox::No);
-  if (answer == QMessageBox::Yes)
-  {
-	 QStringList selection = this->getSelection();
-    for (int i=0; i<selection.size(); i++)
+    int answer = QMessageBox::question(this, "Attention", "You're going to close all the relative windows, are you sure you want to continue?", QMessageBox::Yes | QMessageBox::No);
+    if (answer == QMessageBox::Yes)
     {
-      emit removeRootImage(selection[i]); 
+        QStringList selection = this->getSelection();
+        for (int i=0; i<selection.size(); i++)
+        {
+            emit removePath(selection[i]);
+        }
     }
-  }
 }

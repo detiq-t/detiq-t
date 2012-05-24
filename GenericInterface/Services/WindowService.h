@@ -19,21 +19,24 @@ namespace genericinterface
   public:
     void display(GenericInterface* gi);
     void connect(GenericInterface* gi);
-    ImageWindow* getCurrentImageWindow(); 
 
-  private slots:
-    void removeSubWindow(const QString& path, QMdiSubWindow* sw);
-    void removePath(const QString& path);
+   /**
+    * @brief Returns the current subwindow if it is an ImageWindow.
+    */
+    ImageWindow* getCurrentImageWindow();
 
   public slots:
     void addFile(const QString& path);
     void addWidget(const QString& path, ImageWindow* widget);
     void addWidget(const QString& path, QWidget* widget);
     void updateDisplay();
-    void removeRootImage(const QString& path);
+    void removePath(const QString& path);
 
   signals:
     void subWindowActivated(QMdiSubWindow*);
+
+  private slots:
+    void removeSubWindow(const QString& path, QMdiSubWindow* sw);
 	
   private:
     GenericInterface* _gi;
@@ -45,21 +48,19 @@ namespace genericinterface
 
   class SubWindowController : public QObject
   {
-  Q_OBJECT
+      Q_OBJECT
   public:
-    SubWindowController(const QString& path, QMdiSubWindow* sw, bool isRootImage);
-  
+      SubWindowController(const QString& path, QMdiSubWindow* sw);
+
   public slots:
-  	void closeSubWindow();
+      void closeSubWindow();
 
   signals:
-    void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
-    void removeFromWindowsMapAllPath(const QString& path);
+      void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
 
   private:
-    QString _path;
-    QMdiSubWindow* _sw;
-    bool _isRootImage;
+      QString _path;
+      QMdiSubWindow* _sw;
   };
 }
 

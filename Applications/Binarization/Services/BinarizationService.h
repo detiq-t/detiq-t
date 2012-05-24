@@ -9,8 +9,7 @@
 using namespace genericinterface;
 
 /*!
- * \brief
- *
+ * \brief Service that offers the possibility to Binarize an Image
  *
  */
 class BinarizationService : public AlgorithmService

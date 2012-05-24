@@ -1,6 +1,5 @@
 #include "BinarizationWidget.h"
 
-#include <Image.h>
 #include <Converter.h>
 #include <Algorithm/Binarization.h>
 #include <Algorithm/Otsu.h>
@@ -16,7 +15,8 @@ BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalPath
     this->setWindowTitle("Binarization tool on " + siw->getName());
 
     // backing up the image we're working on while converting it into a grayscale image
-    _originalImage = Converter<GrayscaleImage>::convert(*siw->getImage());
+    _originalImage = new Image(*siw->getImage());
+    _originalGrayscaleImage = Converter<GrayscaleImage>::convert(*_originalImage);
 
     // setting the layout
     QGridLayout* layout = new QGridLayout;
@@ -80,34 +80,36 @@ void BinarizationWidget::displayThresholdSelection(int index)
         _thresholdValue->hide();
         _firstThreshold->show();
         _secondThreshold->hide();
+        applyBinarization(_firstThreshold->value());
     }
     if (index == 2)
     {
         _thresholdValue->hide();
         _firstThreshold->show();
         _secondThreshold->show();
+        applyBinarization(0);
     }
 }
 
-void BinarizationWidget::applyBinarization(int i)
+void BinarizationWidget::applyBinarization(int value)
 {
     if (_nbThreshold->currentIndex() == 0)
     {
         Otsu algo;
-        Image* im_res = algo(_originalImage);
+        Image* im_res = algo(_originalGrayscaleImage);
         _binarizedImage->setImage(im_res);
         _thresholdValue->setText("Threshold: " + QString::number(algo.getThreshold()));
     }
     if (_nbThreshold->currentIndex() == 1)
     {
-        Binarization algo(_firstThreshold->value());
-        Image* im_res = algo(_originalImage);
+        Binarization algo(value);
+        Image* im_res = algo(_originalGrayscaleImage);
         _binarizedImage->setImage(im_res);
     }
     if (_nbThreshold->currentIndex() == 2)
     {
         Binarization algo(_firstThreshold->value(), _secondThreshold->value(), false);
-        Image* im_res = algo(_originalImage);
+        Image* im_res = algo(_originalGrayscaleImage);
         _binarizedImage->setImage(im_res);
     }
 

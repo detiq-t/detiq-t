@@ -1,16 +1,11 @@
 #include "BinarizationService.h"
-//#include "../Widgets/OtsuWidget.h"
 
 #include <GenericInterface.h>
-
-#include <Algorithm/Binarization.h>
-#include <Algorithm/Otsu.h>
-#include <Converter.h>
 
 #include <QMessageBox>
 
 using namespace genericinterface;
-using namespace imagein::algorithm;
+
 
 void BinarizationService::display(GenericInterface* gi)
 {
@@ -48,9 +43,7 @@ void BinarizationService::applyBinarization()
             _binWidget = new BinarizationWidget(siw);
             QObject::connect(_binWidget, SIGNAL(exportBinarizedImage(QString&,Image*)),
                              this, SLOT(exportBinarizedImage(QString&,Image*)));
-            QMdiArea* area = (QMdiArea*)_gi->centralWidget();
-            area->addSubWindow(_binWidget);
-            _binWidget->show();
+            ws->addWidget(siw->getPath(), _binWidget);
         }
     }
 }

@@ -1,8 +1,6 @@
 #ifndef QTINTERFACE_WIDGET_NAVIGATIONDOCK
 #define QTINTERFACE_WIDGET_NAVIGATIONDOCK
 
-#include <iostream>
-
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QStringListModel>
@@ -14,10 +12,10 @@
 
 namespace genericinterface
 {
-  class NavigationDock : public QWidget
-  {
-  Q_OBJECT
-  public:
+class NavigationDock : public QWidget
+{
+    Q_OBJECT
+public:
     /**
     * @brief Default constructor, layout the elements
     */
@@ -25,36 +23,36 @@ namespace genericinterface
 
     QStringList getSelection();
 
-  public slots:
+public slots:
     /**
-    * @brief 
+    * @brief
     *
     * @param path
     */
     void addImage(const QString& path);
-	 void removeImage(const QString& path);
+    void removeImage(const QString& path);
 
-  protected slots:
+protected slots:
     /**
-    * @brief 
+    * @brief
     *
     * @param pos
     */
     void showContextMenu(const QPoint& pos);
     void emitAction(const QModelIndex& index);
-	 void closeSelection();
+    void closeSelection();
 
-  signals:
+signals:
     void actionDone();
-	 void removeRootImage(const QString& path);
+    void removePath(const QString& path);
 
-  private:
+private:
     QStringList _data;
     QStringListModel* _model;
     NavigationBar* _view;
     QMenu* _contextMenu;
 
-  };
+};
 }
 
 #endif

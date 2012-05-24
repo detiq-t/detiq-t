@@ -28,8 +28,9 @@ private slots:
     void exportBinarizedImage();
 
 private:
-    QString& _originalPath;
-    GrayscaleImage* _originalImage;
+    QString _originalPath;
+    Image* _originalImage;
+    GrayscaleImage* _originalGrayscaleImage;
     QComboBox* _nbThreshold;
     QLabel* _thresholdValue;
     QSpinBox* _firstThreshold;

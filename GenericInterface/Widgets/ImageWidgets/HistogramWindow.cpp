@@ -5,36 +5,36 @@ using namespace imagein;
 
 HistogramWindow::HistogramWindow(const QString & path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
 {
-	_view = new HistogramView(image, rect);
-	this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Histogram"));
-	
-	init();
+    _view = new HistogramView(image, rect);
+    this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Histogram"));
+
+    init();
 }
 
 HistogramWindow::~HistogramWindow()
 {
-	delete _view;
+    delete _view;
 }
 
 void HistogramWindow::init()
 {
-	QScrollArea* scrollArea = new QScrollArea();
-	scrollArea->setWidget(_view);
-	scrollArea->setBackgroundRole(QPalette::Dark);
-	scrollArea->setAlignment(Qt::AlignCenter);
-	
-	initStatusBar();
-	
-	QVBoxLayout* layout = new QVBoxLayout();
-  layout->addWidget(_view->getGraphicalHistogram());
-	layout->addWidget(_statusBar);
-	this->setLayout(layout);
-	
-  connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
-  connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
-  connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
-	
-	this->show();
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidget(_view);
+    scrollArea->setBackgroundRole(QPalette::Dark);
+    scrollArea->setAlignment(Qt::AlignCenter);
+
+    initStatusBar();
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->addWidget(_view->getGraphicalHistogram());
+    layout->addWidget(_statusBar);
+    this->setLayout(layout);
+
+    connect(_view, SIGNAL(leftClickedValue(int)), this, SLOT(showLeftClickedValue(int)));
+    connect(_view, SIGNAL(rightClickedValue(int)), this, SLOT(showRightClickedValue(int)));
+    connect(_view, SIGNAL(hoveredValue(int)), this, SLOT(showHoveredValue(int)));
+
+    this->show();
 }
 
 void HistogramWindow::initStatusBar()
@@ -120,7 +120,7 @@ QString HistogramWindow::valueFromHistogram(unsigned int value) const
 	QString s = QString("");
 
   bool out = false;
-	if(value > 255 || value < 0)
+    if(value > 255)
     out = true;
   
   for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)
