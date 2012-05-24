@@ -22,12 +22,12 @@ namespace genericinterface
     ImageWindow* getCurrentImageWindow(); 
 
   private slots:
-    void addFile(const QString& path);
     void removeSubWindow(const QString& path, QMdiSubWindow* sw);
     void removePath(const QString& path);
 
   public slots:
-    void addWidget(const QString& path, ImageWindow* widget);
+    void addFile(const QString& path);
+    void addWidget(const QString& path, QWidget* widget);
     void updateDisplay();
     void removeRootImage(const QString& path);
 

@@ -91,6 +91,8 @@ namespace genericinterface
 		 */
 		const imagein::Rectangle* getSelection();
 
+    inline StandardImageView* getStandardView() { return _imageView; }
+
 
 		AlternativeImageView* getView() { return NULL; }
       
