@@ -2,32 +2,33 @@
 #define BINARIZATIONSERVICE_H
 
 #include <Services/AlgorithmService.h>
+#include "ManualWidget.h"
 
 #include <QToolBar>
 
-namespace genericinterface
+using namespace genericinterface;
+
+/*!
+ * \brief
+ *
+ *
+ */
+class BinarizationService : public AlgorithmService
 {
-  /*!
-   * \brief 
-	*
-	* 
-	*/
-  class BinarizationService : public AlgorithmService
-  {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     void display(GenericInterface* gi);
     void connect(GenericInterface* gi);
 
-  public slots:
-	 void applyOtsu();
-	 void applyManualBinarization();
+public slots:
+    void applyOtsu();
+    void applyManualBinarization();
 
-  private:
+private:
     QToolBar* _toolBar;
-	 QAction* _otsu;
-	 QAction* _manual;
-  };
-}
+    QAction* _otsu;
+    QAction* _manual;
+    ManualWidget* _manualWidget;
+};
 
 #endif
