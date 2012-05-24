@@ -51,39 +51,35 @@ void WindowService::addFile(const QString& path)
   }
 }
 
-void WindowService::addWidget(const QString & path, QWidget* w)
+void WindowService::addWidget(const QString & path, ImageWindow* widget)
 {
   if(_windows.find(path) != _windows.end())
   {
-    ImageWindow* widget = dynamic_cast<ImageWindow*>(w);
+    QMdiSubWindow* sw = _mdi->addSubWindow(widget);
 
-    if(widget)
+    _windows[path] << sw;
+
+    SubWindowController* swc = new SubWindowController(path, sw, false);
+
+    QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
+    QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+
+    QMdiSubWindow* source = _windows[path][0];
+
+    if(source != sw)
     {
-      QMdiSubWindow* sw = _mdi->addSubWindow(widget);
-
-      _windows[path] << sw;
-
-      SubWindowController* swc = new SubWindowController(path, sw, false);
-
-      QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
-      QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
-
-      QMdiSubWindow* source = _windows[path][0];
-
-      if(source != sw)
-      {
-        QObject::connect(widget, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
-        QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
-      }
-      widget->show();
+      QObject::connect(widget, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
+      QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
     }
-    else
-    {
-      QMdiSubWindow* sw = _mdi->addSubWindow(w);
-      _windows[path] << sw;
-      w->show();
-    }
+    widget->show();
   }
+}
+
+void WindowService::addWidget(const QString& path, QWidget* widget)
+{
+  QMdiSubWindow* sw = _mdi->addSubWindow(widget);
+  _windows[path] << sw;
+  widget->show();
 }
  
 void WindowService::removeSubWindow(const QString& path, QMdiSubWindow* sw)

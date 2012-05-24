@@ -1,5 +1,5 @@
 #include "BinarizationService.h"
-#include "../Widgets/OtsuWidget.h"
+//#include "../Widgets/OtsuWidget.h"
 
 #include <GenericInterface.h>
 

@@ -27,6 +27,7 @@ namespace genericinterface
 
   public slots:
     void addFile(const QString& path);
+    void addWidget(const QString& path, ImageWindow* widget);
     void addWidget(const QString& path, QWidget* widget);
     void updateDisplay();
     void removeRootImage(const QString& path);
