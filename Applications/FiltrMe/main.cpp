@@ -4,6 +4,7 @@
 #include "FilteringService.h"
 
 using namespace genericinterface;
+using namespace filtrme;
 
 int main (int argc, char** argv)
 {

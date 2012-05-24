@@ -15,7 +15,7 @@ while($ligne = <PRO>)
 
   if($ligne =~ /TEMPLATE/)
   {
-    print NPRO "TEMPLATE = app\nLIBS += -lqwt -limagein -lpng -ljpeg -lGenericInterface\n";
+    print NPRO "TEMPLATE = app\nLIBS += -lqwt -limagein -lpng -ljpeg -lGenericInterface\nQT += xml\n";
     $w = 1;
   }
 }

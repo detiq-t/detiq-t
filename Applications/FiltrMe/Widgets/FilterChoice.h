@@ -12,7 +12,7 @@
 #include <QVBoxLayout>
 #include <QTableWidget>
 
-namespace genericinterface
+namespace filtrme
 {
   /*!
    * \brief Implementation of AlgorithmService for Filtering application
@@ -28,7 +28,8 @@ namespace genericinterface
   
   signals:
     void choiceValidate(imagein::algorithm::Filtering* filtering);
-
+    void cancelAction();
+  
   private slots:
     void currentBlurChanged(int);
     void dataChanged(const QString&);
@@ -36,6 +37,8 @@ namespace genericinterface
 
   private:
     void updateDisplay();
+    
+    std::vector< std::vector< imagein::algorithm::Filter* > > _filters;
     
     QComboBox* _blurChoices;
     QComboBox* _policyChoices;

@@ -9,8 +9,15 @@
 #include <QTableWidgetItem>
 #include <QHeaderView>
 
+#include <QFile>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomImplementation>
+#include <QtXml/QDomElement>
+#include <QTextStream>
+
 #include <GenericInterface.h>
 
+using namespace filtrme;
 using namespace genericinterface;
 using namespace imagein;
 using namespace algorithm;
@@ -36,6 +43,64 @@ FilterChoice::FilterChoice()
   blurs.push_back("Roberts");
   blurs.push_back("Sobel");
   blurs.push_back("SquareLaplacien");
+  
+  _filters.push_back(Filter::uniform(3));
+  _filters.push_back(Filter::gaussian(1));
+  _filters.push_back(Filter::prewitt(3));
+  _filters.push_back(Filter::roberts());
+  _filters.push_back(Filter::sobel());
+  _filters.push_back(Filter::squareLaplacien());
+  
+  //Personal filters
+  QFile file("filters.xml");
+  if(file.exists())
+  {
+    QDomDocument doc("");
+    file.open(QIODevice::ReadOnly);
+	  doc.setContent(&file);
+	  file.close();
+    
+    QDomElement root = doc.documentElement();
+    QDomNode child = root.firstChild();
+	  while(!child.isNull())
+	  {
+      QDomElement e = child.toElement();
+	    // We know how to treat appearance and geometry
+      blurs.push_back(e.attribute("name"));
+	    
+      Filter* f = new Filter(e.attribute("width").toInt(), e.attribute("height").toInt());
+      QDomElement grandChild = e.firstChild().toElement();
+      if(!grandChild.isNull())
+      {
+        // We know how to treat color
+        if (grandChild.tagName() == "values")
+        {
+          std::string str = grandChild.text().toStdString();
+          std::string word;
+          std::stringstream stream(str);
+          int w = 0, h = 0;
+          while(getline(stream, word, ' '))
+          {
+            (*f)[w][h] = QString::fromStdString(word).toInt();
+                          
+            if(h == f->height() - 1)
+            {
+              h = 0;
+              w++;
+            }
+            else
+              h++;
+          }
+        }
+      }
+      std::vector<Filter*> temp;
+      temp.push_back(f);
+      _filters.push_back(temp);
+      
+      child = child.nextSibling();
+	  }
+  }
+  
   _blurChoices = new QComboBox();
   _blurChoices->addItems(blurs);
   QObject::connect(_blurChoices, SIGNAL(currentIndexChanged(int)), this, SLOT(currentBlurChanged(int)));
@@ -110,7 +175,6 @@ FilterChoice::FilterChoice()
   rightLayout->addWidget(validation); 
   
   princLayout->addWidget(rightPanel);
-  
 }
 
 void FilterChoice::currentBlurChanged(int)
@@ -140,17 +204,8 @@ void FilterChoice::validate()
     case 2:
       filtering = new Filtering(Filtering::prewitt(numPixels));
       break;
-    case 3:
-      filtering = new Filtering(Filtering::roberts());
-      break;
-    case 4:
-      filtering = new Filtering(Filtering::sobel());
-      break;
-    case 5:
-      filtering = new Filtering(Filtering::squareLaplacien());
-      break;
     default:
-      filtering = new Filtering(Filtering::uniformBlur(numPixels));
+      filtering = new Filtering(_filters[_blurChoices->currentIndex()]);
   }
   
   switch(_policyChoices->currentIndex())
@@ -202,31 +257,10 @@ void FilterChoice::updateDisplay()
       _coef->hide();
       _labelCoef->hide();
       break;
-    case 3:
-      filters = Filter::roberts();
-      _numPixels->hide();
-      _labelWidth->hide();
-      _coef->hide();
-      _labelCoef->hide();
-      break;
-    case 4:
-      filters = Filter::sobel();
-      _numPixels->hide();
-      _labelWidth->hide();
-      _coef->hide();
-      _labelCoef->hide();
-      break;
-    case 5:
-      filters = Filter::squareLaplacien();
-      _numPixels->hide();
-      _labelWidth->hide();
-      _coef->hide();
-      _labelCoef->hide();
-      break;
     default:
-      filters = Filter::uniform(numPixels);
-      _numPixels->show();
-      _labelWidth->show();
+      filters = _filters[_blurChoices->currentIndex()];
+      _numPixels->hide();
+      _labelWidth->hide();
       _coef->hide();
       _labelCoef->hide();
   }

@@ -27,20 +27,20 @@ namespace imagein
 		public:
 		  class iterator
 		  {
-		  friend class Filter;
+        friend class Filter;
 
-		  public:
-			iterator operator++ ();
-			int& operator* ();
-			bool operator !=(Filter::iterator it);
-			std::pair<int, int> pos ();
+        public:
+        iterator operator++ ();
+        int& operator* ();
+        bool operator !=(Filter::iterator it);
+        std::pair<int, int> pos ();
 
-		  private:
-			iterator (Filter& m);
+        private:
+        iterator (Filter& m);
 
-			Filter& _Filter;
-			int _i;
-			int _j;
+        Filter& _Filter;
+        int _i;
+        int _j;
 		  };
 
 		  Filter (int w, int h);
