@@ -18,18 +18,19 @@ void ImageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
   {
     double scale = (double)rect.width() / (double)img.width();
     int size = (int) ((double)img.height() * scale);
-    int adjust = - size / 2;
+    int adjust = (rect.height() - size) / 2;
     rect.adjust(0, adjust, 0, -adjust);
   }
   else if (img.height() > img.width()) 
   {
-    double scale = (double)rect.height() / (double)img.height();
+    double scale = (double)rect.width() / (double)img.height();
     int size = (int) ((double)img.width() * scale);
-    int adjust = size / 2;
+    //int adjust = size / 2;
+    int adjust = (rect.width() - size) / 2;
     rect.adjust(adjust, 0, -adjust, 0);
   }
 
-  painter->drawImage(rect/*QRectF(30, index.row()*100, 50, 50)*/, img);
+  painter->drawImage(rect, img);
 }
 
 QSize ImageDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
