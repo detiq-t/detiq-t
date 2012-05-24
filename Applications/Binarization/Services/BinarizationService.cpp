@@ -46,8 +46,8 @@ void BinarizationService::applyBinarization()
         else
         {
             _binWidget = new BinarizationWidget(siw);
-            QObject::connect(_binWidget, SIGNAL(exportBinarizedImage(StandardImageWindow*,Image*)),
-                             this, SLOT(exportBinarizedImage(StandardImageWindow*,Image*)));
+            QObject::connect(_binWidget, SIGNAL(exportBinarizedImage(QString&,Image*)),
+                             this, SLOT(exportBinarizedImage(QString&,Image*)));
             QMdiArea* area = (QMdiArea*)_gi->centralWidget();
             area->addSubWindow(_binWidget);
             _binWidget->show();
@@ -55,8 +55,8 @@ void BinarizationService::applyBinarization()
     }
 }
 
-void BinarizationService::exportBinarizedImage(StandardImageWindow* siw, Image* im)
+void BinarizationService::exportBinarizedImage(QString& path, Image* im)
 {
-    StandardImageWindow* new_siw = new StandardImageWindow(siw->getPath(), _gi, im);
-    emit newImageWindowCreated(siw->getPath(), new_siw);
+    StandardImageWindow* new_siw = new StandardImageWindow(path, _gi, im);
+    emit newImageWindowCreated(path, new_siw);
 }

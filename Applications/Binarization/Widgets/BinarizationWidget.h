@@ -20,7 +20,7 @@ public:
     BinarizationWidget(StandardImageWindow* siw);
 
 signals:
-    void exportBinarizedImage(StandardImageWindow* siw, Image* im);
+    void exportBinarizedImage(QString& path, Image* im);
 
 private slots:
     void displayThresholdSelection(int index);
@@ -28,7 +28,7 @@ private slots:
     void exportBinarizedImage();
 
 private:
-    StandardImageWindow* _originalWindow;
+    QString& _originalPath;
     GrayscaleImage* _originalImage;
     QComboBox* _nbThreshold;
     QLabel* _thresholdValue;

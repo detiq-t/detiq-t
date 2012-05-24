@@ -42,3 +42,9 @@ std::string ImageWindow::getTitleFromPath(const QString & path)
     
   return p;
 }
+
+QString ImageWindow::getName()
+{
+    QString res = QString::fromStdString(getTitleFromPath(_path));
+    return res;
+}

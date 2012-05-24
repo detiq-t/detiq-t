@@ -22,7 +22,7 @@ public:
 
 private slots:
     void applyBinarization();
-    void exportBinarizedImage(StandardImageWindow* siw, Image* im);
+    void exportBinarizedImage(QString& path, Image* im);
 
 private:
     QToolBar* _toolBar;

@@ -28,14 +28,9 @@ ImageWindow* WindowService::getCurrentImageWindow()
   
   if(sw != NULL) {
       ImageWindow* imw = dynamic_cast<ImageWindow*>(sw->widget());
-      if (sw != NULL && imw != NULL)
         return imw;
-      else
-        throw "The current active sub-window doesn't contain an ImageWindow";
   }
-  else {
-      throw "There is no current subWindow";
-  }
+  else return NULL;
 }
 
 void WindowService::addFile(const QString& path)

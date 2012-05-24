@@ -11,8 +11,10 @@ using namespace genericinterface;
 using namespace imagein;
 using namespace imagein::algorithm;
 
-BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalWindow(siw)
+BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalPath(siw->getPath())
 {
+    this->setWindowTitle("Binarization tool on " + siw->getName());
+
     // backing up the image we're working on while converting it into a grayscale image
     _originalImage = Converter<GrayscaleImage>::convert(*siw->getImage());
 
@@ -114,5 +116,5 @@ void BinarizationWidget::applyBinarization(int i)
 void BinarizationWidget::exportBinarizedImage()
 {
     Image* im = new Image(*(_binarizedImage->getImage()));
-    emit exportBinarizedImage(_originalWindow, im);
+    emit exportBinarizedImage(_originalPath, im);
 }
