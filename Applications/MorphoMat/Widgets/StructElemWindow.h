@@ -17,12 +17,16 @@
 #include <QString>
 #include <QToolBar>
 #include <QMdiSubWindow>
+#include <QFormLayout>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QPushButton>
 
 class StructElemWindow : public QMdiSubWindow
 {
     Q_OBJECT
   public:
-    StructElemWindow(imagein::MorphoMat::StructElem<depth_default_t>*& elem);
+    StructElemWindow(imagein::MorphoMat::StructElem<depth_default_t>*& elemi, QAction* button);
     void changeStructElem(imagein::MorphoMat::StructElem<depth_default_t>* elem);
 
   public slots:
@@ -30,9 +34,10 @@ class StructElemWindow : public QMdiSubWindow
     void saveFile();
     void ok();
     void resize(int size);
-    void diamond();
+    void generate();
 
-    protected:
+  protected:
+    void closeEvent ( QCloseEvent * event );
 
   private:
     QWidget* _widget;
@@ -47,6 +52,10 @@ class StructElemWindow : public QMdiSubWindow
     QGraphicsView* _view;
     StructElemViewer *_viewer;
     imagein::GrayscaleImage_t<bool> _realSize;
+    QAction* _tbButton;
+    QPushButton* _genButton; 
+    QComboBox* _shapeToGen;
+    QSpinBox* _shapeSize;
 
 };
 

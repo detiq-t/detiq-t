@@ -5,6 +5,7 @@
 
 #include <Algorithm/MorphoMat.h>
 #include <Converter.h>
+#include <typeinfo>
 
 #include <QMessageBox>
 
@@ -29,74 +30,142 @@ void MorphoMatService::display(GenericInterface* gi)
   AlgorithmService::display(gi);
 
   _toolBar = gi->addToolBar("MorphoMat");
-  _editStructElem = _toolBar->addAction("Element &structurant");
+  _editStructElem = _toolBar->addAction("&Structuring element");
   _erosion = _toolBar->addAction("&Erosion");
   _dilatation = _toolBar->addAction("&Dilatation");
-  _gradient = _toolBar->addAction("&Gradient");
+  
+  QMenu* menu = gi->menu("&Mathematical morphology");
+
+  _erosion2 = menu->addAction("&Erosion");
+  _dilatation2 = menu->addAction("&Dilatation");
+  _opening = menu->addAction("&Opening");
+  _closing = menu->addAction("&Closing");
+  _gradient = menu->addAction("&Gradient");
+  _wtophat = menu->addAction("&White top hat");
+  _btophat = menu->addAction("&Black top hat");
+  
+  _erosion->setEnabled(false);
+  _dilatation->setEnabled(false);
+  _gradient->setEnabled(false);
+  _erosion2->setEnabled(false);
+  _dilatation2->setEnabled(false);
+  _opening->setEnabled(false);
+  _closing->setEnabled(false);
+  _gradient->setEnabled(false);
+  _wtophat->setEnabled(false);
+  _btophat->setEnabled(false);
 }
 
 void MorphoMatService::connect(GenericInterface* gi)
 {
-  AlgorithmService::connect(gi);
+    AlgorithmService::connect(gi);
 
-  QObject::connect(_editStructElem, SIGNAL(triggered()), this, SLOT(editStructElem()));
-  QObject::connect(_erosion, SIGNAL(triggered()), this, SLOT(applyErosion()));
-  QObject::connect(_dilatation, SIGNAL(triggered()), this, SLOT(applyDilatation()));
-  QObject::connect(_gradient, SIGNAL(triggered()), this, SLOT(applyGradient()));
+    QObject::connect(_editStructElem, SIGNAL(triggered()), this, SLOT(editStructElem()));
+    QObject::connect(_erosion, SIGNAL(triggered()), this, SLOT(applyErosion()));
+    QObject::connect(_erosion2, SIGNAL(triggered()), this, SLOT(applyErosion()));
+    QObject::connect(_dilatation, SIGNAL(triggered()), this, SLOT(applyDilatation()));
+    QObject::connect(_dilatation2, SIGNAL(triggered()), this, SLOT(applyDilatation()));
+    QObject::connect(_opening, SIGNAL(triggered()), this, SLOT(applyOpening()));
+    QObject::connect(_closing, SIGNAL(triggered()), this, SLOT(applyClosing()));
+    QObject::connect(_gradient, SIGNAL(triggered()), this, SLOT(applyGradient()));
+    QObject::connect(_wtophat, SIGNAL(triggered()), this, SLOT(applyWhiteTopHat()));
+    QObject::connect(_btophat, SIGNAL(triggered()), this, SLOT(applyBlackTopHat()));
+	//connexion des changements d'images
+	WindowService* ws = dynamic_cast<WindowService*>(gi->getService(GenericInterface::WINDOW_SERVICE));
+	QObject::connect(ws, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(checkActionsValid(QMdiSubWindow*)));
+}
+
+void MorphoMatService::checkActionsValid(QMdiSubWindow* activeWindow) {
+
+	StandardImageWindow* window = (activeWindow) ? dynamic_cast<StandardImageWindow*>(activeWindow->widget()) : NULL;
+	if(window) {
+      _erosion->setEnabled(true);
+      _dilatation->setEnabled(true);
+      _gradient->setEnabled(true);
+      _erosion2->setEnabled(true);
+      _dilatation2->setEnabled(true);
+      _opening->setEnabled(true);
+      _closing->setEnabled(true);
+      _gradient->setEnabled(true);
+      _wtophat->setEnabled(true);
+      _btophat->setEnabled(true);
+    }
+    else {
+      _erosion->setEnabled(false);
+      _dilatation->setEnabled(false);
+      _gradient->setEnabled(false);
+      _erosion2->setEnabled(false);
+      _dilatation2->setEnabled(false);
+      _opening->setEnabled(false);
+      _closing->setEnabled(false);
+      _gradient->setEnabled(false);
+      _wtophat->setEnabled(false);
+      _btophat->setEnabled(false);
+    }
 }
 
 
 void MorphoMatService::editStructElem()
 {
-    StructElemWindow* structElemWindow = new StructElemWindow(_structElem);
+    _editStructElem->setEnabled(false);
+    StructElemWindow* structElemWindow = new StructElemWindow(_structElem, _editStructElem);
     QMdiArea* area = (QMdiArea*)_gi->centralWidget();
     area->addSubWindow(structElemWindow);
     structElemWindow->show();
 }
 
-void MorphoMatService::applyErosion()
+void MorphoMatService::applyOperator(MorphoMat::Operator<depth_default_t>& op)
 {
     WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+    StandardImageWindow* siw = NULL;
+    try {
+        siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+    }
+    catch(const char* str) {
+        std::cerr << str << std::endl;
+    }
     if (siw != NULL)
     {
         const Image* img = siw->getImage();
         QString& path = siw->getPath();
-        //GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(*im);
-        MorphoMat::Erosion<depth8_t> algo(*_structElem);
-        Image *res = algo(img);
+        Image *res = op.operator()(img);
         StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, res);
         emit newImageWindowCreated(path, siw_res);
     } 
+}
+
+void MorphoMatService::applyErosion()
+{
+    MorphoMat::Erosion<depth8_t> op(*_structElem);
+    this->applyOperator(op);
 }
 
 void MorphoMatService::applyDilatation() {
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
-    if (siw != NULL)
-    {
-        const Image* img = siw->getImage();
-        QString& path = siw->getPath();
-        //GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(*im);
-        MorphoMat::Dilatation<depth8_t> algo(*_structElem);
-        Image *res = algo(img);
-        StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, res);
-        emit newImageWindowCreated(path, siw_res);
-    } 
+    MorphoMat::Dilatation<depth8_t> op(*_structElem);
+    this->applyOperator(op);
 }
 
 void MorphoMatService::applyGradient() {
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
-    if (siw != NULL)
-    {
-        const Image* img = siw->getImage();
-        QString& path = siw->getPath();
-        //GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(*im);
-        MorphoMat::Gradient<depth8_t> algo(*_structElem);
-        Image *res = algo(img);
-        StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, res);
-        emit newImageWindowCreated(path, siw_res);
-    } 
+    MorphoMat::Gradient<depth8_t> op(*_structElem);
+    this->applyOperator(op);
 }
 
+void MorphoMatService::applyOpening() {
+    MorphoMat::Opening<depth8_t> op(*_structElem);
+    this->applyOperator(op);
+}
+
+void MorphoMatService::applyClosing() {
+    MorphoMat::Closing<depth8_t> op(*_structElem);
+    this->applyOperator(op);
+}
+
+void MorphoMatService::applyWhiteTopHat() {
+    MorphoMat::WhiteTopHat<depth8_t> op(*_structElem);
+    this->applyOperator(op);
+}
+
+void MorphoMatService::applyBlackTopHat() {
+    MorphoMat::BlackTopHat<depth8_t> op(*_structElem);
+    this->applyOperator(op);
+}

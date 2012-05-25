@@ -2,7 +2,6 @@
 
 #include <GenericInterface.h>
 #include "Services/MorphoMatService.h"
-#include "Services/BasicTools.h"
 
 #include <iostream>
 
@@ -17,8 +16,7 @@ int main(int argc, char** argv)
 
   GenericInterface m;
 
-  int basicToolsID = m.addService(new BasicTools);
-  int morphomatServiceID = m.addService(new MorphoMatService);
+  m.addService(new MorphoMatService);
 
   m.run();
 

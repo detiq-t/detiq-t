@@ -24,6 +24,11 @@ namespace genericinterface
         void applyErosion();
 	    void applyDilatation();
 	    void applyGradient();
+	    void applyOpening();
+	    void applyClosing();
+	    void applyWhiteTopHat();
+	    void applyBlackTopHat();
+        void checkActionsValid(QMdiSubWindow* activeWindow);
 
       private:
         QToolBar* _toolBar;
@@ -31,7 +36,14 @@ namespace genericinterface
         QAction* _editStructElem;
 	    QAction* _erosion;
 	    QAction* _dilatation;
+	    QAction* _erosion2;
+	    QAction* _dilatation2;
+	    QAction* _opening;
+	    QAction* _closing;
 	    QAction* _gradient;
+	    QAction* _wtophat;
+	    QAction* _btophat;
+        void applyOperator(MorphoMat::Operator<depth_default_t>& op);
     };
 }
 

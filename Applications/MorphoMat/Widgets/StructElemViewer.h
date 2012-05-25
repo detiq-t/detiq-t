@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <GrayscaleImage.h>
 #include <Algorithm/MorphoMat.h>
 
@@ -17,7 +18,7 @@ class StructElemViewer : public QGraphicsScene
 {
     Q_OBJECT
   public:
-    StructElemViewer(const imagein::MorphoMat::StructElem<imagein::depth_default_t>& elem);
+    StructElemViewer(imagein::MorphoMat::StructElem<imagein::depth_default_t>& elem);
     ~StructElemViewer();
 
   public slots:
@@ -28,6 +29,9 @@ class StructElemViewer : public QGraphicsScene
     * @param y y-coordinate of the top left
     */
     void draw(int x, int y);
+
+  protected:
+    void mousePressEvent (QGraphicsSceneMouseEvent* event);
 
   private:
     /**
@@ -44,9 +48,9 @@ class StructElemViewer : public QGraphicsScene
     /**
     * @brief Size of one pixel (in pixel... loop !)
     */
-    static const int PIXEL_S = 25;
+    static const int PIXEL_S = 16;
 
-    imagein::GrayscaleImage_t<bool> _image;
+    imagein::MorphoMat::StructElem<imagein::depth_default_t>& _image;
     unsigned int _scale;
     int _row;
     int _col;

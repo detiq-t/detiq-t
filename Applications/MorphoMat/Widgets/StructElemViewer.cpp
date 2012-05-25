@@ -8,10 +8,9 @@
 using namespace std;
 using namespace imagein;
 
-StructElemViewer::StructElemViewer(const MorphoMat::StructElem<depth_default_t>& elem) 
-: QGraphicsScene(0, 0, elem.getElem().getWidth() * PIXEL_S * elem.getScale(), elem.getElem().getHeight() * PIXEL_S*elem.getScale()),
-  _image(elem.getElem()),_col(elem.getElem().getHeight()*elem.getScale()), _row(elem.getElem().getWidth()*elem.getScale()),  _scale(elem.getScale())
-{
+StructElemViewer::StructElemViewer(MorphoMat::StructElem<depth_default_t>& elem) 
+: QGraphicsScene(0, 0, elem.getWidth() * PIXEL_S * elem.getScale(), elem.getHeight() * PIXEL_S*elem.getScale()),
+  _image(elem),  _scale(elem.getScale()), _row(elem.getWidth()*elem.getScale()), _col(elem.getHeight()*elem.getScale()) {
   _rects = new QGraphicsRectItem[_row * _col];
 
   for(int i = 0; i < _row; i++)
@@ -30,6 +29,19 @@ StructElemViewer::StructElemViewer(const MorphoMat::StructElem<depth_default_t>&
 StructElemViewer::~StructElemViewer() {
     delete[] _rects;
 }
+
+void StructElemViewer::mousePressEvent (QGraphicsSceneMouseEvent* event) 
+{
+    QPointF point = event->scenePos(); // Get the location of the click
+    unsigned int px = (point.x()/PIXEL_S)/_scale;
+    unsigned int py = (point.y()/PIXEL_S)/_scale;
+    if(px < _image.getWidth() && py < _image.getHeight()) {
+        _image.setPixel(px, py, !_image.getPixel(px, py));  
+    }
+    //std::cout << px << ":" << py << std::endl;
+    this->draw(0,0);
+}
+                    
 
 void StructElemViewer::draw(int x, int y)
 {
@@ -50,11 +62,20 @@ void StructElemViewer::draw(int x, int y)
 
         try
         {
+          QColor high, low;
 
-          unsigned char value = _image.getPixel(px, py) ? 32 : 224;
-
+          if(px == _image.getWidth()/2 || (_image.getWidth()%2==0 && (px == _image.getWidth()/2-1))
+          || py == _image.getHeight()/2 || (_image.getHeight()%2==0 && (py == _image.getHeight()/2-1))) {
+            high = QColor(232, 232, 232);
+            low = QColor(24, 24, 24);
+          }
+          else {
+            high = QColor(224, 224, 224);
+            low = QColor(32, 32, 32);
+          }
           
-          QColor color(value, value, value);
+          QColor color = _image.getPixel(px, py) ? low : high;
+
           QBrush brush(color, Qt::SolidPattern);
 
           r.setBrush(brush);
