@@ -22,6 +22,7 @@ namespace imagein {
         inline unsigned int getCenterY() { return _centerY; }
         inline void setCenterX(unsigned int centerX) { _centerX = centerX; }
         inline void setCenterY(unsigned int centerY) { _centerY = centerY; }
+        inline void setCenter(unsigned int centerX, unsigned int centerY) { _centerX = centerX; _centerY = centerY; }
         std::vector<D> intersect(const Image_t<D>& image, unsigned int offsetX, unsigned int offsetY, unsigned int channel) {
             std::vector<D> pixels;
             for(unsigned int j = 0; j < getHeight()*_scale; ++j) {
