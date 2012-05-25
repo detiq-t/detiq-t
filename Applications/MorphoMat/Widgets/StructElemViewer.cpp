@@ -36,7 +36,12 @@ void StructElemViewer::mousePressEvent (QGraphicsSceneMouseEvent* event)
     unsigned int px = (point.x()/PIXEL_S)/_scale;
     unsigned int py = (point.y()/PIXEL_S)/_scale;
     if(px < _image.getWidth() && py < _image.getHeight()) {
-        _image.setPixel(px, py, !_image.getPixel(px, py));  
+        if(event->button()==Qt::LeftButton) {
+            _image.setPixel(px, py, !_image.getPixel(px, py));  
+        }
+        else if(event->button() == Qt::RightButton) {
+            _image.setCenter(px, py);
+        }
     }
     //std::cout << px << ":" << py << std::endl;
     this->draw(0,0);
@@ -73,10 +78,22 @@ void StructElemViewer::draw(int x, int y)
             high = QColor(224, 224, 224);
             low = QColor(32, 32, 32);
           }
+          if(px == _image.getCenterX() && py == _image.getCenterY()) {
+            high = QColor(200, 192, 192);
+            low = QColor(8, 0, 0);
+          }
+
           
           QColor color = _image.getPixel(px, py) ? low : high;
 
-          QBrush brush(color, Qt::SolidPattern);
+          QBrush brush;
+          QBrush(color, Qt::SolidPattern);
+          if(px == _image.getCenterX() && py == _image.getCenterY()) {
+            brush = QBrush(color, Qt::SolidPattern);
+          }
+          else {
+            brush = QBrush(color, Qt::SolidPattern);
+          }
 
           r.setBrush(brush);
         } catch(...)
