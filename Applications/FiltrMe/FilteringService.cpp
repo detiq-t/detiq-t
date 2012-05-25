@@ -65,11 +65,11 @@ void FilteringService::applyAlgorithm(Filtering* algo)
   if (siw != NULL)
   {
     const Image* im = siw->getImage();
-    QString& path = siw->getPath();
+    QString id = ws->getWidgetId(siw);
     Image_t<int>* im2 = Converter<Image>::convertToInt(*im);
     im2 = (*algo)(im2);
     Image* im_res = Converter<Image>::makeDisplayable(*im2);
-    StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
-    emit newImageWindowCreated(path, siw_res);
+    StandardImageWindow* siw_res = new StandardImageWindow("", _gi, im_res);
+    emit newImageWindowCreated(id, siw_res);
   }
 }

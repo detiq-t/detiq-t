@@ -9,7 +9,7 @@
 #include "../Widgets/NavBar/NavigationDock.h"
 #include "../GenericInterface.h"
 
-typedef std::map<QString, QList<QMdiSubWindow*> > WindowsMap;
+typedef std::map<QString, QList<QMdiSubWindow*> > WidgetsMap;
 
 namespace genericinterface
 {
@@ -25,24 +25,26 @@ namespace genericinterface
     */
     ImageWindow* getCurrentImageWindow();
 
+	QString getWidgetId(QWidget* widget);
+
   public slots:
     void addFile(const QString& path);
-    void addWidget(const QString& path, ImageWindow* widget);
-    void addWidget(const QString& path, QWidget* widget);
+    void addImage(const QString& id, ImageWindow* image);
+    void addWidget(const QString& id, QWidget* widget);
     void updateDisplay();
-    void removePath(const QString& path);
+    void removeId(const QString& id);
 
   signals:
     void subWindowActivated(QMdiSubWindow*);
 
   private slots:
-    void removeSubWindow(const QString& path, QMdiSubWindow* sw);
+    void removeSubWindow(const QString& id, QMdiSubWindow* sw);
 	
   private:
     GenericInterface* _gi;
     QMdiArea* _mdi;
     NavigationDock* _nav;
-    WindowsMap _windows;
+    WidgetsMap _widgets;
   };
 
 
@@ -50,16 +52,16 @@ namespace genericinterface
   {
       Q_OBJECT
   public:
-      SubWindowController(const QString& path, QMdiSubWindow* sw);
+      SubWindowController(const QString& id, QMdiSubWindow* sw);
 
   public slots:
       void closeSubWindow();
 
   signals:
-      void removeFromWindowsMap(const QString& path, QMdiSubWindow* sw);
+      void removeFromWindowsMap(const QString& id, QMdiSubWindow* sw);
 
   private:
-      QString _path;
+      QString _id;
       QMdiSubWindow* _sw;
   };
 }

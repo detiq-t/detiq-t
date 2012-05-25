@@ -19,7 +19,7 @@ void WindowService::connect(GenericInterface* gi)
 {
     _gi = gi;
     QObject::connect(_nav, SIGNAL(actionDone()), this, SLOT(updateDisplay()));
-    QObject::connect(_nav, SIGNAL(removePath(const QString&)), this, SLOT(removePath(const QString&)));
+    QObject::connect(_nav, SIGNAL(removeId(const QString&)), this, SLOT(removeId(const QString&)));
 
     QObject::connect(_mdi, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SIGNAL(subWindowActivated(QMdiSubWindow*)));
 }
@@ -35,93 +35,86 @@ ImageWindow* WindowService::getCurrentImageWindow()
     else return NULL;
 }
 
+QString WindowService::getWidgetId(QWidget* widget)
+{
+	for(WidgetsMap::iterator it = _widgets.begin() ; it != _widgets.end() ; ++it)
+    {
+		for(int i = 0 ; i < it->second.size() ; ++i)
+		{
+			if(it->second.at(i)->widget() == widget) return it->first;
+		}
+    }
+	return "";
+}
+
 void WindowService::addFile(const QString& path)
 {
-    if(_windows.find(path) == _windows.end())
+    if(_widgets.find(path) == _widgets.end())
     {
         StandardImageWindow* w = new StandardImageWindow(path, _gi);
-        QMdiSubWindow* sw = _mdi->addSubWindow(w);
-        _windows[path] << sw;
-
-        SubWindowController* swc = new SubWindowController(path, sw);
-        QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
-        QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)),
-                         this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
-
-        w->show();
+		_widgets[path] = QList<QMdiSubWindow*>();
+		this->addImage(path, w);
 
         _nav->addImage(path);
     }
 }
 
-void WindowService::addWidget(const QString& path, ImageWindow* widget)
+void WindowService::addImage(const QString& id, ImageWindow* image)
 {
-    if(_windows.find(path) != _windows.end())
-    {
-        QMdiSubWindow* sw = _mdi->addSubWindow(widget);
-
-        _windows[path] << sw;
-
-        SubWindowController* swc = new SubWindowController(path, sw);
-
-        QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
-        QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
-
-
-
-        /* //TODO La mise à jour du rectangle est foireuse : cela n'agit que sur la première Image. Si elle est supprimée et qu'un Widget autre prend
-                    la première place dans la liste, ça crash l'appli ! (pas de slot...)
-        QMdiSubWindow* source = _windows[path][0];
-        if(source != sw)
-        {
-            QObject::connect(widget, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), dynamic_cast<StandardImageWindow*>(source->widget()), SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
-            QObject::connect(sw, SIGNAL(aboutToActivate()), widget, SLOT(activated()));
-        }
-        */
-        widget->show();
-    }
+    
+    this->addWidget(id, image);
+    
 }
 
-void WindowService::addWidget(const QString& path, QWidget* widget)
+void WindowService::addWidget(const QString& id, QWidget* widget)
 {
-    QMdiSubWindow* sw = _mdi->addSubWindow(widget);
-    _windows[path] << sw;
-    widget->show();
+	if(_widgets.find(id) != _widgets.end())
+    {
+		QMdiSubWindow* sw = _mdi->addSubWindow(widget);
+		_widgets[id] << sw;
+		
+		SubWindowController* swc = new SubWindowController(id, sw);
+
+		QObject::connect(sw, SIGNAL(destroyed()), swc, SLOT(closeSubWindow()));
+		QObject::connect(swc, SIGNAL(removeFromWindowsMap(const QString&, QMdiSubWindow*)), this, SLOT(removeSubWindow(const QString&,QMdiSubWindow*)));
+			
+		widget->show();
+	}
 }
  
-void WindowService::removeSubWindow(const QString& path, QMdiSubWindow* sw)
+void WindowService::removeSubWindow(const QString& id, QMdiSubWindow* sw)
 {
     int i;
     bool subWindowFound = false;
-    for (i=0; i<_windows[path].size() && !subWindowFound; i++)
+    for (i=0; i<_widgets[id].size() && !subWindowFound; i++)
     {
-        if (_windows[path][i] == sw)
+        if (_widgets[id][i] == sw)
         {
             subWindowFound = true;
         }
     }
-    _windows[path].removeAt(i-1);
+    _widgets[id].removeAt(i-1);
 
-    if (_windows[path].empty()) removePath(path);
+    if (_widgets[id].empty()) removeId(id);
     //this->updateDisplay();
 }
 
-void WindowService::removePath(const QString& path)
+void WindowService::removeId(const QString& id)
 {
-    QList<QMdiSubWindow*> l = _windows[path];
+    QList<QMdiSubWindow*> l = _widgets[id];
     QList<QMdiSubWindow*>::iterator it;
     for (it = l.begin(); it != l.end(); it++)
     {
         delete *it;
     }
-    _windows.erase(path);
-    _nav->removeImage(path);
+    _widgets.erase(id);
+    _nav->removeImage(id);
     //this->updateDisplay();
 }
 
 void WindowService::updateDisplay()
 {
-    for(WindowsMap::iterator it = _windows.begin(); it != _windows.end(); ++it)
+    for(WidgetsMap::iterator it = _widgets.begin(); it != _widgets.end(); ++it)
     {
         QList<QMdiSubWindow*> list = (*it).second;
 
@@ -136,10 +129,10 @@ void WindowService::updateDisplay()
 
     for(int u = 0; u < sel.size(); u++)
     {
-        for(int x = 0; x < _windows[sel[u]].size(); x++)
+        for(int x = 0; x < _widgets[sel[u]].size(); x++)
         {
-            //_windows[sel[u]][x]->show();
-            _windows[sel[u]][x]->showNormal();
+            //_widgets[sel[u]][x]->show();
+            _widgets[sel[u]][x]->showNormal();
         }
     }
 }
@@ -149,12 +142,12 @@ void WindowService::updateDisplay()
 
 
 
-SubWindowController::SubWindowController(const QString& path, QMdiSubWindow* sw) : _path(path), _sw(sw)
+SubWindowController::SubWindowController(const QString& id, QMdiSubWindow* sw) : _id(id), _sw(sw)
 {
 } 
 
 void SubWindowController::closeSubWindow()
 {
-    emit removeFromWindowsMap(_path, _sw);
+    emit removeFromWindowsMap(_id, _sw);
     delete this;
 }

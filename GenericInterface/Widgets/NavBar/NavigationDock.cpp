@@ -76,7 +76,7 @@ void NavigationDock::closeSelection()
         QStringList selection = this->getSelection();
         for (int i=0; i<selection.size(); i++)
         {
-            emit removePath(selection[i]);
+            emit removeId(selection[i]);
         }
     }
 }

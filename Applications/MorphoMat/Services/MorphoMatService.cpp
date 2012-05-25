@@ -127,10 +127,10 @@ void MorphoMatService::applyOperator(MorphoMat::Operator<depth_default_t>& op)
     if (siw != NULL)
     {
         const Image* img = siw->getImage();
-        QString& path = siw->getPath();
+        QString id = ws->getWidgetId(siw);
         Image *res = op.operator()(img);
-        StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, res);
-        emit newImageWindowCreated(path, siw_res);
+        StandardImageWindow* siw_res = new StandardImageWindow("", _gi, res);
+        emit newImageWindowCreated(id, siw_res);
     } 
 }
 

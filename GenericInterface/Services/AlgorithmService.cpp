@@ -21,7 +21,7 @@ void AlgorithmService::connect(GenericInterface* gi)
   _gi = gi;
 
   WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-  QObject::connect(this, SIGNAL(newImageWindowCreated(const QString&, ImageWindow*)), ws, SLOT(addWidget(const QString&, ImageWindow*)));
+  QObject::connect(this, SIGNAL(newImageWindowCreated(const QString&, ImageWindow*)), ws, SLOT(addImage(const QString&, ImageWindow*)));
 }
 
 /*

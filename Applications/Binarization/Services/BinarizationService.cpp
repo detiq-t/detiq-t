@@ -40,13 +40,13 @@ void BinarizationService::applyBinarization()
             _binWidget = new BinarizationWidget(siw);
             QObject::connect(_binWidget, SIGNAL(exportBinarizedImage(QString&,Image*)),
                              this, SLOT(exportBinarizedImage(QString&,Image*)));
-            ws->addWidget(siw->getPath(), _binWidget);
+            ws->addImage(ws->getWidgetId(siw), _binWidget);
         }
     }
 }
 
 void BinarizationService::exportBinarizedImage(QString& path, Image* im)
 {
-    StandardImageWindow* new_siw = new StandardImageWindow(path, _gi, im);
+    StandardImageWindow* new_siw = new StandardImageWindow("", _gi, im);
     emit newImageWindowCreated(path, new_siw);
 }

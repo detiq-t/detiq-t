@@ -44,7 +44,7 @@ protected slots:
 
 signals:
     void actionDone();
-    void removePath(const QString& path);
+    void removeId(const QString& path);
 
 private:
     QStringList _data;

@@ -2,6 +2,7 @@
 
 #include <GenericInterface.h>
 #include <Converter.h>
+#include <QDebug>
 
 using namespace genericinterface;
 using namespace imagein::algorithm;
@@ -43,15 +44,13 @@ void ComponentLabelingService::applyAlgorithm(ComponentLabeling* algo)
     if (siw != NULL)
     {
         const Image* im = Converter<GrayscaleImage>::convert(*(siw->getImage()));
-        QString& path = siw->getPath();
+        QString id = ws->getWidgetId(siw);
         RgbImage* im_res = (*algo)(im);
-        StandardImageWindow* siw_res = new StandardImageWindow(path, _gi, im_res);
-        ws->addWidget(path, siw_res);
+        StandardImageWindow* siw_res = new StandardImageWindow("", _gi, im_res);
+        ws->addImage(id, siw_res);
 
         ResultWidget* r = new ResultWidget(algo->getNbComponents(), algo->getAverageComponentSize(), _gi);
-        QMdiSubWindow* resultWindow = dynamic_cast<QMdiArea*>(_gi->centralWidget())->addSubWindow(r);
-        QObject::connect(siw_res, SIGNAL(destroyed()), resultWindow, SLOT(close()));
-        r->show();
+        ws->addWidget(id, r);
     }
 }
 

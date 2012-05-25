@@ -26,8 +26,8 @@ void BitPlaneService::applyBitPlane()
   {
     const Image* im = siw->getImage();
     Image* im_selected = im->crop(*(siw->getSelection()));
-    QString& path = siw->getPath();
-    _bitplanewindow = new BitPlaneWindow(path, _gi, im_selected);
-    emit newImageWindowCreated(path, _bitplanewindow);
+    QString id = ws->getWidgetId(siw);
+    _bitplanewindow = new BitPlaneWindow("", _gi, im_selected);
+    emit newImageWindowCreated(id, _bitplanewindow);
   }
 }
