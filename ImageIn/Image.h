@@ -100,7 +100,7 @@ namespace imagein
              * \return The value contained in the matrix at the given coordinates.
              * \throw out_of_range if the parameters are not a valid pixel.
              */
-            const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const;
+            inline const D& getPixel(unsigned int x, unsigned int y, unsigned int channel) const;
 
             /*!
              * \brief Set the value of a channel for the given pixel.
@@ -111,7 +111,7 @@ namespace imagein
              * \param cPixel The new value.
              * \throw out_of_range if the parameters are not a valid pixel.
              */
-            void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
+            inline void setPixel(unsigned int x, unsigned int y, unsigned int channel, const D& cPixel);
 
              /*!
              * \brief Set the values of the given pixel.

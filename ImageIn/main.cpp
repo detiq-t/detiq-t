@@ -1,8 +1,11 @@
+#include <list>
 #include "Image.h"
 #include "Algorithm/Otsu.h"
+#include "Algorithm/MorphoMat.h"
 
 using namespace imagein;
 using namespace imagein::algorithm;
+using namespace std;
 
 /*
 int main()
