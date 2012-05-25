@@ -1,6 +1,10 @@
 #include "FilterEditor.h"
 
+#include "FilterEditorItem.h"
+
+#include <QScrollArea>
 #include <QLineEdit>
+#include <QHBoxLayout>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
@@ -9,6 +13,7 @@
 #include <QtGui/QMdiArea>
 #include <QtGui/QPushButton>
 
+#include <QTimer>
 #include <QFile>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomImplementation>
@@ -17,72 +22,70 @@
 
 using namespace filtrme;
 using namespace imagein::algorithm;
+using namespace std;
 
 FilterEditor::FilterEditor()
 {
-  _width = 3;
-  _height = 3;
+  _nbFilters = 1;
   initUI();
 }
 
 
 void FilterEditor::initUI()
-{  
-  QDialogButtonBox *buttonBox;
-  QSpinBox *spinBoxWidth;
-  QSpinBox *spinBoxHeight;
-  QLabel *label;
-  QLabel *label_2;
+{ 
+  _filterLayout = new QVBoxLayout();
+  QWidget* widgetPrinc = new QWidget();
+  widgetPrinc->setLayout(_filterLayout);
+  
+  QVBoxLayout* layout = new QVBoxLayout();
+  QScrollArea* scroll = new QScrollArea();
+  
+  QHBoxLayout* hLayout = new QHBoxLayout();
+  QWidget* widget = new QWidget();
+  widget->setLayout(hLayout);
+  QSpinBox *spinBoxNbFilters;
   QLabel *label_3;
-
-  buttonBox = new QDialogButtonBox(this);
-  buttonBox->setGeometry(QRect(140, 290, 341, 32));
+  QLabel *label_4;
+  label_3 = new QLabel();
+  label_3->setText("Name:");
+  _name = new QLineEdit();
+  label_4 = new QLabel();
+  label_4->setText("Number of filters:");
+  spinBoxNbFilters = new QSpinBox();
+  spinBoxNbFilters->setValue(_nbFilters);
+  spinBoxNbFilters->setMinimum(1);
+  hLayout->addWidget(label_3);
+  hLayout->addWidget(_name);
+  hLayout->addWidget(label_4);
+  hLayout->addWidget(spinBoxNbFilters);
+  _filterLayout->addWidget(widget);
+  
+  FilterEditorItem* item = new FilterEditorItem();
+  _filterLayout->addWidget(item);
+  
+  QDialogButtonBox *buttonBox;
+  buttonBox = new QDialogButtonBox();
   buttonBox->setOrientation(Qt::Horizontal);
   buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Save);
   QPushButton* applyButton = buttonBox->addButton(QString::fromStdString("Apply"), QDialogButtonBox::ApplyRole);
-  _filter = new QTableWidget(_width, _height, this);
-  _filter->setGeometry(QRect(210, 20, 271, 241));
-  _filter->resizeColumnsToContents();
-  _filter->resizeRowsToContents();
-  spinBoxWidth = new QSpinBox(this);
-  spinBoxWidth->setGeometry(QRect(100, 90, 60, 27));
-  spinBoxWidth->setValue(_width);
-  spinBoxWidth->setMinimum(2);
-  spinBoxHeight = new QSpinBox(this);
-  spinBoxHeight->setGeometry(QRect(100, 130, 60, 27));
-  spinBoxHeight->setValue(_height);
-  spinBoxHeight->setMinimum(2);
-  label = new QLabel(this);
-  label->setGeometry(QRect(30, 90, 66, 17));
-  label_2 = new QLabel(this);
-  label_2->setGeometry(QRect(30, 130, 66, 17));
-  label_3 = new QLabel(this);
-  label_3->setGeometry(QRect(10, 40, 66, 17));
-  _name = new QLineEdit(this);
-  _name->setGeometry(QRect(70, 30, 113, 27));
+  _filterLayout->addWidget(buttonBox);
 
   QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(save()));
   QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(cancel()));
   QObject::connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
-  QObject::connect(spinBoxWidth, SIGNAL(valueChanged(int)), this, SLOT(widthChanged(int)));
-  QObject::connect(spinBoxHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
-  QObject::connect(this, SIGNAL(insertRow(int)), _filter, SLOT(insertRow(int)));
-  QObject::connect(this, SIGNAL(removeRow(int)), _filter, SLOT(removeRow(int)));
-  QObject::connect(this, SIGNAL(insertColumn(int)), _filter, SLOT(insertColumn(int)));
-  QObject::connect(this, SIGNAL(removeColumn(int)), _filter, SLOT(removeColumn(int)));
+  QObject::connect(spinBoxNbFilters, SIGNAL(valueChanged(int)), this, SLOT(nbFiltersChanged(int)));
 
-  label->setText("Width:");
-  label_2->setText("Height:");
-  label_3->setText("Name:");
-  
-  this->adjustSize();
-  this->resize(500, 337);
+  scroll->setWidget(widgetPrinc);
+  scroll->setWidgetResizable(true);
+  layout->addWidget(scroll);
+  this->setLayout(layout);
+  this->setMinimumSize(670, 470);
   this->setWindowTitle("FilterEditor");
 }
 
 void FilterEditor::save()
 {
-  Filter* filter = NULL;
+  vector<Filter*> filters;
   if(_name->text() == "")
   {
     QMessageBox msgBox(QMessageBox::Critical, "Error!", "Your filter has to have a name to be saved.");
@@ -91,11 +94,13 @@ void FilterEditor::save()
     msgBox.exec();
     return;
   }
-  if((filter = validFilter()) != NULL)
-    saveXML(filter);
+  bool ok;
+  filters = validFilters(&ok);
+  if(ok)
+    saveXML(filters);
 }
 
-void FilterEditor::saveXML(Filter* filterToSave)
+void FilterEditor::saveXML(vector<Filter*> filtersToSave)
 {
   QFile file("filters.xml");
   // document
@@ -115,7 +120,6 @@ void FilterEditor::saveXML(Filter* filterToSave)
     doc.appendChild(doc.createTextNode("\n")); // for nicer output
     QDomElement e = doc.createElement("filtersList");
     doc.appendChild(e);
-    std::cout << doc.toString().toStdString();
   }
   else
   {
@@ -146,31 +150,37 @@ void FilterEditor::saveXML(Filter* filterToSave)
       }
       child = child.nextSibling();
 	  }
-    
-    std::cout << doc.toString().toStdString();
   }
 
   // root node
   QDomElement filterNode = doc.createElement("filter");
   filterNode.setAttribute("name", _name->text());
-  filterNode.setAttribute("width", QString::number(_width));
-  filterNode.setAttribute("height", QString::number(_height));
+  filterNode.setAttribute("nbFilters", QString::number(_nbFilters));
 
   // values
-  QDomElement valuesNode = doc.createElement("values");
-
-  QString s = "";
-  for(int w = 0; w < _width; w++)
+  for(int i = 0; i < _nbFilters; i++)
   {
-    for(int h = 0; h < _height; h++)
+    Filter* filterToSave = filtersToSave[i];
+    int width = filterToSave->width();
+    int height = filterToSave->height();
+    
+    QDomElement valuesNode = doc.createElement("values");
+    valuesNode.setAttribute("width", QString::number(width));
+    valuesNode.setAttribute("height", QString::number(height));
+
+    QString s = "";
+    for(int w = 0; w < width; w++)
     {
-      s += QString::number((*filterToSave)[w][h]);
-      if(w != _width - 1 || h != _height - 1)
-        s += " ";
+      for(int h = 0; h < height; h++)
+      {
+        s += QString::number((*filterToSave)[w][h]);
+        if(w != width - 1 || h != height - 1)
+          s += " ";
+      }
     }
+    valuesNode.appendChild(doc.createTextNode(s));
+    filterNode.appendChild(valuesNode);
   }
-  valuesNode.appendChild(doc.createTextNode(s));
-  filterNode.appendChild(valuesNode);
   if(replace)
     doc.documentElement().replaceChild(filterNode, oldFilter);
   else
@@ -184,6 +194,36 @@ void FilterEditor::saveXML(Filter* filterToSave)
   }
 }
 
+vector<Filter*> FilterEditor::validFilters(bool* ok)
+{
+  vector<Filter*> filters;
+  
+  *ok = true;
+  
+  for(int i = 1; i <= _nbFilters; i++)
+  {
+    FilterEditorItem* item = (FilterEditorItem*)_filterLayout->itemAt(i)->widget();
+    Filter* f = item->validFilter();
+    if(f != NULL)
+      filters.push_back(f);
+    else
+    {
+      *ok = false;
+      QMessageBox msgBox(QMessageBox::Critical, "Error!", "Every square have to be completed by int value.");
+      std::ostringstream oss;
+      oss << i;
+      std::string is = oss.str();
+      msgBox.setInformativeText(QString::fromStdString("Filter " + is + " isn't ok."));
+      msgBox.setStandardButtons(QMessageBox::Ok);
+      msgBox.setDefaultButton(QMessageBox::Ok);
+      msgBox.exec();
+      break;
+    }
+  }      
+  
+  return filters;
+}
+
 void FilterEditor::cancel()
 {
   QMessageBox msgBox(QMessageBox::Warning, "Warning!", "Unsaved changes will be lost.");
@@ -192,76 +232,33 @@ void FilterEditor::cancel()
   msgBox.setDefaultButton(QMessageBox::No);
   int ret = msgBox.exec();
   if(ret == QMessageBox::Yes)
-    emit(cancelAction());
+    QTimer::singleShot(200, this, SLOT(quit()));
+}
+
+void FilterEditor::quit()
+{
+  emit(cancelAction());
 }
 
 void FilterEditor::apply()
 {
-  Filter* filter = NULL;
-  if((filter = validFilter()) != NULL)
-    emit(applyFiltering(new Filtering(filter)));
-}
-
-void FilterEditor::widthChanged(const int width)
-{
-  if(_width < width)
-    emit(insertRow(width-_width));
-  else
-    emit(removeRow(_width-width));
-    
-  _width = width;
-}
-
-void FilterEditor::heightChanged(const int height)
-{
-  if(_height < height)
-    emit(insertColumn(height-_height));
-  else
-    emit(removeColumn(_height-height));
-  
-  _height = height;
-}
-
-imagein::algorithm::Filter* FilterEditor::validFilter()
-{
-  Filter* filter = new Filter(_width, _height);
+  vector<Filter*> filters;
   bool ok;
-  for(int w = 0; w < _width; w++)
+  filters = validFilters(&ok);
+  if(ok)
+    emit(applyFiltering(new Filtering(filters)));
+}
+
+void FilterEditor::nbFiltersChanged(const int nb)
+{
+  if(_nbFilters < nb)
   {
-    for(int h = 0; h < _height; h++)
-    {
-      int i;
-      QTableWidgetItem* item = _filter->item(w, h);
-      if(!item)
-        ok = false;
-      else
-        i = item->text().toInt(&ok);
-      if(!ok)
-      {
-        QMessageBox msgBox(QMessageBox::Critical, "Error!", "Every square have to be completed by int value.");
-        std::ostringstream oss;
-        oss << w;
-        std::string ws = oss.str();
-        oss.str("");
-        oss << h;
-        std::string hs = oss.str();
-        msgBox.setInformativeText(QString::fromStdString("Square " + ws + ";" + hs + "isn't int."));
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        break;
-        ok = true;
-      }
-      else
-      {
-        (*filter)[w][h] = i;
-      }
-    }
-    if(!ok)
-      break;
+    FilterEditorItem* item = new FilterEditorItem();
+    _filterLayout->insertWidget(_nbFilters + 1, item);
   }
-  if(!ok)
-    filter = NULL;
-  
-  return filter;
+  else if(_nbFilters > nb)
+  {
+    _filterLayout->removeItem(_filterLayout->itemAt(_nbFilters));
+  }
+  _nbFilters = nb;
 }

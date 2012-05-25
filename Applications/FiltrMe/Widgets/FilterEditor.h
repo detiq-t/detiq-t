@@ -2,6 +2,7 @@
 #define WIDGET_FILTEREDITION
 
 #include <iostream>
+#include <vector>
 
 #include <Algorithm/Filter.h>
 #include <Algorithm/Filtering.h>
@@ -24,12 +25,7 @@ namespace filtrme
   public:
     FilterEditor();
 
-  
   signals:
-    void insertRow(int);
-    void removeRow(int);
-    void insertColumn(int);
-    void removeColumn(int);
     void applyFiltering(imagein::algorithm::Filtering*);
     void cancelAction();
     
@@ -37,18 +33,17 @@ namespace filtrme
     void save();
     void cancel();
     void apply();
-    void widthChanged(const int);
-    void heightChanged(const int);
+    void quit();
+    void nbFiltersChanged(const int);
     
   private:
     void initUI();
-    void saveXML(imagein::algorithm::Filter* filter);
-    imagein::algorithm::Filter* validFilter();
+    void saveXML(std::vector<imagein::algorithm::Filter*> filter);
+    std::vector<imagein::algorithm::Filter*> validFilters(bool* ok);
 
-    QTableWidget* _filter;
+    QVBoxLayout* _filterLayout;
     QLineEdit* _name;
-    int _width;
-    int _height;
+    int _nbFilters;
   };
 }
 

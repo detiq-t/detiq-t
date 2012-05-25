@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QVBoxLayout>
 #include <QTableWidget>
+#include <QSpinBox>
 
 namespace filtrme
 {
@@ -34,26 +35,23 @@ namespace filtrme
     void currentBlurChanged(int);
     void dataChanged(const QString&);
     void validate();
+    void cancel();
+    void deleteFilter();
 
   private:
+    void initUI();
     void updateDisplay();
     
     std::vector< std::vector< imagein::algorithm::Filter* > > _filters;
     
     QComboBox* _blurChoices;
     QComboBox* _policyChoices;
-    /*
-     * QComboBox* _normalizationChoices;
-     */
     
-    QLabel* _labelCoef;
-    QLineEdit* _coef;
-    QLabel* _labelWidth;
-    QLineEdit* _numPixels;
+    QLabel* _labelNumber;
+    QSpinBox* _number;
     
     QTableWidget* _filterView;
-    
-    QVBoxLayout* _centerLayout;
+    QPushButton* _deleteButton;
   };
 }
 
