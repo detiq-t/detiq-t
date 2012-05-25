@@ -3,8 +3,10 @@
 #include "Filtering.h"
 
 #include <algorithm>
+#ifdef __linux__
 #include <pthread.h>
 #include <sys/sysinfo.h>
+#endif
 #include "Average.h"
 #include "Distance.h"
 
