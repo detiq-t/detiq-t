@@ -14,17 +14,71 @@ class TestGenericInterface : public QObject
 {
   Q_OBJECT
 private slots:
-  void testImageWindow();
-  
+  void initTestCase();
+  void testWindowServiceAddFile();
+  void testFileServiceSave();
+  void testShowHistogram();
+  void cleanupTestCase();
+
+private:
+  GenericInterface _gi;
+  StandardImageWindow* _img;
 };
 
-void TestGenericInterface::testImageWindow() {
-  GenericInterface gi;
-  gi.run();
+void TestGenericInterface::initTestCase() {
+  _gi.run();
+}
 
-  WindowService* ws = dynamic_cast<WindowService*>(gi.getService(GenericInterface::WINDOW_SERVICE));
+void TestGenericInterface::testWindowServiceAddFile() {
+
+  WindowService* ws = dynamic_cast<WindowService*>(_gi.getService(GenericInterface::WINDOW_SERVICE));
 
   ws->addFile(QString("test.jpg"));
+  _img = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+
+  QVERIFY((void*)_img != (void*)0);
+
+  QCOMPARE(QString("test.jpg"), ws->getCurrentImageWindow()->getPath());
+}
+
+void TestGenericInterface::testFileServiceSave() {
+
+  FileService* fs = dynamic_cast<FileService*>(_gi.getService(GenericInterface::FILE_SERVICE));
+  fs->save("tata.jpg");
+
+  Image test("test.jpg"), tata("tata.jpg");
+
+  QCOMPARE(test.getWidth(),      tata.getWidth());
+  QCOMPARE(test.getHeight(),     tata.getHeight());
+  QCOMPARE(test.getNbChannels(), tata.getNbChannels());
+}
+
+void TestGenericInterface::testShowHistogram() {
+  _img->showHistogram();
+
+  WindowService* ws = dynamic_cast<WindowService*>(_gi.getService(GenericInterface::WINDOW_SERVICE));
+
+  HistogramWindow* hw;
+  hw = dynamic_cast<HistogramWindow*>(ws->getCurrentImageWindow());
+
+  QVERIFY((void*)hw != (void*)0);
+}
+
+void TestGenericInterface::cleanupTestCase() {
+  QFile("tata.jpg").remove();
+}
+
+QTEST_MAIN(TestGenericInterface)
+#include "Tests.moc"
+
+
+
+
+
+
+
+
+/*
   StandardImageWindow* imgw;
   imgw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
   QGraphicsView* v;
@@ -43,7 +97,5 @@ void TestGenericInterface::testImageWindow() {
 
   QCOMPARE(rect->x, static_cast<unsigned int>(10));
   QCOMPARE(rect->y, static_cast<unsigned int>(10));
-}
+*/
 
-QTEST_MAIN(TestGenericInterface)
-#include "Tests.moc"

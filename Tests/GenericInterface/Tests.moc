@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'Tests.cpp'
 **
-** Created: Thu May 24 14:26:25 2012
+** Created: Fri May 25 16:32:28 2012
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -22,7 +22,7 @@ static const uint qt_meta_data_TestGenericInterface[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,12 +31,19 @@ static const uint qt_meta_data_TestGenericInterface[] = {
 
  // slots: signature, parameters, type, tag, flags
       22,   21,   21,   21, 0x08,
+      37,   21,   21,   21, 0x08,
+      64,   21,   21,   21, 0x08,
+      86,   21,   21,   21, 0x08,
+     106,   21,   21,   21, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_TestGenericInterface[] = {
-    "TestGenericInterface\0\0testImageWindow()\0"
+    "TestGenericInterface\0\0initTestCase()\0"
+    "testWindowServiceAddFile()\0"
+    "testFileServiceSave()\0testShowHistogram()\0"
+    "cleanupTestCase()\0"
 };
 
 void TestGenericInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -45,7 +52,11 @@ void TestGenericInterface::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         Q_ASSERT(staticMetaObject.cast(_o));
         TestGenericInterface *_t = static_cast<TestGenericInterface *>(_o);
         switch (_id) {
-        case 0: _t->testImageWindow(); break;
+        case 0: _t->initTestCase(); break;
+        case 1: _t->testWindowServiceAddFile(); break;
+        case 2: _t->testFileServiceSave(); break;
+        case 3: _t->testShowHistogram(); break;
+        case 4: _t->cleanupTestCase(); break;
         default: ;
         }
     }
@@ -84,9 +95,9 @@ int TestGenericInterface::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 5;
     }
     return _id;
 }
