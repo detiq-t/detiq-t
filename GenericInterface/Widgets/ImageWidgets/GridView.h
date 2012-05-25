@@ -29,15 +29,6 @@ namespace genericinterface
     */
     GridView(imagein::Image* im, const QString & path, int dx, int dy);
 
-  public slots:
-    /**
-    * @brief Request for a new display
-    *
-    * @param x the horizontal offset
-    * @param y the vertical offset
-    */
-    void newDisplay(int x, int y);
-
   private:
     QHBoxLayout* _layout; /*!< the layout of the widget */
     ImageViewer* _viewer; /*!< the viewer which permits to see the complete picture */

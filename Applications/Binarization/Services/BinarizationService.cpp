@@ -9,17 +9,17 @@ using namespace genericinterface;
 
 void BinarizationService::display(GenericInterface* gi)
 {
-  AlgorithmService::display(gi);
+    AlgorithmService::display(gi);
 
-  _toolBar = gi->addToolBar("Binarization");
-  _binarize = _toolBar->addAction("&Binarization");
+    _toolBar = gi->addToolBar("Binarization");
+    _binarize = _toolBar->addAction("&Binarization");
 }
 
 void BinarizationService::connect(GenericInterface* gi)
 {
-  AlgorithmService::connect(gi);
+    AlgorithmService::connect(gi);
 
-  QObject::connect(_binarize, SIGNAL(triggered()), this, SLOT(applyBinarization()));
+    QObject::connect(_binarize, SIGNAL(triggered()), this, SLOT(applyBinarization()));
 }
 
 
@@ -29,10 +29,7 @@ void BinarizationService::applyBinarization()
     StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
     if (siw != NULL)
     {
-        const Image* im = siw->getImage();
-        Image* im_selected = im->crop(*(siw->getSelection()));
-
-        if (im_selected->getNbChannels() != 1)
+        if (siw->getImage()->getNbChannels() != 1)
         {
             QMessageBox::information(siw,
                                      "Attention",

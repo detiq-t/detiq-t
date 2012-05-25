@@ -204,112 +204,112 @@ void StandardImageView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
-void StandardImageView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+void StandardImageView::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-  int x = event->pos().x();
-	int y = event->pos().y();
-  
-  if(x >= 0 && x < pixmap().width() && y >= 0 && y < pixmap().height())
-  {
-		if(_mouseButtonPressed)
-		{
-      if(_move)
-      {
-        int newX = _selection->x - (_pixelClicked->x() - x);
-        int newY = _selection->y - (_pixelClicked->y() - y);
-        if(!_hLine)
-          _selection->x = newX < 0 ? 0 : newX + _selection->w >= _image->getWidth() ? _image->getWidth() - _selection->w - 1 : newX;
-        if(!_vLine)
-          _selection->y = newY < 0 ? 0 : newY + _selection->h >= _image->getHeight() ? _image->getHeight() - _selection->h - 1 : newY;
-        _pixelClicked->setX(x);
-        _pixelClicked->setY(y);
-        if(_sourceHighlight != NULL)
-          _sourceHighlight->update(_selection);
-      }
-      else if(_resize && this->hasCursor())
-      {
-        if(this->cursor().shape() == Qt::SizeHorCursor || this->cursor().shape() == Qt::SizeFDiagCursor || this->cursor().shape() == Qt::SizeBDiagCursor)
+    qreal x = event->pos().x();
+    qreal y = event->pos().y();
+
+    if(x >= 0 && x < pixmap().width() && y >= 0 && y < pixmap().height())
+    {
+        if(_mouseButtonPressed)
         {
-          if(_originX && x < _originalHighlight->x  + _originalHighlight->w)
-          {
-            _selection->w = _originalHighlight->x - x + _originalHighlight->w;
-            _selection->x = x;
-          }
-          else if(_originX)
-          {
-            _originalHighlight->x = _originalHighlight->x + _originalHighlight->w;
-            _originalHighlight->w = x - _originalHighlight->x;
-            _originX = false;
-          }
-          
-          if(!_originX && _originalHighlight->x >= x)
-          {
-            _selection->w = _originalHighlight->x - x;
-            _selection->x = x;            
-          }
-          else if(!_originX)
-          {
-            _selection->w = x - _originalHighlight->x;
-            _selection->x = _originalHighlight->x;
-          }
+            if(_move)
+            {
+                int newX = _selection->x - (_pixelClicked->x() - x);
+                int newY = _selection->y - (_pixelClicked->y() - y);
+                if(!_hLine)
+                    _selection->x = newX < 0 ? 0 : newX + _selection->w >= _image->getWidth() ? _image->getWidth() - _selection->w - 1 : newX;
+                if(!_vLine)
+                    _selection->y = newY < 0 ? 0 : newY + _selection->h >= _image->getHeight() ? _image->getHeight() - _selection->h - 1 : newY;
+                _pixelClicked->setX(x);
+                _pixelClicked->setY(y);
+                if(_sourceHighlight != NULL)
+                    _sourceHighlight->update(_selection);
+            }
+            else if(_resize && this->hasCursor())
+            {
+                if(this->cursor().shape() == Qt::SizeHorCursor || this->cursor().shape() == Qt::SizeFDiagCursor || this->cursor().shape() == Qt::SizeBDiagCursor)
+                {
+                    if(_originX && x < _originalHighlight->x  + _originalHighlight->w)
+                    {
+                        _selection->w = _originalHighlight->x - x + _originalHighlight->w;
+                        _selection->x = x;
+                    }
+                    else if(_originX)
+                    {
+                        _originalHighlight->x = _originalHighlight->x + _originalHighlight->w;
+                        _originalHighlight->w = x - _originalHighlight->x;
+                        _originX = false;
+                    }
+
+                    if(!_originX && _originalHighlight->x >= x)
+                    {
+                        _selection->w = _originalHighlight->x - x;
+                        _selection->x = x;
+                    }
+                    else if(!_originX)
+                    {
+                        _selection->w = x - _originalHighlight->x;
+                        _selection->x = _originalHighlight->x;
+                    }
+                }
+
+                if(this->cursor().shape() == Qt::SizeVerCursor || this->cursor().shape() == Qt::SizeFDiagCursor || this->cursor().shape() == Qt::SizeBDiagCursor)
+                {
+                    if(_originY && y < _originalHighlight->y  + _originalHighlight->h)
+                    {
+                        _selection->h = _originalHighlight->y - y + _originalHighlight->h;
+                        _selection->y = y;
+                    }
+                    else if(_originY)
+                    {
+                        _originalHighlight->y = _originalHighlight->y + _originalHighlight->h;
+                        _originalHighlight->h = y - _originalHighlight->y;
+                        _originY = false;
+                    }
+
+                    if(!_originY && _originalHighlight->y >= y)
+                    {
+                        _selection->h = _originalHighlight->y - y;
+                        _selection->y = y;
+                    }
+                    else if(!_originY)
+                    {
+                        _selection->h = y - _originalHighlight->y;
+                        _selection->y = _originalHighlight->y;
+                    }
+                }
+                if(_sourceHighlight != NULL)
+                    _sourceHighlight->update(_selection);
+            }
+            else
+            {
+                _sourceHighlight = NULL;
+                if(_pixelClicked->x() < x)
+                {
+                    _selection->w = x - _pixelClicked->x();
+                    _selection->x = _pixelClicked->x();
+                }
+                else
+                {
+                    _selection->x = x;
+                    _selection->w = _pixelClicked->x() - x;
+                }
+
+                if(_pixelClicked->y() < y)
+                {
+                    _selection->y = _pixelClicked->y();
+                    _selection->h = y - _pixelClicked->y();
+                }
+                else
+                {
+                    _selection->y = y;
+                    _selection->h = _pixelClicked->y() - y;
+                }
+            }
+            _highlight->setRect(_selection->x, _selection->y, _selection->w, _selection->h);
         }
-        
-        if(this->cursor().shape() == Qt::SizeVerCursor || this->cursor().shape() == Qt::SizeFDiagCursor || this->cursor().shape() == Qt::SizeBDiagCursor)
-        {
-          if(_originY && y < _originalHighlight->y  + _originalHighlight->h)
-          {
-            _selection->h = _originalHighlight->y - y + _originalHighlight->h;
-            _selection->y = y;
-          }
-          else if(_originY)
-          {
-            _originalHighlight->y = _originalHighlight->y + _originalHighlight->h;
-            _originalHighlight->h = y - _originalHighlight->y;
-            _originY = false;
-          }
-          
-          if(!_originY && _originalHighlight->y >= y)
-          {
-            _selection->h = _originalHighlight->y - y;
-            _selection->y = y;            
-          }
-          else if(!_originY)
-          {
-            _selection->h = y - _originalHighlight->y;
-            _selection->y = _originalHighlight->y;
-          }
-        }
-        if(_sourceHighlight != NULL)
-          _sourceHighlight->update(_selection);
-      }
-      else
-      {
-        _sourceHighlight = NULL;
-        if(_pixelClicked->x() < x)
-        {
-          _selection->w = x - _pixelClicked->x();
-          _selection->x = _pixelClicked->x();
-        }
-        else
-        {
-          _selection->x = x;
-          _selection->w = _pixelClicked->x() - x;
-        }
-        
-        if(_pixelClicked->y() < y)
-        {
-          _selection->y = _pixelClicked->y();
-          _selection->h = y - _pixelClicked->y();
-        }
-        else
-        {
-          _selection->y = y;
-          _selection->h = _pixelClicked->y() - y;
-        }
-      }
-      _highlight->setRect(_selection->x, _selection->y, _selection->w, _selection->h);
-		}
-	}
+    }
 }
 
 void StandardImageView::hoverMoveEvent(QGraphicsSceneHoverEvent* event)

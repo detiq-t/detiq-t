@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-GenericHistogramView::GenericHistogramView(const Image* image, imagein::Rectangle* rect, bool projection, bool horizontal, int value): AlternativeImageView(image), _rectangle(rect), _projection(projection), _horizontal(horizontal), _value(value)
+GenericHistogramView::GenericHistogramView(const Image* image, imagein::Rectangle* rect, bool horizontal, int value, bool projection): AlternativeImageView(image), _rectangle(rect), _horizontal(horizontal), _value(value), _projection(projection)
 {
 	_qwtPlot = new QwtPlot();
 	init();

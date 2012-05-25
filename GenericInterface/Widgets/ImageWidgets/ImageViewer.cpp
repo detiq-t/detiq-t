@@ -11,17 +11,17 @@ using namespace std;
 
 ImageItem::ImageItem(QPixmap& pix) : QGraphicsPixmapItem(pix), _moving(false) { }
 
-void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
+void ImageItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
   _moving = true;
 }
 
-void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+void ImageItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
   _moving = false;
 }
 
-void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
   if(_moving) {
     int x = event->pos().x();

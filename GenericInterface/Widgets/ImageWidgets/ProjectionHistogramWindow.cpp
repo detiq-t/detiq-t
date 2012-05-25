@@ -123,7 +123,7 @@ QString ProjectionHistogramWindow::valueFromHistogram(unsigned int value) const
 	QString s = QString("");
 
   bool out = false;
-	if(value > 255 || value < 0)
+    if(value > 255)
     out = true;
 	
   for(unsigned int i = 0; i < _view->getImage()->getNbChannels(); ++i)

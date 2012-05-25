@@ -15,7 +15,8 @@ BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalPath
     this->setWindowTitle("Binarization tool on " + siw->getName());
 
     // backing up the image we're working on while converting it into a grayscale image
-    _originalImage = new Image(*siw->getImage());
+    _originalImage = siw->getImage()->crop(*(siw->getSelection()));
+    //_originalImage = new Image(*siw->getImage());
     _originalGrayscaleImage = Converter<GrayscaleImage>::convert(*_originalImage);
 
     // setting the layout
@@ -53,13 +54,13 @@ BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalPath
 
 
     // Bottom left panel = histogram
-    Rectangle* rect = new Rectangle(); //TODO Faire rectangle total sur une image
-    _histo = new HistogramWindow(siw->getPath(), siw->getImage(), rect, NULL);
+    //Rectangle* rect = new Rectangle(); //TODO Faire rectangle total sur une image
+    _histo = new HistogramWindow(siw->getPath(), siw->getImage(), new Rectangle(*siw->getSelection()), NULL);
     layout->addWidget(_histo, 1, 0);
 
 
     // Bottom right panel = binarized image
-    _binarizedImage = new StandardImageView(this, new Image(*(siw->getImage())));
+    _binarizedImage = new StandardImageView(this, new Image(*_originalImage));
     layout->addWidget(_binarizedImage->getGraphicsView(), 1, 1);
 
     // Once everything created, we call a binarization with Otsu's algorithm
