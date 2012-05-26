@@ -3,6 +3,7 @@
 #include "JpgImage.h"
 #include "PngImage.h"
 #include "BmpImage.h"
+#include "UnknownFormatException.h"
 
 using namespace imagein;
 
@@ -29,6 +30,8 @@ ImageFile* ImageFileFactory::getImageFile(std::string filename) const
     else if(filename.substr(filename.size()-4,4)==".png") {
         imgf = new PngImage(filename);
     }
-    // TODO : add webp
+	else {
+		throw UnknownFormatException(__LINE__, __FILE__);
+	}
     return imgf;
 }

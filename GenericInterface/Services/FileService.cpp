@@ -1,6 +1,9 @@
 #include "FileService.h"
 
+#include <UnknownFormatException.h>
+
 #include <QMessageBox>
+#include <QDebug>
 
 using namespace genericinterface;
 
@@ -28,7 +31,7 @@ void FileService::display (GenericInterface* gi)
     _saveAs->setEnabled(false);
 }
 
-void FileService::save(const QString& path)
+void FileService::save(const QString& path, const QString& ext)
 {
 	if(path == "") {
 		this->saveAs();
@@ -39,7 +42,15 @@ void FileService::save(const QString& path)
             if(ws != NULL) {
                 StandardImageWindow* imw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
                 if(imw != NULL) {
-                    imw->getImage()->save(path.toStdString()); 
+					try {
+						imw->getImage()->save(path.toStdString()); 
+					}
+					catch(const UnknownFormatException& e) {
+						if(ext == "")
+							throw e;
+						
+						imw->getImage()->save((path+ext).toStdString()); 
+					}
                 }
                 else {
                     QMessageBox::critical(_gi, "Bad object type", "Only images can be saved at the moment.");
@@ -54,10 +65,14 @@ void FileService::save(const QString& path)
 
 void FileService::saveAs()
 {
-	QString path = QFileDialog::getSaveFileName(_gi, "Save a file", QString(), "Png image (*.png);;Bmp image (*.bmp);; Jpeg image(*.jpg)");
-	
+    QString selectedFilter;
+	QString path = QFileDialog::getSaveFileName(_gi, "Save a file", QString(), "Png image (*.png);;Bmp image (*.bmp);; Jpeg image(*.jpg)", &selectedFilter);
+
+	QString ext = selectedFilter.right(5).left(4);
+	if(!path.contains('.')) path += ext;
+
 	if(path != "") {
-		this->save(path);
+		this->save(path, ext);
 	}
 }
 

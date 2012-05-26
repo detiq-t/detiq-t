@@ -17,7 +17,7 @@ namespace genericinterface
 			void display (GenericInterface* gi);
 
 		public slots:
-			void save(const QString& path = QString());
+			void save(const QString& path = QString(), const QString& ext = QString());
 			void saveAs();
 	        void checkActionsValid(QMdiSubWindow* activeWindow);
 		
