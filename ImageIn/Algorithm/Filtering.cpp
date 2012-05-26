@@ -161,6 +161,7 @@ namespace imagein
 		  return result;
 		}
 		
+    #ifdef __linux__
 		void* Filtering::parallelAlgorithm(void* data)
 		{
 			struct ParallelArgs args = *((ParallelArgs*) data);
@@ -210,6 +211,7 @@ namespace imagein
 			if(supx != img->getWidth())
 				pthread_exit(NULL);
 		}
+    #endif
 		
 		Filtering Filtering::uniformBlur(int numPixels = 3)
 		{
