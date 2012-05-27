@@ -60,8 +60,17 @@ void TestGenericInterface::testShowHistogram() {
 
   HistogramWindow* hw;
   hw = dynamic_cast<HistogramWindow*>(ws->getCurrentImageWindow());
+  const Histogram* h = dynamic_cast<HistogramView*>(hw->getView())->getHistogram(0);
 
   QVERIFY((void*)hw != (void*)0);
+
+  const Image* img = _img->getImage();
+  Histogram h2 = img->getHistogram();
+
+  QCOMPARE(h->getWidth(), h2.getWidth());
+
+  for(int i = 0; i < h->getWidth(); i++)
+    QCOMPARE((*h)[i], h2[i]);
 }
 
 void TestGenericInterface::cleanupTestCase() {
