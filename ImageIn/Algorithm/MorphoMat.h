@@ -7,6 +7,8 @@
 #include "../GenericAlgorithm.h"
 #include "../GrayscaleImage.h"
 #include "Difference.h"
+#include "Otsu.h"
+#include "../Converter.h"
 
 namespace imagein {
 
@@ -15,6 +17,26 @@ namespace imagein {
     template <typename D>
     class StructElem  : public GrayscaleImage_t<bool> {
       public:
+        StructElem(std::string filename) {
+            Image image(filename);
+            algorithm::Otsu algo;
+            GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(image);
+            GrayscaleImage* im_res = algo(im_tmp);
+            
+            _width = im_res->getWidth();
+            _height = im_res->getHeight();
+            _mat = new bool[_width * _height * _nChannels];
+            
+            for(unsigned int j = 0; j < getHeight(); ++j) {
+                for(unsigned int i = 0; i < getWidth(); ++i) {
+                    setPixel(i, j, (im_res->getPixel(i, j) <= 0));
+                }
+            }
+
+            _scale = 1;
+            _centerX = getWidth()/2;
+            _centerY = getHeight()/2;
+        }
         StructElem(GrayscaleImage_t<bool> elem, unsigned int centerX, unsigned int centerY) : GrayscaleImage_t<bool>(elem), _scale(1), _centerX(centerX), _centerY(centerY) {}
         inline unsigned char getScale() const { return _scale; }
         inline void setScale(unsigned char scale) { if(scale>0) { _scale = scale; } }
@@ -38,6 +60,16 @@ namespace imagein {
             }
             return pixels;
         }
+        void save(const std::string& filename) const {
+            GrayscaleImage img(getWidth(), getHeight());
+            for(unsigned int j = 0; j < img.getHeight(); ++j) {
+                for(unsigned int i = 0; i < img.getWidth(); ++i) {
+                    img.setPixel(i, j, getPixel(i, j) ? 0 : 255);
+                }
+            }
+            img.save(filename);
+        }
+        
       private:
         unsigned char _scale;
         unsigned int _centerX, _centerY;
@@ -301,7 +333,6 @@ namespace imagein {
                 ++it2;
                 ++it3;
             }
-            std::cout << i << std::endl;
             delete buffer;
             return result;
         }

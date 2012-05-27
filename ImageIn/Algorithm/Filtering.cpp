@@ -39,7 +39,7 @@ namespace imagein
 		  int width = img->getWidth();
 		  int height = img->getHeight();
 		  int nChannels = img->getNbChannels();
-      bool odd = width % 2 != 1 || height % 2 != 1;
+          bool odd = width % 2 != 1 || height % 2 != 1;
 		  
 		  std::vector<Filter*>::iterator filter;
 		  std::vector<Image_t<int>*> images;

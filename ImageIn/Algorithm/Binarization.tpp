@@ -7,11 +7,12 @@ namespace imagein {
 		template<typename D>
 		GrayscaleImage_t<D>* Binarization_t<D>::algorithm(const std::vector<const Image_t<D>*>& imgs)
 		{
-			const GrayscaleImage_t<D>* img = dynamic_cast<const GrayscaleImage_t<D>*>(imgs.at(0));
+            /*const GrayscaleImage_t<D>* img = dynamic_cast<const GrayscaleImage_t<D>*>(imgs.at(0));*/
 
-			if(img == NULL) {
+			if(imgs.at(0)->getNbChannels()>1) {
 				throw ImageTypeException(__LINE__, __FILE__);
 			}
+            const GrayscaleImage_t<D>* img = Converter<GrayscaleImage_t<D> >::convert(*imgs.at(0));
 
 			D* data = new D[img->getWidth() * img->getHeight()];
 			D* out = data;
@@ -25,12 +26,14 @@ namespace imagein {
 					}
 				}
 				else {
-					*(out++) = (*it < _threshold) ? 0 : std::numeric_limits<D>::max();
+					*(out++) = (*it <= _threshold) ? 0 : std::numeric_limits<D>::max();
 				}
 			
 			}
 
-			return new GrayscaleImage_t<D>(img->getWidth(), img->getHeight(), data);
+			GrayscaleImage_t<D>* result = new GrayscaleImage_t<D>(img->getWidth(), img->getHeight(), data);
+            delete img;
+            return result;
 		}
 	}
 }

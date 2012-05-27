@@ -21,6 +21,10 @@ imagein::Image_t<D>::Image_t(std::string filename)
 {
     imagein::ImageFile* im = imagein::ImageFileAbsFactory::getFactory()->getImageFile(filename);
 
+    if(im==NULL) {
+        throw "Unable to open file";
+    }
+
     _width = im->readWidth();
     _height = im->readHeight();
     _nChannels = im->readNbChannels();

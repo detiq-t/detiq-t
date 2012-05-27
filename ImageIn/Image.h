@@ -131,6 +131,7 @@ namespace imagein
             inline iterator end() { return _mat + _width*_height*_nChannels; };
             //! returns a const iterator past the end of the image
             inline const_iterator end() const { return _mat + _width*_height*_nChannels; };
+            inline unsigned int size() const { return _width*_height*_nChannels; };
 
             /*!
              * \brief Saves the image into a file.
