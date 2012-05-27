@@ -6,7 +6,7 @@ using namespace genericinterface;
 using namespace imagein;
 using namespace std;
 
-StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi): ImageWindow(path), _gi(gi)
+StandardImageWindow::StandardImageWindow(const QString path, GenericInterface* gi): ImageWindow(path), _gi(gi)
 {
     _image = new Image(path.toStdString());
     this->setWindowTitle(ImageWindow::getTitleFromPath(path));
@@ -15,7 +15,7 @@ StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* 
     init();
 }
 
-StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi, Image* image): ImageWindow(path), _gi(gi)
+StandardImageWindow::StandardImageWindow(const QString path, GenericInterface* gi, Image* image): ImageWindow(path), _gi(gi)
 {
     _image = image;
 

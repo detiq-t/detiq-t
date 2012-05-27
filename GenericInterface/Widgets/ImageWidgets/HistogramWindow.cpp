@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(QString & path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
+HistogramWindow::HistogramWindow(QString path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
 {
     _view = new HistogramView(image, rect);
     this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Histogram"));

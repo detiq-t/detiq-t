@@ -3,7 +3,7 @@
 using namespace genericinterface;
 using namespace imagein;
 
-ProjectionHistogramWindow::ProjectionHistogramWindow(const QString& path, const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal): ImageWindow(path, source, rect)
+ProjectionHistogramWindow::ProjectionHistogramWindow(const QString path, const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal): ImageWindow(path, source, rect)
 {
 	_view = new ProjectionHistogramView(image, rect, value, horizontal);
 	if(horizontal)
