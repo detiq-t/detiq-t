@@ -217,20 +217,21 @@ void StructElemWindow::changeStructElem(imagein::MorphoMat::StructElem<depth_def
 void StructElemWindow::openFile() {
     QString file = QFileDialog::getOpenFileName(this, "Open a file", QString(), "Images (*.png *.bmp *.jpg *.jpeg)");
     if(file.size()==0) return;
-    Image image(file.toStdString());
-    Otsu algo;
-    GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(image);
-    GrayscaleImage* im_res = algo(im_tmp);
-    GrayscaleImage_t<bool> elem(im_res->getWidth(), im_res->getHeight());
-    for(unsigned int j = 0; j < elem.getHeight(); ++j) {
-        for(unsigned int i = 0; i < elem.getWidth(); ++i) {
-            elem.setPixel(i, j, (im_res->getPixel(i, j) <= 0));
-        }
-    }
+    //Image image(file.toStdString());
+    //Otsu algo;
+    //GrayscaleImage* im_tmp = Converter<GrayscaleImage>::convert(image);
+    //GrayscaleImage* im_res = algo(im_tmp);
+    //GrayscaleImage_t<bool> elem(im_res->getWidth(), im_res->getHeight());
+    //for(unsigned int j = 0; j < elem.getHeight(); ++j) {
+        //for(unsigned int i = 0; i < elem.getWidth(); ++i) {
+            //elem.setPixel(i, j, (im_res->getPixel(i, j) <= 0));
+        //}
+    //}
 
-    StructElem<depth_default_t>* structElem = new StructElem<depth_default_t>(elem, elem.getWidth()/2, elem.getHeight()/2);
+    //StructElem<depth_default_t>* structElem = new StructElem<depth_default_t>(elem, elem.getWidth()/2, elem.getHeight()/2);
+    StructElem<depth_default_t>* structElem = new StructElem<depth_default_t>(file.toStdString());
     changeStructElem(structElem);
-    _realSize = elem;
+    _realSize = *structElem;
     
 }
 
@@ -238,13 +239,14 @@ void StructElemWindow::saveFile() {
     QString file = QFileDialog::getSaveFileName(this, "Save file", QString(), "Images (*.png *.bmp *.jpg *.jpeg)");
 
     if(file.size()==0) return;
-    GrayscaleImage img(_structElem->getWidth(), _structElem->getHeight());
-    for(unsigned int j = 0; j < img.getHeight(); ++j) {
-        for(unsigned int i = 0; i < img.getWidth(); ++i) {
-            img.setPixel(i, j, _structElem->getPixel(i, j) ? 0 : 255);
-        }
-    }
-    img.save(file.toStdString());
+    //GrayscaleImage img(_structElem->getWidth(), _structElem->getHeight());
+    //for(unsigned int j = 0; j < img.getHeight(); ++j) {
+        //for(unsigned int i = 0; i < img.getWidth(); ++i) {
+            //img.setPixel(i, j, _structElem->getPixel(i, j) ? 0 : 255);
+        //}
+    //}
+    //img.save(file.toStdString());
+    _structElem->save(file.toStdString());
 
     
 }
