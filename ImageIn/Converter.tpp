@@ -161,7 +161,7 @@ namespace imagein {
     }
     int factor = std::abs(maxValue / 255);
     
-    std::cout << "Max value : " << maxValue << std::endl;
+    /*std::cout << "Max value : " << maxValue << std::endl;*/
     
     for(unsigned int i = 0; i < from.getWidth(); i++)
     {
