@@ -132,6 +132,7 @@ namespace imagein
             //! returns a const iterator past the end of the image
             inline const_iterator end() const { return _mat + _width*_height*_nChannels; };
             inline unsigned int size() const { return _width*_height*_nChannels; };
+            bool operator==(const imagein::Image_t<D>& img) const;
 
             /*!
              * \brief Saves the image into a file.

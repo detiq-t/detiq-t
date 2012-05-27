@@ -94,6 +94,17 @@ void imagein::Image_t<D>::setPixel(unsigned int x, unsigned int y, const D* pixe
 }
 
 template <typename D>
+bool imagein::Image_t<D>::operator==(const imagein::Image_t<D>& img) const {
+    if(this->_width != img._width) return false;
+    if(this->_height != img._height) return false;
+    if(this->_nChannels != img._nChannels) return false;
+    for(const_iterator it = this->begin(), jt = img.begin(); it < this->end(); ++it, ++jt) {
+        if(*it != *jt) return false;
+    }
+    return true;
+}
+
+template <typename D>
 void imagein::Image_t<D>::save(const std::string& filename) const
 {
     imagein::ImageFile* im = imagein::ImageFileAbsFactory::getFactory()->getImageFile(filename);
