@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 
     error += CoreTester<D>(refImg)();
     error += IOTester<D>(refImg)();
-    error += UtilityTester()();
+    error += UtilityTester(refImg)();
     error += MorphoMatTester()();
     error += BinarizationTester()();
     error += FilteringTester()();
