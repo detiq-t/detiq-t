@@ -6,9 +6,11 @@
 
 #include "CoreTester.h"
 #include "IOTester.h"
+#include "ConverterTester.h"
 #include "UtilityTester.h"
 #include "MorphoMatTester.h"
 #include "BinarizationTester.h"
+#include "ComponentLabelingTester.h"
 #include "FilteringTester.h"
 
 using namespace imagein;
@@ -26,9 +28,11 @@ int main(int argc, char** argv) {
 
     error += CoreTester<D>(refImg)();
     error += IOTester<D>(refImg)();
+    error += ConverterTester<D>()();
     error += UtilityTester(refImg)();
     error += MorphoMatTester()();
     error += BinarizationTester()();
+    error += ComponentLabelingTester()();
     error += FilteringTester()();
     
     delete refImg;

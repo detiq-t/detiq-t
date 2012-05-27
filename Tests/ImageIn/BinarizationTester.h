@@ -21,9 +21,9 @@ class BinarizationTester : public Tester {
         ImageDiff<D> nodiff(0, 0, 0);
         
         _otsu = new Otsu();
-        addTest(new AlgorithmTest<D>("Otsu 1", _otsu, "res/harewood.png", "res/harewood_BW.png", nodiff));
-        addTest(new AlgorithmTest<D>("Otsu 2", _otsu, "res/snow.jpg", "res/snow_BW.png", nodiff));
-        addTest(new AlgorithmTest<D>("Otsu 3", _otsu, "res/nutsBolts.jpg", "res/nutsBolts_BW.png", nodiff));
+        addTest(new AlgorithmTest<D>("Otsu on harewood", _otsu, "res/harewood.png", "res/harewood_BW.png", nodiff));
+        addTest(new AlgorithmTest<D>("Otsu on snow", _otsu, "res/snow.jpg", "res/snow_BW.png", nodiff));
+        addTest(new AlgorithmTest<D>("Otsu on nutsBolts", _otsu, "res/nutsBolts.jpg", "res/nutsBolts_BW.png", nodiff));
     }
 
     void clean() {
