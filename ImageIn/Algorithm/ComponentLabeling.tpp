@@ -196,13 +196,15 @@ namespace imagein {
 				}
 			}
 			
+			int step = (getNbComponents() / 3) - 1;
+			
 			D* data = new D[img->getWidth() * img->getHeight() * 3];
 			for(unsigned int j = 0 ; j < img->getHeight() ; ++j) {
 				for(unsigned int i = 0 ; i < img->getWidth() ; ++i) {
 					if(img->getPixel(i, j) == foreground) {
-						data[3*i + 3*j*img->getWidth()] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][0];
-						data[3*i + 3*j*img->getWidth() + 1] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][1];
-						data[3*i + 3*j*img->getWidth() + 2] = colours[(_nameToColour.find(labels[i + j*img->getWidth()])->second)][2];
+						data[3*i + 3*j*img->getWidth()] = colours[((_nameToColour.find(labels[i + j*img->getWidth()])->second) * step)%getNbComponents()][0];
+						data[3*i + 3*j*img->getWidth() + 1] = colours[((_nameToColour.find(labels[i + j*img->getWidth()])->second) * step)%getNbComponents()][1];
+						data[3*i + 3*j*img->getWidth() + 2] = colours[((_nameToColour.find(labels[i + j*img->getWidth()])->second) * step)%getNbComponents()][2];
 					}
 					else {
 						data[3*i + 3*j*img->getWidth()] = img->getPixel(i,j);
