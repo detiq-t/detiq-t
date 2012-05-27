@@ -8,7 +8,7 @@
 using namespace imagein;
 using namespace genericinterface;
 
-GridWindow::GridWindow(const QString & path, ImageWindow* source, imagein::Rectangle* rect) : ImageWindow(path, source, 0)
+GridWindow::GridWindow(QString & path, ImageWindow* source) : ImageWindow(path, source, 0)
 {
   QVBoxLayout* box = new QVBoxLayout;
 
@@ -18,7 +18,7 @@ GridWindow::GridWindow(const QString & path, ImageWindow* source, imagein::Recta
 
   box->addWidget(_view);
   
-  this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Pixels Grid"));
+  this->setWindowTitle(ImageWindow::getTitleFromPath(path) + QString::fromStdString(" - Pixels Grid"));
 
   setLayout(box);
 }

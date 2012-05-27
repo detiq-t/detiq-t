@@ -3,16 +3,13 @@
 using namespace genericinterface;
 using namespace imagein;
 
-RowWindow::RowWindow(const imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(path, source, rect)
+RowWindow::RowWindow(const imagein::Image* image, imagein::Rectangle* rect, const QString& path, GenericInterface *gi, const ImageWindow* source, bool vertical): ImageWindow(path, source, rect), _gi(gi)
 {
-	_path = path;
-	_gi = gi;
-
 	_view = new RowView(image, rect);
 	if(vertical)
-		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Column Profile"));
+        this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Column Profile"));
 	else
-		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Line Profile"));
+        this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Line Profile"));
 	
 	init();
 }
@@ -48,7 +45,7 @@ void RowWindow::initStatusBar()
 	QFont font;
     _statusBar = new QStatusBar();
     
-    _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
+    _lImageName = new QLabel(QString::fromStdString("Image: ") + ImageWindow::getTitleFromPath(_path));
     font = _lImageName->font();
     font.setPointSize(8);
     font.setBold(true);

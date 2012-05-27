@@ -3,10 +3,10 @@
 using namespace genericinterface;
 using namespace imagein;
 
-HistogramWindow::HistogramWindow(const QString & path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
+HistogramWindow::HistogramWindow(QString & path, const Image* image, imagein::Rectangle* rect, const ImageWindow* source): ImageWindow(path, source, rect)
 {
     _view = new HistogramView(image, rect);
-    this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Histogram"));
+    this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Histogram"));
 
     init();
 }
@@ -42,7 +42,7 @@ void HistogramWindow::initStatusBar()
 	QFont font;
     _statusBar = new QStatusBar();
     
-    _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
+    _lImageName = new QLabel(QString::fromStdString("Image: ") + ImageWindow::getTitleFromPath(_path));
     font = _lImageName->font();
     font.setPointSize(8);
     font.setBold(true);

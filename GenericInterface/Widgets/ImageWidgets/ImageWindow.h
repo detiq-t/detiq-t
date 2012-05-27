@@ -26,9 +26,10 @@ class ImageWindow : public QWidget
         imagein::Rectangle* _applicationArea;
         QStatusBar* _statusBar;
         const ImageWindow* _sourceWindow;
-        QString _path; /*!< The path of the source image */
+        QString _path;
 
     public:
+        ImageWindow(QString path);
         /*!
          * \brief Default constructor.
          *
@@ -37,26 +38,18 @@ class ImageWindow : public QWidget
          * \param source The source window
          * \param rect The application area (Rectangle used for Histogram, Algorithm...)
          */
-        ImageWindow(const QString & path, const ImageWindow* source = 0, imagein::Rectangle* rect = 0);
-
-        /*!
-         * \brief Returns the path of the Image in the window.
-         *
-         */
-        QString& getPath();
+        ImageWindow(QString path, const ImageWindow *source, Rectangle *rect = 0);
 
         /*!
          * \brief Returns the title from a path.
          *
          * \param path The path of a file.
          */
-        static std::string getTitleFromPath(const QString& path);
+        static QString getTitleFromPath(QString path);
 
-        /*!
-         * \brief Returns the name of the Image in the window.
-         *
-         */
-        QString getName();
+        QString getPath(){ return _path; }
+
+        QString getName(){ return getTitleFromPath(_path); }
 
         /*!
          * \brief Returns the view in the window.

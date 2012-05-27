@@ -8,12 +8,10 @@ using namespace std;
 
 StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* gi): ImageWindow(path), _gi(gi)
 {
-    _image = new Image(_path.toStdString());
-
-    this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path)));
+    _image = new Image(path.toStdString());
+    this->setWindowTitle(ImageWindow::getTitleFromPath(path));
 
     _imageView = new StandardImageView(this, _image);
-
     init();
 }
 
@@ -21,7 +19,7 @@ StandardImageWindow::StandardImageWindow(const QString& path, GenericInterface* 
 {
     _image = image;
 
-    this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path)));
+    this->setWindowTitle(ImageWindow::getTitleFromPath(path));
 
     _imageView = new StandardImageView(this, _image);
 
@@ -37,14 +35,14 @@ StandardImageWindow::~StandardImageWindow()
 
 void StandardImageWindow::init()
 {
-	_selectedPixel = new QPoint();
+    _selectedPixel = new QPoint();
 
-	initStatusBar();
+    initStatusBar();
 
 	QVBoxLayout* layout = new QVBoxLayout();
 	layout->addWidget(_imageView->getGraphicsView());
 	layout->addWidget(_statusBar);
-	this->setLayout(layout);
+    this->setLayout(layout);
 
 	QObject::connect(_imageView, SIGNAL(pixelClicked(int, int)), this, SLOT(showSelectedPixelInformations(int, int)));
 	QObject::connect(_imageView, SIGNAL(pixelHovered(int, int)), this, SLOT(showHoveredPixelInformations(int, int)));
@@ -57,19 +55,23 @@ void StandardImageWindow::init()
 
 void StandardImageWindow::showHistogram()
 {
+    QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
     const Image* im = _imageView->getImage();
-    HistogramWindow* histo = new HistogramWindow(_path, im, _imageView->getRectangle(), this);
+    HistogramWindow* histo = new HistogramWindow(path, im, _imageView->getRectangle(), this);
 
     AlternativeImageView* view = histo->getView();
     GenericHistogramView* source;
     if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
         QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
     
-    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
+    QObject::connect(histo, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), this, SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
+
+    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addImage(path, histo);
 }
 
 void StandardImageWindow::showHProjectionHistogram()
 {
+    QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
     const Image* im = _imageView->getImage();
 
     bool ok;
@@ -77,75 +79,81 @@ void StandardImageWindow::showHProjectionHistogram()
 
     if (ok)
     {
-        ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(_path, im, _imageView->getRectangle(), this, value);
+        ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(path, im, _imageView->getRectangle(), this, value);
 
         AlternativeImageView* view = histo->getView();
         GenericHistogramView* source;
         if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
             QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-        dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
+        dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
     }
 }
 
 void StandardImageWindow::showVProjectionHistogram()
 {
-	const Image* im = _imageView->getImage();
+    QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
+    const Image* im = _imageView->getImage();
 	
 	bool ok;
 	int value = QInputDialog::getInt(this, "Select value", "What Value (0..255)?", 0, 0, 255, 1, &ok);
 	
 	if(ok)
 	{
-		ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(_path, im, _imageView->getRectangle(), this, value, false);
+        ProjectionHistogramWindow* histo = new ProjectionHistogramWindow(path, im, _imageView->getRectangle(), this, value, false);
     
 		AlternativeImageView* view = histo->getView();
 		GenericHistogramView* source;
 		if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 			QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-		dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
+        dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
 	} 
 }
 
 void StandardImageWindow::showPixelsGrid()
 {
-  GridWindow* grid = new GridWindow(_path, this);
+  QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
+  GridWindow* grid = new GridWindow(path, this);
   grid->show();
   
-  dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, grid);
+  dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, grid);
 }
 
 void StandardImageWindow::showLineProfile()
 {
+    QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
+
 	const Image* im = _imageView->getImage();
 	imagein::Rectangle* rect = new Rectangle(0, _selectedPixel->y(), im->getWidth(), 0);
-	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this);
+    RowWindow* histo = new RowWindow(im, rect, path, _gi, this);
     
 	AlternativeImageView* view = histo->getView();
 	GenericHistogramView* source;
 	if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 		QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
+    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
 }
 
 void StandardImageWindow::showColumnProfile()
 {
-	const Image* im = _imageView->getImage();
+    QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
+
+    const Image* im = _imageView->getImage();
 	imagein::Rectangle* rect = new Rectangle(_selectedPixel->x(), 0, 0, im->getHeight());
-	RowWindow* histo = new RowWindow(im, rect, _path, _gi, this, true);
+    RowWindow* histo = new RowWindow(im, rect, path, _gi, this, true);
     
 	AlternativeImageView* view = histo->getView();
 	GenericHistogramView* source;
 	if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 		QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-	dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(_path, histo);
+    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
 }
 
 void StandardImageWindow::initStatusBar()
-{	
+{
   std::ostringstream oss;
   oss << _imageView->getPixmap()->height();
   std::string height = oss.str();
@@ -155,8 +163,8 @@ void StandardImageWindow::initStatusBar()
 	
   QFont font;
   _statusBar = new QStatusBar();
-  
-  _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
+
+  _lImageName = new QLabel(QString::fromStdString("Image: ") + ImageWindow::getTitleFromPath(_path));
   font = _lImageName->font();
   font.setPointSize(8);
   font.setBold(true);

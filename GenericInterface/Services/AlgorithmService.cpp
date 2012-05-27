@@ -50,7 +50,7 @@ void AlgorithmService::applyAlgorithm(Algorithm_t<Image>* algo)
     {
         const Image* whole_image = siw->getImage();
         const Image* im = whole_image->crop(*(siw->getSelection()));
-        QString& name = siw->getPath();
+        QString name = ws->getWidgetId(siw);
 
         Image* im_res = (*algo)(im);
         //im_res = Converter<Image>::makeDisplayable(*im_res);
@@ -68,7 +68,7 @@ void AlgorithmService::applyAlgorithm(Algorithm_t<GrayscaleImage>* algo)
     {
         const Image* whole_image = siw->getImage();
         const Image* im = whole_image->crop(*(siw->getSelection()));
-        QString& name = siw->getPath();
+        QString name = ws->getWidgetId(siw);
 
         if (im->getNbChannels() != 1) std::cout << "PUDDI PUDDI" << std::endl;
         GrayscaleImage* im_g = Converter<GrayscaleImage>::convert(*im);

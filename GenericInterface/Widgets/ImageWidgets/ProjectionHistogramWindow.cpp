@@ -3,13 +3,13 @@
 using namespace genericinterface;
 using namespace imagein;
 
-ProjectionHistogramWindow::ProjectionHistogramWindow(const QString & path, const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal): ImageWindow(path, source, rect)
+ProjectionHistogramWindow::ProjectionHistogramWindow(const QString& path, const imagein::Image* image, imagein::Rectangle* rect, const ImageWindow* source, int value, bool horizontal): ImageWindow(path, source, rect)
 {
 	_view = new ProjectionHistogramView(image, rect, value, horizontal);
 	if(horizontal)
-		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Horizontal Projection Histogram"));
+        this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Horizontal Projection Histogram"));
 	else
-		this->setWindowTitle(QString::fromStdString(ImageWindow::getTitleFromPath(_path) + " - Vertical Projection Histogram"));
+        this->setWindowTitle(ImageWindow::getTitleFromPath(_path) + QString::fromStdString(" - Vertical Projection Histogram"));
 	
 	init();
 }
@@ -45,7 +45,7 @@ void ProjectionHistogramWindow::initStatusBar()
 	QFont font;
     _statusBar = new QStatusBar();
     
-    _lImageName = new QLabel(QString::fromStdString("Image: " + ImageWindow::getTitleFromPath(_path)));
+    _lImageName = new QLabel(QString::fromStdString("Image: ") + ImageWindow::getTitleFromPath(_path));
     font = _lImageName->font();
     font.setPointSize(8);
     font.setBold(true);

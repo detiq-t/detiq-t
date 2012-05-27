@@ -28,7 +28,7 @@ namespace genericinterface
     * @param source the widget which asked for the creation of the grid
     * @param rect the original view
     */
-    GridWindow(const QString & path, ImageWindow* source = 0, imagein::Rectangle* rect = 0);
+    GridWindow(QString & path, ImageWindow* source = 0);
 
     virtual AlternativeImageView* getView() { return NULL; }
   protected:
