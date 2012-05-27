@@ -19,7 +19,7 @@ class FilteringTester : public Tester {
     void init() {
         ImageDiff<D> nodiff(0, 0, 0);
         
-        Filtering* gaussian = new Filtering(Filter::gaussian(2));
+        Filtering* gaussian = new Filtering(Filter::gaussian(3));
         addTest(new FilteringTest<D>("Gaussian blur", gaussian, "res/lena.png", "res/lena_gaussian_16.png", nodiff));
     }
 
