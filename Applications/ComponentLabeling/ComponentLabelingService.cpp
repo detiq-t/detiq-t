@@ -47,9 +47,11 @@ void ComponentLabelingService::applyAlgorithm(ComponentLabeling* algo)
         QString id = ws->getWidgetId(siw);
         RgbImage* im_res = (*algo)(im);
         StandardImageWindow* siw_res = new StandardImageWindow("", _gi, im_res);
+        siw_res->setWindowTitle(ImageWindow::getTitleFromPath(id));
         ws->addImage(id, siw_res);
 
         ResultWidget* r = new ResultWidget(algo->getNbComponents(), algo->getAverageComponentSize(), _gi);
+        r->setWindowTitle(siw_res->windowTitle()+" - Statistiques");
         ws->addWidget(id, r);
     }
 }
