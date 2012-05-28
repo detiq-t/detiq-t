@@ -109,9 +109,10 @@ void MorphoMatService::editStructElem()
 {
     _editStructElem->setEnabled(false);
     StructElemWindow* structElemWindow = new StructElemWindow(_structElem, _editStructElem);
-    QMdiArea* area = (QMdiArea*)_gi->centralWidget();
-    area->addSubWindow(structElemWindow);
-    structElemWindow->show();
+
+    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+    StandardImageWindow* current_siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+    ws->addWidget(ws->getWidgetId(current_siw), structElemWindow);
 }
 
 void MorphoMatService::applyOperator(MorphoMat::Operator<depth_default_t>& op)
