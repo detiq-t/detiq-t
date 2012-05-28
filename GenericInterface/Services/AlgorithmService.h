@@ -20,11 +20,7 @@ namespace genericinterface
         virtual void display(GenericInterface* gi);
         virtual void connect(GenericInterface* gi);
 
-        virtual void applyAlgorithm(imagein::Algorithm_t<Image>* algo);
-        virtual void applyAlgorithm(imagein::Algorithm_t<GrayscaleImage>* algo);
-
-    public slots:
-        //virtual void apply();
+        virtual void applyAlgorithm(imagein::GenericAlgorithm_t<Image::depth_t>* algo);
 
     signals:
         void newImageWindowCreated(const QString& path, ImageWindow* widget);

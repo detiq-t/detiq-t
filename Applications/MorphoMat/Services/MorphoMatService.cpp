@@ -116,22 +116,7 @@ void MorphoMatService::editStructElem()
 
 void MorphoMatService::applyOperator(MorphoMat::Operator<depth_default_t>& op)
 {
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = NULL;
-    try {
-        siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
-    }
-    catch(const char* str) {
-        std::cerr << str << std::endl;
-    }
-    if (siw != NULL)
-    {
-        const Image* img = siw->getImage();
-        QString id = ws->getWidgetId(siw);
-        Image *res = op.operator()(img);
-        StandardImageWindow* siw_res = new StandardImageWindow("", _gi, res);
-        emit newImageWindowCreated(id, siw_res);
-    } 
+	 applyAlgorithm(&op);
 }
 
 void MorphoMatService::applyErosion()
