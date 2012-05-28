@@ -9,7 +9,7 @@ using namespace std;
 using namespace imagein;
 using namespace genericinterface;
 
-ZoomViewer::ZoomViewer(Image* im, int row, int col) : QGraphicsScene(0, 0, row * PIXEL_S, col * PIXEL_S),
+ZoomViewer::ZoomViewer(const Image* im, int row, int col) : QGraphicsScene(0, 0, row * PIXEL_S, col * PIXEL_S),
                                           _image(im), _row(row), _col(col), _channel(0)
 {
   _rects = new QGraphicsRectItem[row * col];

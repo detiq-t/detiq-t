@@ -8,13 +8,11 @@
 using namespace imagein;
 using namespace genericinterface;
 
-GridWindow::GridWindow(QString & path, ImageWindow* source) : ImageWindow(path, source, 0)
+GridWindow::GridWindow(const QString& path, const imagein::Image* img, ImageWindow* source) : ImageWindow(path, source, 0)
 {
   QVBoxLayout* box = new QVBoxLayout;
 
-  Image* im = new Image(path.toStdString());
-
-  _view = new GridView(im, path, 0, 0);
+  _view = new GridView(img, 0, 0);
 
   box->addWidget(_view);
   

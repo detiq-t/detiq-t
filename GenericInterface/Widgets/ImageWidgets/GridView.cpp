@@ -53,11 +53,11 @@ void RadioPanel::rcvActivated(int a)
   emit activated(a);
 }
 
-GridView::GridView(Image* im, const QString & path, int dx, int dy)
+GridView::GridView(const imagein::Image* im, int dx, int dy)
   : AlternativeImageView(im)
 {
     _layout = new QHBoxLayout;
-    _viewer = new ImageViewer(path, dx, dy);
+    _viewer = new ImageViewer(im, dx, dy);
 
     QVBoxLayout *layout = new QVBoxLayout();
 

@@ -470,7 +470,8 @@ void StandardImageView::setImage(imagein::Image* image)
 }
 
 
-QImage getQImage(imagein::Image* image) {
+QImage genericinterface::getQImage(const imagein::Image* image) 
+{
   QImage im(image->getWidth(), image->getHeight(), QImage::Format_ARGB32);
 
   //on récupère les bits de l'image qt, qu'on cast en QRgb (qui fait 32 bits -> une image RGBA)

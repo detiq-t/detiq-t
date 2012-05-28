@@ -4,7 +4,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QString>
-
+#include <Image.h>
+#include "StandardImageView.h"
 
 
 /**
@@ -66,7 +67,7 @@ namespace genericinterface
 
   Q_OBJECT
   public:
-    ImageViewer (const QString & path, int x, int y);
+    ImageViewer (const imagein::Image* img, int x, int y);
 
     static const int RECT_W = 30; /*!< The number of horizontal pixels in the grid */
     static const int RECT_H = 21; /*!< The number of vertical pixels in the grid */
@@ -107,7 +108,7 @@ namespace genericinterface
     void positionUpdated(int x, int y);
 
   private:
-    void init (const QString & path, int x, int y);
+    void init (const imagein::Image*, int x, int y);
 
     void updatePos (int x, int y);
 

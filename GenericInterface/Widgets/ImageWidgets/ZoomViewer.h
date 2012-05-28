@@ -18,7 +18,7 @@ namespace genericinterface
   {
   Q_OBJECT
   public:
-    ZoomViewer(imagein::Image* im, int row, int col);
+    ZoomViewer(const imagein::Image* im, int row, int col);
 
   public slots:
     /**
@@ -62,7 +62,7 @@ namespace genericinterface
     */
     static const int PIXEL_S = 25;
 
-    imagein::Image* _image;
+    const imagein::Image* _image;
     int _row;
     int _col;
     int _channel;

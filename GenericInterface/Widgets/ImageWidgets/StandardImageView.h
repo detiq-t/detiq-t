@@ -21,7 +21,7 @@
 
 namespace genericinterface
 {
-  QImage getQImage(imagein::Image* image);
+  QImage getQImage(const imagein::Image* image);
   /*!
    * \brief Display an image from imagein
    *

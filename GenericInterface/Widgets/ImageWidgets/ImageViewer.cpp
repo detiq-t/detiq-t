@@ -31,15 +31,16 @@ void ImageItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
   }
 }
 
-ImageViewer::ImageViewer (const QString & path, int x, int y) : QGraphicsScene (0, 0, WIDGET_S, WIDGET_S)
+ImageViewer::ImageViewer (const imagein::Image* img, int x, int y) : QGraphicsScene (0, 0, WIDGET_S, WIDGET_S)
 {
-  init(path, x, y);
+  init(img, x, y);
 }
 
-void ImageViewer::init(const QString & path, int x, int y)
+void ImageViewer::init(const imagein::Image* img, int x, int y)
 {
   /* Get info about the image */
-  QSize size = (QImage(path)).size();
+  QImage qimg = getQImage(img);
+  QSize size = (qimg).size();
 
   int height = size.height();
   int width = size.width();
@@ -57,7 +58,8 @@ void ImageViewer::init(const QString & path, int x, int y)
 
   /* Creats the scene */
 
-  QPixmap i(path);
+  QPixmap i;
+  i.convertFromImage(qimg);
   i = i.scaled(width * _scale, height * _scale);
 
   //QGraphicsPixmapItem* im = new QGraphicsPixmapItem(i);

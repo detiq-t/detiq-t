@@ -121,7 +121,7 @@ void StandardImageWindow::showPixelsGrid()
  
     WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
     QString id = ws->getWidgetId(this);
-    GridWindow* grid = new GridWindow(id, this);
+    GridWindow* grid = new GridWindow(id, _imageView->getImage(), this);
     ws->addWidget(id, grid);
 }
 

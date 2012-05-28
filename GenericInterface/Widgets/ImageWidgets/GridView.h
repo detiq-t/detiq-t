@@ -56,7 +56,7 @@ namespace genericinterface
     * @param dx the original horizontal offset
     * @param dy the original vertical offset
     */
-    GridView(imagein::Image* im, const QString & path, int dx, int dy);
+    GridView(const imagein::Image* im, int dx, int dy);
 
   private:
     QHBoxLayout* _layout; /*!< the layout of the widget */
