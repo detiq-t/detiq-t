@@ -17,7 +17,7 @@ class BinarizationWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BinarizationWidget(StandardImageWindow* siw);
+    BinarizationWidget(StandardImageWindow* siw, const QString& id);
 
 signals:
     void exportBinarizedImage(QString& path, Image* im);

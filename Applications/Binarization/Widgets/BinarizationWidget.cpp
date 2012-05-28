@@ -10,7 +10,7 @@ using namespace genericinterface;
 using namespace imagein;
 using namespace imagein::algorithm;
 
-BinarizationWidget::BinarizationWidget(StandardImageWindow* siw) : _originalPath(siw->getPath())
+BinarizationWidget::BinarizationWidget(StandardImageWindow* siw, const QString& id) : _originalPath(id)
 {
     this->setWindowTitle("Binarization tool on " + siw->getName());
 

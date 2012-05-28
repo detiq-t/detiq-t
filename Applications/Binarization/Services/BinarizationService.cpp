@@ -37,7 +37,7 @@ void BinarizationService::applyBinarization()
         }
         else
         {
-            _binWidget = new BinarizationWidget(siw);
+            _binWidget = new BinarizationWidget(siw, ws->getWidgetId(siw));
             QObject::connect(_binWidget, SIGNAL(exportBinarizedImage(QString&,Image*)),
                              this, SLOT(exportBinarizedImage(QString&,Image*)));
             ws->addWidget(ws->getWidgetId(siw), _binWidget);
@@ -48,5 +48,6 @@ void BinarizationService::applyBinarization()
 void BinarizationService::exportBinarizedImage(QString& path, Image* im)
 {
     StandardImageWindow* new_siw = new StandardImageWindow("", _gi, im);
+    new_siw->setWindowTitle(ImageWindow::getTitleFromPath(path));
     emit newImageWindowCreated(path, new_siw);
 }
