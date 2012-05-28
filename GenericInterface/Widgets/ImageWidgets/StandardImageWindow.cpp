@@ -63,10 +63,11 @@ void StandardImageWindow::showHistogram()
     GenericHistogramView* source;
     if(view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
         QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
-    
-    QObject::connect(histo, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), this, SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
-
-    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addImage(path, histo);
+        QObject::connect(histo, SIGNAL(highlightRectChange(const imagein::Rectangle*, ImageWindow*)), this, SLOT(showHighlightRect(const imagein::Rectangle*, ImageWindow*)));
+   
+    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+    QString id = ws->getWidgetId(this);
+    ws->addWidget(id, histo);
 }
 
 void StandardImageWindow::showHProjectionHistogram()
@@ -86,7 +87,9 @@ void StandardImageWindow::showHProjectionHistogram()
         if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
             QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-        dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
+        WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+        QString id = ws->getWidgetId(this);
+        ws->addWidget(id, histo);
     }
 }
 
@@ -107,17 +110,19 @@ void StandardImageWindow::showVProjectionHistogram()
 		if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 			QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-        dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
+        WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+        QString id = ws->getWidgetId(this);
+        ws->addWidget(id, histo);
 	} 
 }
 
 void StandardImageWindow::showPixelsGrid()
 {
-  QString path = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->getWidgetId(this);
-  GridWindow* grid = new GridWindow(path, this);
-  grid->show();
-  
-  dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, grid);
+ 
+    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+    QString id = ws->getWidgetId(this);
+    GridWindow* grid = new GridWindow(id, this);
+    ws->addWidget(id, grid);
 }
 
 void StandardImageWindow::showLineProfile()
@@ -133,7 +138,9 @@ void StandardImageWindow::showLineProfile()
 	if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 		QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
+    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+    QString id = ws->getWidgetId(this);
+    ws->addWidget(id, histo);
 }
 
 void StandardImageWindow::showColumnProfile()
@@ -149,7 +156,9 @@ void StandardImageWindow::showColumnProfile()
 	if (view != NULL && (source = dynamic_cast<GenericHistogramView*>(view)))
 		QObject::connect(source, SIGNAL(updateApplicationArea(const imagein::Rectangle*)), histo, SLOT(setApplicationArea(const imagein::Rectangle*)));
 
-    dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE))->addWidget(path, histo);
+    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
+    QString id = ws->getWidgetId(this);
+    ws->addWidget(id, histo);
 }
 
 void StandardImageWindow::initStatusBar()
