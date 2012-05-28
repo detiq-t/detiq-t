@@ -452,6 +452,25 @@ void StandardImageView::setImage(imagein::Image* image)
   
   _pixelClicked = new QPoint(-1, -1);
   
+  QImage im(getQImage(image));
+
+  //Qt ne peut pas afficher les QImage directement, on en fait un QPixmap...
+  _pixmap_img = new QPixmap();
+  _pixmap_img->convertFromImage(im);
+    
+  this->setPixmap(*_pixmap_img);
+	//_scene->addItem(this);
+	
+	_highlight = new QGraphicsRectItem(((int)_selection->x), ((int)_selection->y), ((int)_selection->w), ((int)_selection->h));
+	
+	//_scene->addItem(_highlight);
+	//_view->setScene(_scene);
+  
+  _image = image;
+}
+
+
+QImage getQImage(imagein::Image* image) {
   QImage im(image->getWidth(), image->getHeight(), QImage::Format_ARGB32);
 
   //on récupère les bits de l'image qt, qu'on cast en QRgb (qui fait 32 bits -> une image RGBA)
@@ -496,18 +515,5 @@ void StandardImageView::setImage(imagein::Image* image)
       data[i] = qRgb(gray, gray, gray);			
     }
   }
-
-  //Qt ne peut pas afficher les QImage directement, on en fait un QPixmap...
-  _pixmap_img = new QPixmap();
-  _pixmap_img->convertFromImage(im);
-    
-  this->setPixmap(*_pixmap_img);
-	//_scene->addItem(this);
-	
-	_highlight = new QGraphicsRectItem(((int)_selection->x), ((int)_selection->y), ((int)_selection->w), ((int)_selection->h));
-	
-	//_scene->addItem(_highlight);
-	//_view->setScene(_scene);
-  
-  _image = image;
+  return im;
 }
