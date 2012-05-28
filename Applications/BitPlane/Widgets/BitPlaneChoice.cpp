@@ -11,7 +11,7 @@ BitPlaneChoice::BitPlaneChoice(QWidget* parent) : QWidget(parent)
   _StrMask = new QString("[1 1 1 1 1 1 1 1]");
   QVBoxLayout* mainLayout = new QVBoxLayout();
   mainLayout->setContentsMargins(0, 0, 0, 0);
-  _DisplayMask = new QLabel("Bit plane mask [1 1 1 1 1 1 1 1] :", this);
+  _DisplayMask = new QLabel("Bit plane mask [1 1 1 1 1 1 1 1] (with scaling) :", this);
   mainLayout->addWidget(_DisplayMask);
 
   QHBoxLayout* CBLayout = new QHBoxLayout();
@@ -112,7 +112,7 @@ void BitPlaneChoice::maskChanged()
   _StrMask = new QString(newMask.c_str());
   std::string newDisplayMask = "Bit plane mask " ;
   newDisplayMask+=newMask;
-  newDisplayMask+=" :";
+  newDisplayMask+=" (with scaling) :";
   _DisplayMask->setText(newDisplayMask.c_str());
   emit newMaskAllocated();
 }
