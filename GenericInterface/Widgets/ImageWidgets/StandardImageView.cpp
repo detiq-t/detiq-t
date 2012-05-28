@@ -509,6 +509,5 @@ void StandardImageView::setImage(imagein::Image* image)
 	//_scene->addItem(_highlight);
 	//_view->setScene(_scene);
   
-  delete _image;
   _image = image;
 }

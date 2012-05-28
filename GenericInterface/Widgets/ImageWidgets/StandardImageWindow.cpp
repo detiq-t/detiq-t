@@ -29,8 +29,8 @@ StandardImageWindow::StandardImageWindow(const QString path, GenericInterface* g
 StandardImageWindow::~StandardImageWindow()
 {
 	delete _imageView;
-	delete _selectedPixel;
-	delete _image;
+  delete _selectedPixel;
+  delete _image;
 }
 
 void StandardImageWindow::init()
@@ -329,6 +329,8 @@ const imagein::Image* StandardImageWindow::getImage()
 void StandardImageWindow::setImage(Image* image)
 {
     _imageView->setImage(image);
+    delete _image;
+    _image = image;
 }
 
 const imagein::Rectangle* StandardImageWindow::getSelection()

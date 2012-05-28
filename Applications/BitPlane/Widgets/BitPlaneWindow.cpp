@@ -23,7 +23,7 @@ void BitPlaneWindow::changeMask()
 {
   BitPlane<Image> bp = BitPlane<Image>(_bitplanechoice->getMask());
   Image* image = bp(_workImg);
-  _imageView->setImage(image);
+  setImage(image);
   std::string newTitle = "Image with bit plane ";
   newTitle+=(_bitplanechoice->getStrMask()).toStdString();
   newTitle+=" - ";
