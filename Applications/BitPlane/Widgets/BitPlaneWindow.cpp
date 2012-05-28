@@ -27,12 +27,13 @@ void BitPlaneWindow::changeMask()
   if(m!=0) {
     unsigned int w = image->getWidth();
     unsigned int h = image->getHeight();
-    unsigned int i,j;
+    unsigned int c = image->getNbChannels();
+    unsigned int i,j,k;
     for(i=0;i<w;i++) {
       for(j=0;j<h;j++) {
-        image->setPixel(i,j,0,image->getPixel(i,j,0)*255/m);
-        image->setPixel(i,j,1,image->getPixel(i,j,1)*255/m);
-        image->setPixel(i,j,2,image->getPixel(i,j,2)*255/m);
+        for(k=0;k<c;k++) {
+          image->setPixel(i,j,k,image->getPixel(i,j,k)*255/m);
+        }
       }
     }
   }
