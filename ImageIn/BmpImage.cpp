@@ -77,7 +77,7 @@ void BmpImage::writeData(const void* const data_, unsigned int width, unsigned i
 			px->Green = data[nChannels*(i+j*width)+1];
 			px->Blue = data[nChannels*(i+j*width)+2];
 			if(nChannels == 4) px->Alpha = data[nChannels*(i+j*width)+3]; // In case there are 4 channels, we load the Alpha channel too
-			//TODO handling of a depth other than char
+			//TODO handling of a depth other than uint8_t
 		}
 	}
     /* We try to write to the file at the given adress (filename),
