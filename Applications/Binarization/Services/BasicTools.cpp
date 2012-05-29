@@ -3,6 +3,7 @@
 
 #include <Algorithm/Identity.h>
 #include <Algorithm/Inversion.h>
+#include <Algorithm/RgbToGrayscale.h>
 #include <Converter.h>
 
 using namespace genericinterface;
@@ -44,4 +45,6 @@ void BasicTools::applyInversion()
 
 void BasicTools::convertToGrayscale()
 {
+    RgbToGrayscale* algo = new RgbToGrayscale;
+    applyAlgorithm(algo);
 }
