@@ -7,9 +7,8 @@ QT += xml
 TARGET = 
 DEPENDPATH += . Widgets
 INCLUDEPATH += . Widgets ../../GenericInterface ../../ImageIn
-LIBS += -L../../GenericInterface -lGenericInterface -L../../ImageIn -limagein
+LIBS += -L../../GenericInterface -lGenericInterface -L../../ImageIn -limagein -lpng -ljpeg
 CONFIG += qwt
-
 
 # Input
 HEADERS += FilteringService.h \
