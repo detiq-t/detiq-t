@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 
   Log::configure(true, true, 0);
 
-  GenericInterface m;
+  GenericInterface m("Basic Application");
   m.addService(new BasicAlgorithmService);
 
   m.run();

@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
   Log::configure(true, false, 0);
 
-  GenericInterface m;
+  GenericInterface m("MorphoMat");
 
   m.addService(new MorphoMatService);
 

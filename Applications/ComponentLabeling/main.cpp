@@ -11,10 +11,10 @@ int main (int argc, char** argv)
 
   Log::configure (true, false, 0);
 
-  GenericInterface m;
+  GenericInterface m("Component Labelling");
   m.addService(new ComponentLabelingService);
 
-  m.run ();
+  m.run();
 
   return app.exec ();
 }

@@ -3,12 +3,14 @@
 using namespace std;
 using namespace genericinterface;
 
-GenericInterface::GenericInterface()
-  : _nbServices(3)
+GenericInterface::GenericInterface(QString name) : _nbServices(3)
 {
-  addService(WINDOW_SERVICE, new WindowService);
-  addService(FILE_SERVICE, new FileService);
-  addService(UTILITY_SERVICE, new UtilityService);
+    addService(WINDOW_SERVICE, new WindowService);
+    addService(FILE_SERVICE, new FileService);
+    addService(UTILITY_SERVICE, new UtilityService);
+
+    if (name != "")
+        setWindowTitle(name);
 }
 
 int GenericInterface::addService(Service* s)

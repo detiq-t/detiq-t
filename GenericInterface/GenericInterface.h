@@ -43,8 +43,8 @@ namespace genericinterface
 	public:
 	
 	enum { WINDOW_SERVICE, FILE_SERVICE, UTILITY_SERVICE }; 
-	   
-    GenericInterface();
+
+    GenericInterface(QString name = "");
 
     /**
     * @brief Add a new service to the generic interface and returns its id

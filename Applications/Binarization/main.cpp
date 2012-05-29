@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
   Log::configure(true, false, 0);
 
-  GenericInterface m;
+  GenericInterface m("Binarization");
 
   m.addService(new BasicTools);
   m.addService(new BinarizationService);

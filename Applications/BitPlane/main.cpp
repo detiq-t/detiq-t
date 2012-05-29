@@ -10,10 +10,10 @@ int main (int argc, char** argv)
 
   Log::configure (true, false, 0);
 
-  GenericInterface m;
+  GenericInterface m("BitPlane");
   m.addService(new BitPlaneService);
 
-  m.run ();
+  m.run();
 
   return app.exec ();
 }
