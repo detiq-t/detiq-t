@@ -5,7 +5,7 @@
 #include <QFileDialog>
 
 #include "../GenericInterface.h"
-#include "WindowService.h"
+
 
 namespace genericinterface
 {

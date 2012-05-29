@@ -1,4 +1,5 @@
 #include "FileService.h"
+#include "WindowService.h"
 
 #include <UnknownFormatException.h>
 

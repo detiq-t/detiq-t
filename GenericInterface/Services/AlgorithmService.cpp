@@ -13,27 +13,26 @@ AlgorithmService::AlgorithmService()
 
 void AlgorithmService::display(GenericInterface* gi)
 {
-  _toolBar = gi->addToolBar("Algorithm");
+  _toolBar = gi->toolBar("Algorithm");
 }
 
 void AlgorithmService::connect(GenericInterface* gi)
 {
   _gi = gi;
+  _ws = _gi->windowService();
 
-  WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-  QObject::connect(this, SIGNAL(newImageWindowCreated(const QString&, ImageWindow*)), ws, SLOT(addImage(const QString&, ImageWindow*)));
+  QObject::connect(this, SIGNAL(newImageWindowCreated(const QString&, ImageWindow*)), _ws, SLOT(addImage(const QString&, ImageWindow*)));
 }
 
 
 void AlgorithmService::applyAlgorithm(GenericAlgorithm_t<Image::depth_t>* algo)
 {
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(_ws->getCurrentImageWindow());
     if (siw != NULL)
     {
         const Image* whole_image = siw->getImage();
         const Image* im = whole_image->crop(*(siw->getSelection()));
-        QString name = ws->getWidgetId(siw);
+        QString name = _ws->getWidgetId(siw);
 
         Image* im_res = (*algo)(im);
         //im_res = Converter<Image>::makeDisplayable(*im_res);

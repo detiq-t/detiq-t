@@ -31,7 +31,6 @@ namespace genericinterface
         void checkActionsValid(QMdiSubWindow* activeWindow);
 
       private:
-        QToolBar* _toolBar;
         imagein::MorphoMat::StructElem<depth_default_t>* _structElem; 
         QAction* _editStructElem;
 	    QAction* _erosion;

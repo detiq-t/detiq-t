@@ -11,7 +11,6 @@ void BasicAlgorithmService::display(GenericInterface* gi)
 {
     AlgorithmService::display(gi);
 
-    _toolBar = gi->addToolBar("Basic Algorithms");
     _identity = _toolBar->addAction("&Identity");
     _inversion = _toolBar->addAction("&Inversion");
 }

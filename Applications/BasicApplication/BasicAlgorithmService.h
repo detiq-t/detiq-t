@@ -24,7 +24,6 @@ namespace genericinterface
     void applyInversion();
 
   private:
-    QToolBar* _toolBar;
     QAction* _identity;
     QAction* _inversion;
   };

@@ -11,7 +11,7 @@ int main (int argc, char** argv)
   Log::configure (true, false, 0);
 
   GenericInterface m;
-  int serviceId = m.addService(new BitPlaneService);
+  m.addService(new BitPlaneService);
 
   m.run ();
 

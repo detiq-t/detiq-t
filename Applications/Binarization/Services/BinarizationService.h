@@ -36,8 +36,9 @@ private slots:
      */
     void exportBinarizedImage(QString& path, Image* im);
 
+    void aboutOtsu();
+
 private:
-    QToolBar* _toolBar;
     QAction* _binarize;
     BinarizationWidget* _binWidget;
 };

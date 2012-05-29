@@ -47,6 +47,17 @@ Service* GenericInterface::getService(int id) throw (BadIdException)
     return _services[id];
 }
 
+WindowService* GenericInterface::windowService()
+{
+    WindowService* ws = dynamic_cast<WindowService*>(_services[WINDOW_SERVICE]);
+    return ws;
+}
+
+FileService* GenericInterface::fileService()
+{
+    FileService* fs = dynamic_cast<FileService*>(_services[FILE_SERVICE]);
+    return fs;
+}
 
 void GenericInterface::run(bool shw)
 {
@@ -112,19 +123,36 @@ QMdiArea* GenericInterface::initCentralWidget()
 
 QMenu* GenericInterface::menu(QString name)
 {
-  QMenu* res;
+    QMenu* res;
 
-  if (_menus.find(name) != _menus.end())
-  {
-    res = _menus[name];
-  }
-  else
-  {
-    res = menuBar()->addMenu(name);
-    _menus[name] = res;
-  }
+    if (_menus.find(name) != _menus.end())
+    {
+        res = _menus[name];
+    }
+    else
+    {
+        res = menuBar()->addMenu(name);
+        _menus[name] = res;
+    }
 
-  return res;
+    return res;
+}
+
+QToolBar* GenericInterface::toolBar(QString name)
+{
+    QToolBar* res;
+
+    if (_toolBars.find(name) != _toolBars.end())
+    {
+        res = _toolBars[name];
+    }
+    else
+    {
+        res = addToolBar(name);
+        _toolBars[name] = res;
+    }
+
+    return res;
 }
 
 void GenericInterface::finalizeInterface()

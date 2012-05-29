@@ -56,8 +56,8 @@ void StructElemViewer::draw(int x, int y)
     {
       QGraphicsRectItem& r = at(i, j);
 
-      int px = (i + x)/_scale;
-      int py = (j + y)/_scale;
+      unsigned int px = (i + x)/_scale;
+      unsigned int py = (j + y)/_scale;
 
 
       if(   px < static_cast<int>(_image.getWidth())

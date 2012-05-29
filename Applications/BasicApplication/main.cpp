@@ -12,7 +12,7 @@ int main(int argc, char** argv)
   Log::configure(true, true, 0);
 
   GenericInterface m;
-  int serviceId = m.addService(new BasicAlgorithmService);
+  m.addService(new BasicAlgorithmService);
 
   m.run();
 

@@ -29,7 +29,6 @@ void MorphoMatService::display(GenericInterface* gi)
 {
   AlgorithmService::display(gi);
 
-  _toolBar = gi->addToolBar("MorphoMat");
   _editStructElem = _toolBar->addAction("&Structuring element");
   _erosion = _toolBar->addAction("&Erosion");
   _dilatation = _toolBar->addAction("&Dilatation");
@@ -71,8 +70,7 @@ void MorphoMatService::connect(GenericInterface* gi)
     QObject::connect(_wtophat, SIGNAL(triggered()), this, SLOT(applyWhiteTopHat()));
     QObject::connect(_btophat, SIGNAL(triggered()), this, SLOT(applyBlackTopHat()));
 	//connexion des changements d'images
-	WindowService* ws = dynamic_cast<WindowService*>(gi->getService(GenericInterface::WINDOW_SERVICE));
-	QObject::connect(ws, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(checkActionsValid(QMdiSubWindow*)));
+    QObject::connect(_ws, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(checkActionsValid(QMdiSubWindow*)));
 }
 
 void MorphoMatService::checkActionsValid(QMdiSubWindow* activeWindow) {
@@ -110,9 +108,8 @@ void MorphoMatService::editStructElem()
     _editStructElem->setEnabled(false);
     StructElemWindow* structElemWindow = new StructElemWindow(_structElem, _editStructElem);
 
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* current_siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
-    ws->addWidget(ws->getWidgetId(current_siw), structElemWindow);
+    StandardImageWindow* current_siw = dynamic_cast<StandardImageWindow*>(_ws->getCurrentImageWindow());
+    _ws->addWidget(_ws->getWidgetId(current_siw), structElemWindow);
 }
 
 void MorphoMatService::applyOperator(MorphoMat::Operator<depth_default_t>& op)

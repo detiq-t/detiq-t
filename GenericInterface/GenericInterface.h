@@ -10,12 +10,15 @@
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QMenu>
+#include <QToolBar>
 #include <QString>
 #include <QApplication>
 
 namespace genericinterface
 {
   class GenericInterface; /* Pre-declaration for the Service include */
+  class WindowService;
+  class FileService;
 }
 
 #include "InterfaceExceptions.h"
@@ -75,18 +78,29 @@ namespace genericinterface
     */
     void changeService(int id, Service* s) throw (BadIdException);
 
-    //template <class Serv>
-    //int getIDService();
-
     /**
     * @brief Provides a direct access to the wanted service, mostly used by the Service::connect(GenericInterface*)
     * function.
     *
     * @param id its id
     *
-    * @return 
+    * @return the wanted Service
     */
     Service* getService(int id) throw (BadIdException);
+
+    /**
+    * @brief Return a pointer on the WindowService
+    *
+    * @return a pointer to the WindowService
+    */
+    WindowService* windowService();
+
+    /**
+    * @brief Return a pointer on the FileService
+    *
+    * @return a pointer to the FileService
+    */
+    FileService* fileService();
 
     /**
     * @brief This function has to be prefered to the Qt function void QMainWindow::show(), it connects the
@@ -107,7 +121,7 @@ namespace genericinterface
     virtual QMdiArea* initCentralWidget();
 
     /**
-    * @brief Get a pointer to the QMenu labelled name
+    * @brief Get a pointer to the QMenu labelled name, create the menu if it doesn't exist.
     *
     * @param name the label of the wanted menu
     *
@@ -115,12 +129,23 @@ namespace genericinterface
     */
     virtual QMenu* menu(QString name);
 
+    /**
+    * @brief Get a pointer to the QToolBar labelled name, create the toolBar if it doesn't exist.
+    *
+    * @param name the label of the wanted QToolBar
+    *
+    * @return the pointer
+    */
+    virtual QToolBar* toolBar(QString name);
+
+
   protected:
     /**
     * @brief The services the interface can uses.
     */
     std::map<int, Service*> _services;
     std::map<QString, QMenu*> _menus;
+    std::map<QString, QToolBar*> _toolBars;
 	
 	int _nbServices;
 	
