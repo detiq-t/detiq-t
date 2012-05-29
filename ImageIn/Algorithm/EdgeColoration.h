@@ -20,12 +20,13 @@ namespace imagein {
 
       void generateColors()
       {
-        for (int i = 0; i < 2 * 3 * A; i += 3) {
+        for (int i = 0; i < 2 * 3 * A; i += 6) {
           _colors[i] = rand() % 255;
           _colors[i + 1] = rand() % 255;
           _colors[i + 2] = rand() % 255;
-
-          std::cout << _colors[i] << "," << _colors[i + 1] << "," << _colors[i+2] << std::endl;
+          _colors[i + 3] = 255 - _colors[i];
+          _colors[i + 4] = 255 - _colors[i + 1];
+          _colors[i + 5] = 255 - _colors[i + 2];
         }
       }
       
@@ -56,8 +57,6 @@ namespace imagein {
             }
 
             int nb = (2 * max + (neg ? 1 : 0));
-
-            std::cout << nb << std::endl;
 
             r = _colors[3 * nb]     * ((double)max_val / 255.0);
             g = _colors[3 * nb + 1] * ((double)max_val / 255.0);

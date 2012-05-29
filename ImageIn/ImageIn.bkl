@@ -63,6 +63,7 @@
 	
 	<sys-lib>png</sys-lib>
 	<sys-lib>jpeg</sys-lib>
+	<sys-lib>pthread</sys-lib>
 	<sys-lib>z</sys-lib>
 </exe>
 

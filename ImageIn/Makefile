@@ -111,7 +111,7 @@ libimagein.a: $(IMAGEIN_OBJECTS)
 	$(RANLIB) $@
 
 ImageIn_main: $(IMAGEIN_MAIN_OBJECTS) libimagein.a
-	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
+	$(CXX) -o $@ $(IMAGEIN_MAIN_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lpthread -lz
 
 ImageIn_test: $(IMAGEIN_TEST_OBJECTS) libimagein.a
 	$(CXX) -o $@ $(IMAGEIN_TEST_OBJECTS)  $(____DEBUG_4)  $(LDFLAGS)  libimagein.a -lpng -ljpeg -lz
