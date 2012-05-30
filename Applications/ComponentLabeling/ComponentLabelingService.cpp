@@ -2,7 +2,6 @@
 
 #include <GenericInterface.h>
 #include <Converter.h>
-#include <QDebug>
 
 using namespace genericinterface;
 using namespace imagein::algorithm;

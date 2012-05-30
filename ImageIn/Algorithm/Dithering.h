@@ -65,9 +65,9 @@ namespace imagein
 
         typedef Dithering_t<depth_default_t> Dithering; //!< Standard Algorithm with default depth. See Image_t::depth_default_t
         
-        #include "Dithering.tpp"
+        
     }
 }
-
+#include "Dithering.tpp"
 
 #endif
