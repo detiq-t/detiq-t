@@ -5,6 +5,7 @@
 #include "Algorithm/Dithering.h"
 #include "Algorithm/EdgeColoration.h"
 #include "Algorithm/Filtering.h"
+#include "Algorithm/RgbToGrayscale.h"
 #include "Converter.h"
 
 #include <ctime>
@@ -23,7 +24,9 @@ int main(int argc, char** argv)
 
   EdgeColoration_t<Image_t<int>, 2> ec;
 
-  Image* img        = new Image("samples/circle.png");
+  Image* i          = new Image("samples/de.jpg");
+  RgbToGrayscale algo;
+  Image* img        = algo(i);
   Image_t<int>* i1  = c1(Converter<Image>::convertToInt(*img));
   Image_t<int>* i2  = c2(Converter<Image>::convertToInt(*img));
   Image_t<int>* res = ec(i1, i2);
