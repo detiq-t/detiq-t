@@ -73,12 +73,16 @@ StructElemWindow::StructElemWindow(StructElem<depth_default_t>*& elem, QAction* 
 
 void StructElemWindow::ok() {
     _serviceStructElem = _structElem;
-    //_tbButton->setEnabled(true);
-    this->close();
+    _tbButton->setEnabled(true);
+    //this->close();
+    this->hide();
 }
 
-void StructElemWindow::closeEvent ( QCloseEvent * ) {
+void StructElemWindow::closeEvent ( QCloseEvent * event) {
     _tbButton->setEnabled(true);
+    event->ignore();
+    this->hide();
+
 }
 
 void rasterCircle(GrayscaleImage_t<bool>& img, int x0, int y0, int radius)
