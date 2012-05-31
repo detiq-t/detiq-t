@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "ImageFileFactory.h"
 
 #include "JpgImage.h"
@@ -21,17 +23,26 @@ unsigned int ImageFileFactory::getImageDepth(std::string filename) const
 ImageFile* ImageFileFactory::getImageFile(std::string filename) const
 {
     ImageFile* imgf = NULL;
-    if(filename.substr(filename.size()-4,4)==".bmp") {
+    size_t pos = filename.rfind('.');
+    if(pos == std::string::npos) {
+      throw UnknownFormatException(__LINE__, __FILE__);
+    }
+
+    std::string ext = filename.substr(pos);
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+    std::cout << ext << std::endl;
+    if(ext==".bmp") {
         imgf = new BmpImage(filename);
     }
-    else if(filename.substr(filename.size()-4,4)==".jpg" || filename.substr(filename.size()-5,5)==".jpeg") {
+    else if(ext==".jpg" || filename.substr(filename.size()-5,5)==".jpeg") {
         imgf = new JpgImage(filename);
     }
-    else if(filename.substr(filename.size()-4,4)==".png") {
+    else if(ext==".png") {
         imgf = new PngImage(filename);
     }
-	else {
-		throw UnknownFormatException(__LINE__, __FILE__);
-	}
+    else {
+      throw UnknownFormatException(__LINE__, __FILE__);
+    }
+    
     return imgf;
 }
