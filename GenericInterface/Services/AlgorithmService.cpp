@@ -24,7 +24,6 @@ void AlgorithmService::connect(GenericInterface* gi)
   QObject::connect(this, SIGNAL(newImageWindowCreated(const QString&, ImageWindow*)), _ws, SLOT(addImage(const QString&, ImageWindow*)));
 }
 
-
 void AlgorithmService::applyAlgorithm(GenericAlgorithm_t<Image::depth_t>* algo)
 {
     StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(_ws->getCurrentImageWindow());

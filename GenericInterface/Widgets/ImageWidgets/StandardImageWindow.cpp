@@ -300,7 +300,11 @@ void StandardImageWindow::showHoveredPixelInformations(int x, int y) const
 	for(unsigned int i = 0; i < im->getNbChannels(); i++)
 	{
 		oss.str("");
-		oss << (unsigned int) im->getPixel(x, y, i);
+		try {
+			oss << (unsigned int) im->getPixel(x, y, i);
+		}
+		catch(std::out_of_range&) {
+		}
 		_lHoveredPixelColor->setText(_lHoveredPixelColor->text() + QString::fromStdString(" " + oss.str()));
 	}
 }
