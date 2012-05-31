@@ -3,9 +3,7 @@ LIBS += -lqwt -limagein -lpng -ljpeg -lGenericInterface
 QT += xml
 TARGET = 
 DEPENDPATH += . Widgets
-INCLUDEPATH += . Widgets ../../GenericInterface ../../ImageIn
-LIBS += -L../../GenericInterface -lGenericInterface -L../../ImageIn -limagein -lpng -ljpeg
-CONFIG += qwt
+INCLUDEPATH += . Widgets
 
 # Input
 HEADERS += FilteringService.h \

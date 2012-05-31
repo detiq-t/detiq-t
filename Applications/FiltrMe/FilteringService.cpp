@@ -61,16 +61,18 @@ void FilteringService::apply(Filtering* filtering)
 
 void FilteringService::applyAlgorithm(Filtering* algo)
 {
-    WindowService* ws = dynamic_cast<WindowService*>(_gi->getService(GenericInterface::WINDOW_SERVICE));
-    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(ws->getCurrentImageWindow());
+    StandardImageWindow* siw = dynamic_cast<StandardImageWindow*>(_ws->getCurrentImageWindow());
     if (siw != NULL)
     {
-        const Image* im = siw->getImage();
-        QString id = ws->getWidgetId(siw);
+        const Image* whole_image = siw->getImage();
+        const Image* im = whole_image->crop(*(siw->getSelection()));
+        QString id = _ws->getWidgetId(siw);
+        
         Image_t<int>* im2 = Converter<Image>::convertToInt(*im);
         im2 = (*algo)(im2);
         Image* im_res = Converter<Image>::makeDisplayable(*im2);
-        StandardImageWindow* siw_res = new StandardImageWindow("", _gi, im_res);
+        
+        StandardImageWindow* siw_res = new StandardImageWindow(id, _gi, im_res);
         siw_res->setWindowTitle(ImageWindow::getTitleFromPath(siw->getPath()));
         emit newImageWindowCreated(id, siw_res);
     }
