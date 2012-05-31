@@ -3,6 +3,8 @@
 
 #include <Services/AlgorithmService.h>
 
+#include <Widgets/ImageWidgets/StandardImageWindow.h>
+
 #include "Widgets/FilterChoice.h"
 #include "Widgets/FilterEditor.h"
 
@@ -37,6 +39,8 @@ namespace filtrme
     QAction* _filtering;
     QAction* _filterEdition;
     QStringList _texts;
+
+    genericinterface::StandardImageWindow* _siw;
   };
 }
 
