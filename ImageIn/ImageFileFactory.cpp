@@ -30,7 +30,6 @@ ImageFile* ImageFileFactory::getImageFile(std::string filename) const
 
     std::string ext = filename.substr(pos);
     std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-    std::cout << ext << std::endl;
     if(ext==".bmp") {
         imgf = new BmpImage(filename);
     }

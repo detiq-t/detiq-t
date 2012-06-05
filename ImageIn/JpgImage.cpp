@@ -210,7 +210,7 @@ void* JpgImage::readData(){
     unsigned int width = cinfo.output_width;
     unsigned int height = cinfo.output_height;
     unsigned int nChannels = cinfo.output_components;
-    unsigned int depth = sizeof(JSAMPLE)*8;
+    //unsigned int depth = sizeof(JSAMPLE)*8;
     unsigned int rowSize = width*nChannels*(sizeof(JSAMPLE)/sizeof(uint8_t));
 
     uint8_t* data = new uint8_t[height*rowSize];
@@ -222,7 +222,7 @@ void* JpgImage::readData(){
     /* We read the decompression results */
     //for (unsigned int i=0; i < 1; i++) {
     while(cinfo.output_scanline < cinfo.output_height) {
-        uint8_t* pos = &data[cinfo.output_scanline*rowSize];
+        JSAMPROW pos = (JSAMPROW)&data[cinfo.output_scanline*rowSize];
         jpeg_read_scanlines(&cinfo, &pos, 1);
     }
 
@@ -357,7 +357,7 @@ void JpgImage::writeData(const void* const data_, unsigned int width, unsigned i
          * Here the array is only one element long, but you could pass
          * more than one scanline at a time if that's more convenient.
          */
-        row_pointer[0] = (uint8_t*)& data[cinfo.next_scanline * row_stride + offset];
+        row_pointer[0] = (JSAMPROW)& data[cinfo.next_scanline * row_stride + offset];
         jpeg_write_scanlines(&cinfo, row_pointer, 1);
     }
 
